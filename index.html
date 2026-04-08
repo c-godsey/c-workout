@@ -532,7 +532,7 @@ const ACH_DEFS=[
 ];
 
 const DAYS=['day1','day2','day3'];
-const DAY_LABELS={day1:'Day 1',day2:'Day 2',day3:'Day 3'};
+const DAY_LABELS={day1:'Workout 1',day2:'Workout 2',day3:'Workout 3'};
 const RPE_LABELS=['','Very Easy','Easy','Moderate','Somewhat Hard','Hard','Hard','Very Hard','Very Hard','Extremely Hard','Max Effort! 🔥'];
 const K={hist:'cw-history',ach:'cw-ach',timers:'cw-timers',week:'cw-week'};
 const WORKOUT_DATA={
@@ -543,7 +543,7 @@ const WORKOUT_DATA={
     {range:[40,52],name:"Peak Performance",focus:"Combining speed and strength for maximum fitness."}
   ],
   video_library:{
-    "Day 1":[
+    "Workout 1":[
       {id:"ewrf_rCHUdA",title:"15 Min HIIT Booster",duration:"15m"},
       {id:"wBurKQX7h4Q",title:"20 Min Fat Burn",duration:"20m"},
       {id:"QuKEyPhRrMM",title:"25 Min HIIT Intervals",duration:"25m"},
@@ -551,7 +551,7 @@ const WORKOUT_DATA={
       {id:"MM4YwZvmdhs",title:"Sharp & Hard Efforts",duration:"20m"},
       {id:"lwuFoUHxHJ0",title:"Feel the Burn HIIT",duration:"20m"}
     ],
-    "Day 2":[
+    "Workout 2":[
       {id:"FtkPs2tFx9I",title:"40 Min Passo Pordoi",duration:"40m"},
       {id:"DdRZyRoONuE",title:"45 Min Rolling Hills",duration:"45m"},
       {id:"J9fAk04oTtA",title:"45 Min VO2 Max",duration:"45m"},
@@ -559,7 +559,7 @@ const WORKOUT_DATA={
       {id:"jY8MwfuyK94",title:"Cadence & Speed Drills",duration:"60m"},
       {id:"QB69Pwl6GI8",title:"Endurance Threshold",duration:"60m"}
     ],
-    "Day 3":[
+    "Workout 3":[
       {id:"vDKnTjpccf4",title:"30 Min Hill Climb",duration:"30m"},
       {id:"MvO2LRlVsyI",title:"30 Min Low Cadence",duration:"30m"},
       {id:"ZiGE3-L4vyg",title:"30 Min Power Intervals",duration:"30m"},
@@ -618,7 +618,7 @@ function getBoxing(week,day){
   return BOXING[((week-1+off)%BOXING.length+BOXING.length)%BOXING.length];
 }
 function getVideo(week,day){
-  const dayKey={day1:'Day 1',day2:'Day 2',day3:'Day 3'}[day]||'Day 1';
+  const dayKey={day1:'Workout 1',day2:'Workout 2',day3:'Workout 3'}[day]||'Workout 1';
   const lib=WORKOUT_DATA.video_library[dayKey];
   return lib[(week-1)%lib.length]||lib[0];
 }
