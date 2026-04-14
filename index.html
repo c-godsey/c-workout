@@ -206,6 +206,7 @@ html,body{background:var(--bg);color:var(--text);font-family:-apple-system,Blink
 /* ── PROGRESS TAB ────────────────────────────────── */
 .prog-hero{padding:22px 0 6px}
 .prog-stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:6px}
+@media(max-width:480px){.prog-stats-row{grid-template-columns:repeat(2,1fr)!important}}
 .prog-stat-card{background:var(--glass);border:1px solid var(--glass-border);border-radius:16px;padding:16px 12px;text-align:center}
 .prog-stat-val{font-size:36px;font-weight:900;color:var(--lime);line-height:1;text-shadow:0 0 20px rgba(204,255,0,.2)}
 .prog-stat-lbl{font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--dim);margin-top:4px}
@@ -787,8 +788,8 @@ code{font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:4px
         <div class="prog-stat-lbl">Badges</div>
       </div>
       <div class="prog-stat-card">
-        <div class="prog-stat-val" id="prog-month" style="font-size:26px">0%</div>
-        <div id="prog-month-fraction" style="font-size:9px;color:var(--dim);margin-top:2px;font-weight:700;letter-spacing:.5px">0 / 0 days</div>
+        <div class="prog-stat-val" id="prog-month" style="font-size:28px">0%</div>
+        <div id="prog-month-fraction" style="font-size:10px;color:var(--dim);margin-top:2px;font-weight:700">0/0 days</div>
         <div class="prog-stat-lbl">This Month</div>
         <div class="month-bar-track"><div class="month-bar-fill" id="prog-month-bar" style="width:0%"></div></div>
       </div>
@@ -1490,7 +1491,7 @@ function render(){
   const pmf=document.getElementById('prog-month-fraction');
   const pmb=document.getElementById('prog-month-bar');
   if(pm) pm.textContent=mc.pct+'%';
-  if(pmf) pmf.textContent=`${mc.active} of ${mc.total} days`;
+  if(pmf) pmf.textContent=`${mc.active}/${mc.total} days`;
   if(pmb) pmb.style.width=mc.pct+'%';
 
   // Phase card
@@ -2009,16 +2010,19 @@ function makeSvgRing(current,goal,color,size,strokeW){
   const pct=goal>0?Math.min(current/goal,1):0;
   const done=goal>0&&current>=goal;
   const dashFill=(pct*circ).toFixed(2);
-  const fc=done?'var(--text)':color;
-  const tc=done?color:'var(--text)';
   return`<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" style="display:block;overflow:visible">
     <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="var(--surface2)" stroke-width="${strokeW}"/>
-    <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${fc}" stroke-width="${strokeW}"
+    ${done?`<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${color}" stroke-width="${strokeW}" opacity=".18"/>`:''}
+    <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${color}" stroke-width="${done?strokeW+2:strokeW}"
       stroke-dasharray="${dashFill} ${circ.toFixed(2)}" stroke-linecap="round"
-      transform="rotate(-90 ${cx} ${cy})"/>
-    ${done?`<circle cx="${cx}" cy="${cy}" r="${r+strokeW/2+3}" fill="none" stroke="${color}" stroke-width="1.5" opacity=".3"/>`:''}
+      transform="rotate(-90 ${cx} ${cy})"
+      ${done?`filter="url(#glow-${cx.toFixed(0)})"`:''} />
+    ${done?`<defs><filter id="glow-${cx.toFixed(0)}" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter></defs>`:''}
     <text x="${cx}" y="${cy-size*0.06}" text-anchor="middle" dominant-baseline="middle"
-      font-size="${size*0.22}" font-weight="900" fill="${tc}" font-family="-apple-system,sans-serif">${current}</text>
+      font-size="${size*0.22}" font-weight="900" fill="${done?color:'var(--text)'}" font-family="-apple-system,sans-serif">${current}</text>
     <text x="${cx}" y="${cy+size*0.16}" text-anchor="middle" dominant-baseline="middle"
       font-size="${size*0.11}" fill="var(--dim)" font-family="-apple-system,sans-serif">/ ${goal}</text>
   </svg>`;
