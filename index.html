@@ -2,13 +2,18 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+<meta name="apple-mobile-web-app-title" content="C-Workout"/>
+<meta name="mobile-web-app-capable" content="yes"/>
+<meta name="theme-color" content="#0c0c0c"/>
 <title>C-Workout</title>
 <style>
 :root{--bg:#0c0c0c;--surface:#151515;--surface2:#1e1e1e;--border:#2a2a2a;--accent:#CCFF00;--accent-dim:#a8d400;--text:#f0f0f0;--dim:#5a5a6e;--red:#e63946;--orange:#ff9a3c;--blue:#4d9fff;--green:#4dff91;--r:16px;--lime:#CCFF00;--lime-dim:#a8d400;--lime-glow:rgba(204,255,0,.22);--glass:rgba(255,255,255,.04);--glass-border:rgba(255,255,255,.09)}
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh}
-.app{max-width:900px;margin:0 auto;padding:0 16px 80px}
+.app{max-width:900px;margin:0 auto;padding:0 16px calc(80px + env(safe-area-inset-bottom));padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right))}
 
 /* ── TOP BAR ─────────────────────────────────────── */
 .topbar{display:flex;align-items:center;justify-content:space-between;padding:18px 0 0;gap:10px}
@@ -1980,6 +1985,52 @@ loadState();
 const incompleteDays=DAYS.filter(d=>!isDayDone(S.week,d));
 if(incompleteDays.length)S.activeDay=incompleteDays[0];
 render();resetBoxingTimer();
+
+// ── PWA: Generate icon + manifest dynamically ─────────────────────────────────
+(function(){
+  try{
+    // Draw app icon on canvas
+    const sz=512;
+    const cv=document.createElement('canvas');cv.width=cv.height=sz;
+    const cx=cv.getContext('2d');
+    // Background — rounded rect
+    cx.fillStyle='#0c0c0c';
+    if(cx.roundRect){cx.beginPath();cx.roundRect(0,0,sz,sz,sz*0.18);cx.fill();}
+    else{cx.fillRect(0,0,sz,sz);}
+    // Lime accent bar at bottom
+    cx.fillStyle='#CCFF00';
+    cx.fillRect(0,sz-18,sz,18);
+    // "C" lettermark
+    cx.fillStyle='#CCFF00';
+    cx.font='900 '+Math.round(sz*0.62)+'px -apple-system,BlinkMacSystemFont,Arial,sans-serif';
+    cx.textAlign='center';cx.textBaseline='middle';
+    cx.fillText('C',sz*0.46,sz*0.46);
+    // Small "W" subscript
+    cx.fillStyle='rgba(204,255,0,0.55)';
+    cx.font='700 '+Math.round(sz*0.18)+'px -apple-system,BlinkMacSystemFont,Arial,sans-serif';
+    cx.fillText('WORKOUT',sz*0.56,sz*0.74);
+    const iconUrl=cv.toDataURL('image/png');
+
+    // Apple touch icon
+    const al=document.createElement('link');al.rel='apple-touch-icon';al.href=iconUrl;
+    document.head.appendChild(al);
+
+    // Web app manifest (inline data URI — works on HTTPS)
+    const manifest={
+      name:'C-Workout',short_name:'C-Workout',
+      description:'52-Week Cycling, Boxing & Strength Tracker',
+      start_url:'./',display:'standalone',
+      background_color:'#0c0c0c',theme_color:'#0c0c0c',
+      orientation:'portrait-primary',
+      icons:[
+        {src:iconUrl,sizes:'512x512',type:'image/png',purpose:'any maskable'}
+      ]
+    };
+    const ml=document.createElement('link');ml.rel='manifest';
+    ml.href='data:application/manifest+json,'+encodeURIComponent(JSON.stringify(manifest));
+    document.head.appendChild(ml);
+  }catch(e){}
+})();
 </script>
 <!-- ── SET LOGGING DRAWER (global, outside tab) ─── -->
 <div class="str-backdrop" id="str-backdrop" onclick="closeLogDrawer()"></div>
