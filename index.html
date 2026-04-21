@@ -198,39 +198,58 @@ html,body{background:var(--bg);color:var(--text);font-family:-apple-system,Blink
 @media (orientation:landscape) and (max-height:520px){
   #fs-overlay.open{
     flex-direction:row;
-    flex-wrap:wrap;
     align-items:stretch;
     justify-content:flex-start;
     padding:0;
     padding-left:env(safe-area-inset-left,0px);
     padding-right:env(safe-area-inset-right,0px);
   }
-  .fs-topbar{padding:8px 14px}
-  .fs-btn-minimize,.fs-btn-exit{padding:5px 11px;font-size:12px}
-  /* Left column: phase + round + countdown */
+  /* Topbar slim */
+  .fs-topbar{padding:7px 14px}
+  .fs-btn-minimize,.fs-btn-exit{padding:4px 10px;font-size:11px}
+  .fs-topbar-title{font-size:10px}
+
+  /* LEFT COL — countdown dominates, takes ~65% of width */
   .fs-left-col{
-    width:42%;min-width:200px;flex:0 0 42%;
-    justify-content:center;align-items:center;
-    padding:44px 10px 16px;
-    border-right:1px solid var(--border);
+    flex:0 0 62%;
+    display:flex;flex-direction:column;
+    align-items:center;justify-content:center;
+    padding:36px 12px 10px;
+    position:relative;
   }
-  .fs-phase{font-size:11px;margin-bottom:4px}
-  .fs-round{font-size:12px;margin-bottom:8px}
-  .fs-countdown{font-size:clamp(60px,14vw,100px) !important;letter-spacing:-3px}
-  /* Right column: exercise + stations + controls */
+  /* Countdown fills the left column — use vh so it scales to screen height */
+  .fs-countdown{
+    font-size:clamp(80px,22vh,160px) !important;
+    line-height:1 !important;
+    letter-spacing:-4px;
+  }
+  .fs-phase{font-size:10px;letter-spacing:2px;margin-bottom:3px;min-height:14px}
+  .fs-round{font-size:11px;margin-bottom:6px;min-height:14px}
+
+  /* RIGHT COL — exercise info + controls, slim strip on right */
   .fs-right-col{
-    flex:1;min-width:0;
-    justify-content:center;align-items:center;
-    padding:44px 16px 16px;
+    flex:1;
+    display:flex;flex-direction:column;
+    align-items:center;justify-content:center;
+    padding:36px 14px 10px;
+    border-left:1px solid var(--border);
     gap:0;
+    overflow:hidden;
   }
-  .fs-exercise{font-size:clamp(14px,2.5vw,20px) !important;margin-top:0;max-width:100%;padding:0 8px}
-  .fs-stations{margin-top:12px;gap:7px}
-  .fs-st{padding:5px 12px;font-size:12px;border-radius:8px}
-  .fs-controls{margin-top:12px;gap:10px}
-  .fs-btn-pause{padding:11px 28px;font-size:14px}
-  .fs-btn-skip{padding:9px 16px;font-size:13px}
-  /* Progress bar pinned to very bottom */
+  .fs-exercise{
+    font-size:clamp(12px,1.9vh,17px) !important;
+    margin-top:0;
+    line-height:1.4;
+    max-width:100%;
+    text-align:center;
+  }
+  .fs-stations{margin-top:10px;gap:5px;flex-wrap:wrap;justify-content:center}
+  .fs-st{padding:4px 9px;font-size:10px;border-radius:7px}
+  .fs-controls{margin-top:10px;gap:8px;flex-wrap:wrap;justify-content:center}
+  .fs-btn-pause{padding:10px 20px;font-size:13px}
+  .fs-btn-skip{padding:8px 13px;font-size:12px}
+
+  /* Progress bar pinned to very bottom, full width */
   .fs-progress-wrap{
     position:fixed;bottom:0;left:0;right:0;
     width:100% !important;border-radius:0;margin-top:0;
