@@ -345,17 +345,12 @@ html,body{background:var(--bg);color:var(--text);font-family:-apple-system,Blink
 /* Today's Lifts */
 .str-lifts-hdr{font-size:10px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:var(--dim);padding:22px 0 12px}
 .str-lift-item{background:var(--glass);border:1px solid var(--glass-border);border-radius:16px;margin-bottom:10px;overflow:hidden}
-.str-lift-name-row{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 6px;gap:10px}
+.str-lift-name-row{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 8px;gap:10px}
 .str-lift-name{font-size:14px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;flex:1}
 .str-lift-meta{font-size:10px;color:var(--dim);white-space:nowrap}
-.str-lift-sets-row{display:flex;align-items:center;gap:7px;padding:0 16px 14px;flex-wrap:wrap}
-.str-set-chip{display:flex;align-items:center;gap:6px;padding:7px 12px;border-radius:9px;background:var(--surface2);border:1px solid var(--border);font-size:12px;font-weight:700;cursor:pointer;transition:all .15s;color:var(--dim)}
-.str-set-chip.done{background:rgba(174,212,63,.1);border-color:rgba(174,212,63,.3);color:var(--lime)}
-.str-set-chip-chk{width:15px;height:15px;border-radius:4px;border:2px solid currentColor;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s}
-.str-set-chip.done .str-set-chip-chk{background:var(--lime);border-color:var(--lime);color:#fff}
-.str-add-set{padding:7px 14px;border-radius:9px;background:transparent;border:1px dashed var(--dim);color:var(--dim);font-size:12px;font-weight:700;cursor:pointer;transition:all .15s}
-.str-add-set:hover{border-color:var(--lime);color:var(--lime)}
-.str-lift-notes{font-size:11px;color:var(--dim);padding:0 16px 12px;line-height:1.5}
+.str-lift-notes{font-size:11px;color:var(--dim);padding:0 16px 10px;line-height:1.5}
+.str-lift-progress{padding:0 16px 12px}
+.str-sets-done{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;color:var(--lime);background:rgba(174,212,63,.08);border:1px solid rgba(174,212,63,.2);border-radius:6px;padding:3px 9px}
 
 /* Warm-up card (reused) */
 .warmup-step{display:flex;align-items:flex-start;gap:12px;font-size:13px;color:var(--text)}
@@ -380,6 +375,56 @@ html,body{background:var(--bg);color:var(--text);font-family:-apple-system,Blink
 .str-analytics-hist-week{font-weight:800;color:var(--text);min-width:64px;font-size:13px}
 .str-analytics-hist-pill{padding:3px 9px;border-radius:6px;font-size:11px;background:rgba(174,212,63,.1);color:var(--lime);font-weight:700;border:1px solid rgba(174,212,63,.2)}
 .str-complete-btn{width:100%;margin-top:20px;padding:18px;background:linear-gradient(160deg,#aed43f,#79991e);color:#fff;border:1px solid rgba(174,212,63,.3);border-radius:16px;font-size:16px;font-weight:900;letter-spacing:2.5px;text-transform:uppercase;cursor:pointer;transition:all .2s;box-shadow:0 2px 16px rgba(174,212,63,.15)}
+/* ── Guided Workout Overlay ── */
+.gw-overlay{display:none;position:fixed;inset:0;z-index:550;background:var(--bg);flex-direction:column;overflow-y:auto;-webkit-overflow-scrolling:touch}
+.gw-overlay.open{display:flex}
+.gw-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px 10px;border-bottom:1px solid var(--border);flex-shrink:0}
+.gw-header-left{display:flex;flex-direction:column;gap:2px}
+.gw-ex-progress{font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--lime)}
+.gw-workout-name{font-size:14px;font-weight:900;color:var(--text);text-transform:uppercase;letter-spacing:.5px}
+.gw-exit-btn{padding:8px 16px;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;border:1px solid var(--border);background:var(--surface2);color:var(--dim);transition:all .15s}
+.gw-body{flex:1;padding:20px 20px 8px;display:flex;flex-direction:column;gap:0}
+.gw-block-tag{display:inline-flex;align-items:center;padding:3px 10px;border-radius:100px;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px;width:fit-content}
+.gw-ex-name{font-size:28px;font-weight:900;color:var(--text);line-height:1.15;margin-bottom:6px}
+.gw-set-label{font-size:13px;font-weight:800;color:var(--dim);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px}
+.gw-target-hint{font-size:12px;color:var(--lime);font-weight:700;margin-bottom:10px}
+.gw-prev-best{font-size:11px;color:var(--dim);margin-bottom:18px;display:none}
+.gw-inputs{display:grid;grid-template-columns:1fr 1px 1fr;background:var(--surface);border-radius:16px;border:1px solid var(--border);overflow:hidden;margin-bottom:12px}
+.gw-input-sep{background:var(--border);align-self:stretch}
+.gw-input-grp{display:flex;flex-direction:column;align-items:center;gap:6px;padding:18px 10px}
+.gw-input-lbl{font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--dim)}
+.gw-input{background:transparent;border:none;outline:none;width:100%;text-align:center;font-family:inherit;font-size:52px;font-weight:900;color:var(--text);-moz-appearance:textfield;line-height:1}
+.gw-input::-webkit-outer-spin-button,.gw-input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.gw-warmup{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:14px;min-height:28px}
+.gw-warmup-lbl{font-size:9px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--dim);width:100%}
+.gw-wu-chip{padding:4px 10px;border-radius:8px;background:var(--surface2);border:1px solid var(--border);font-size:11px;font-weight:700;color:var(--dim)}
+.gw-log-btn{width:100%;padding:18px;background:linear-gradient(160deg,#aed43f,#79991e);color:#fff;border:1px solid rgba(174,212,63,.3);border-radius:16px;font-size:16px;font-weight:900;letter-spacing:2.5px;text-transform:uppercase;cursor:pointer;box-shadow:0 2px 16px rgba(174,212,63,.15);margin-bottom:10px}
+.gw-skip-btn{width:100%;padding:12px;background:transparent;border:1px solid var(--border);border-radius:12px;color:var(--dim);font-size:13px;font-weight:700;cursor:pointer;margin-bottom:14px}
+.gw-rest-state{display:none;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:30px 0}
+.gw-rest-lbl{font-size:11px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:var(--blue)}
+.gw-rest-countdown{font-size:80px;font-weight:900;color:var(--text);font-variant-numeric:tabular-nums;line-height:1;letter-spacing:-2px}
+.gw-rest-bar-track{width:100%;height:5px;background:var(--surface2);border-radius:3px;overflow:hidden;margin:4px 0 8px}
+.gw-rest-bar-fill{height:100%;background:var(--blue);border-radius:3px;transition:width .95s linear}
+.gw-rest-next{font-size:13px;color:var(--dim);font-weight:600;text-align:center}
+.gw-rest-skip{padding:12px 28px;border-radius:12px;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-size:14px;font-weight:700;cursor:pointer;margin-top:6px}
+.gw-checklist{padding:16px 20px 20px;border-top:1px solid var(--border);flex-shrink:0}
+.gw-checklist-lbl{font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--dim);margin-bottom:10px}
+.gw-check-item{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:10px;margin-bottom:4px;background:var(--glass);border:1px solid transparent;transition:all .15s}
+.gw-check-item.current{background:rgba(174,212,63,.06);border-color:rgba(174,212,63,.2)}
+.gw-check-item.done{opacity:.5}
+.gw-check-dot{width:8px;height:8px;border-radius:50%;background:var(--dim);flex-shrink:0;transition:all .15s}
+.gw-check-item.current .gw-check-dot{background:var(--lime)}
+.gw-check-item.done .gw-check-dot{background:var(--lime);box-shadow:0 0 6px rgba(174,212,63,.5)}
+.gw-check-name{flex:1;font-size:12px;font-weight:700;color:var(--text)}
+.gw-check-sets{font-size:11px;font-weight:700;color:var(--dim)}
+.gw-check-item.current .gw-check-sets{color:var(--lime)}
+.gw-complete-btn{display:none;width:calc(100% - 40px);margin:0 20px 24px;padding:18px;background:linear-gradient(160deg,#aed43f,#79991e);color:#fff;border:1px solid rgba(174,212,63,.3);border-radius:16px;font-size:16px;font-weight:900;letter-spacing:2.5px;text-transform:uppercase;cursor:pointer;box-shadow:0 2px 16px rgba(174,212,63,.15);flex-shrink:0}
+.str-start-btn{width:100%;margin-top:14px;padding:16px;background:linear-gradient(160deg,#3A3A3C,#1C1C1E);color:#fff;border:1px solid var(--border);border-radius:16px;font-size:15px;font-weight:900;letter-spacing:2px;text-transform:uppercase;cursor:pointer;box-shadow:0 2px 12px rgba(0,0,0,.3);transition:all .2s}
+.str-start-btn:hover{background:linear-gradient(160deg,#454547,#252527)}
+/* version banner */
+.update-banner{position:fixed;top:0;left:50%;transform:translateX(-50%) translateY(-100%);width:100%;max-width:900px;z-index:700;background:var(--lime);color:#000;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:13px;font-weight:800;transition:transform .4s cubic-bezier(.32,.72,0,1)}
+.update-banner.show{transform:translateX(-50%) translateY(0)}
+.update-banner-btn{padding:6px 14px;border-radius:8px;background:#000;color:var(--lime);font-size:12px;font-weight:800;border:none;cursor:pointer;white-space:nowrap}
 .str-complete-btn:hover{background:linear-gradient(160deg,#bce054,#8aaa32);box-shadow:0 4px 24px rgba(174,212,63,.25)}
 .str-complete-btn:disabled{opacity:.3;cursor:not-allowed;box-shadow:none}
 
@@ -900,6 +945,7 @@ code{font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:4px
       <div id="str-lifts-list"><!-- rendered by JS --></div>
 
       <!-- Complete Workout -->
+      <button class="str-start-btn" onclick="startGuidedWorkout()">▶ START WORKOUT</button>
       <button class="str-complete-btn" id="str-complete-btn" onclick="completeStrengthWorkout()">✓ COMPLETE WORKOUT</button>
 
       <!-- Analytics link -->
@@ -1229,6 +1275,14 @@ const STRENGTH=[
     {name:"Landmine Rear Delt Row",sets:"3",reps:"15",rest:"60s",notes:"Pull the end of the bar toward your ear."},
     {name:"Superset: Curls / Dips",sets:"3",reps:"10–15",rest:"60s",notes:"Perform curls, then immediately perform bench dips."},
     {name:"Hammer Curls",sets:"3",reps:"10–12",rest:"60s",notes:"Palms facing in; no swinging."},
+  ]},
+  {id:4,title:"Kettlebell Shoulders & Arms",time:"~50 min",muscles:"Shoulders · Biceps · Triceps",exercises:[
+    {name:"Kettlebell Halos",sets:"3",reps:"10–12",rest:"60s",notes:"Hold bell upside-down by the horns at your chest. Orbit it around your head in a tight, controlled circle — alternate directions each set. Primes the deltoids, rotator cuff, and upper traps.",warmup:true},
+    {name:"KB Clean & Strict Press",sets:"3–4",reps:"6–10",rest:"60s",notes:"Per side. Clean to rack position, core and glutes tight, press strictly overhead — no leg drive. Take 3 full seconds to lower the bell back to your shoulder."},
+    {name:"KB Bent-Over Reverse Fly",sets:"3",reps:"12–15",rest:"60s",notes:"Per side. Hinge at hips until torso is parallel to the floor. Raise your arm out to the side with a slight elbow bend until it reaches shoulder height, then lower slowly. Targets rear delts."},
+    {name:"Dual-Grip KB Bicep Curl",sets:"3–4",reps:"10–15",rest:"60s",notes:"Grip the horns or cup the bottom of the bell. Elbows pinned to ribs, curl to chest. Squeeze hard for 1 second at the top before lowering slowly."},
+    {name:"Overhead KB Tricep Extension",sets:"3",reps:"12–15",rest:"60s",notes:"Hold by the horns, press overhead. Elbows pointing forward — lower the bell behind your head then press back up. Brace your core throughout to protect your lower back."},
+    {name:"KB Lateral Raise",sets:"3",reps:"12–15",rest:"60s",notes:"Per side. Stand tall, slight elbow bend, raise arm out to shoulder height. Lower slowly over 2–3 seconds — resist gravity the whole way down."},
   ]},
 ];
 
@@ -1841,23 +1895,18 @@ function renderStrength(){
   if(ll) ll.innerHTML=wo.exercises.map((e,i)=>{
     const sets=strGetSets(wIdx,i);
     const target=strTargetSets(e);
-    const chips=Array.from({length:Math.max(target,sets.length)},(_,si)=>{
-      const s=sets[si];const done=!!s;
-      return`<div class="str-set-chip${done?' done':''}" onclick="${done?`unlogSet(${wIdx},${i},${si})`:`openLogDrawer(${i})`}">
-        <span class="str-set-chip-chk">${done?'✓':''}</span>
-        <span>${done?`${s.weight}lbs × ${s.reps}`:`Set ${si+1}`}</span>
-      </div>`;
-    }).join('');
-    // Build block-aware meta: show adjusted rep range for current block
+    // Read-only outline — logging happens only in guided mode
     const blockMeta=`<span class="ex-block-tag ${block.type}">${block.repRange}</span>`;
     const deloadNote=isDeload?` <span style="font-size:10px;color:var(--blue);font-weight:600">· 60% weight</span>`:'';
+    const loggedSets=sets.length;
+    const progressNote=loggedSets>0?`<span class="str-sets-done">${loggedSets} set${loggedSets!==1?'s':''} logged</span>`:'';
     return`<div class="str-lift-item">
       <div class="str-lift-name-row">
         <div class="str-lift-name">${e.name}${blockMeta}</div>
-        <div class="str-lift-meta">${block.sets} sets · ${block.repRange} · ${e.rest}${deloadNote}</div>
+        <div class="str-lift-meta">${e.sets} sets · ${e.reps} reps · ${e.rest}${deloadNote}</div>
       </div>
-      <div class="str-lift-sets-row">${chips}<button class="str-add-set" onclick="openLogDrawer(${i})">+ Log</button></div>
       ${e.notes?`<div class="str-lift-notes">${e.notes}</div>`:''}
+      ${progressNote?`<div class="str-lift-progress">${progressNote}</div>`:''}
     </div>`;
   }).join('');
 
@@ -1887,14 +1936,13 @@ function updateDrawerUI(){
   const e=wo.exercises[S.strLogExIdx];
   document.getElementById('str-drawer-ex-name').textContent=e.name.toUpperCase();
   document.getElementById('log-weight').value=S.strLogWeight%1?S.strLogWeight.toFixed(1):S.strLogWeight;
-  document.getElementById('log-reps').textContent=S.strLogReps;
+  document.getElementById('log-reps').value=S.strLogReps;
   updateWarmupCalc();
   // Block periodization hint in drawer
   const blockHint=document.getElementById('block-drawer-hint');
   if(blockHint){
     const block=getStrengthBlock(S.week);
     const labels={accumulation:'Accumulation — aim for '+block.repRange+' reps at '+block.intensity,
-                  intensification:'Intensification — aim for '+block.repRange+' reps at '+block.intensity,
                   realization:'Realization — aim for '+block.repRange+' reps at '+block.intensity,
                   deload:'Deload Week — use ~60% of your normal weight'};
     blockHint.className=`block-drawer-hint ${block.type}`;
@@ -1939,14 +1987,17 @@ function syncWeightInput(){
   const val=parseFloat(inp.value);
   if(!isNaN(val)&&val>=0){S.strLogWeight=val;updateWarmupCalc();}
 }
-function adjustLog(field,delta){
-  S.strLogReps=Math.max(1,S.strLogReps+delta);
-  document.getElementById('log-reps').textContent=S.strLogReps;
+function syncRepsInput(){
+  const inp=document.getElementById('log-reps');
+  const val=parseInt(inp.value);
+  if(!isNaN(val)&&val>=1) S.strLogReps=val;
 }
 function confirmLogSet(){
-  // Sync weight from input in case user typed without triggering oninput
+  // Sync inputs in case user typed without triggering oninput
   const wInp=document.getElementById('log-weight');
   if(wInp){const v=parseFloat(wInp.value);if(!isNaN(v)&&v>=0)S.strLogWeight=v;}
+  const rInp=document.getElementById('log-reps');
+  if(rInp){const v=parseInt(rInp.value);if(!isNaN(v)&&v>=1)S.strLogReps=v;}
   const wIdx=S.activeStrengthWorkout;
   const eIdx=S.strLogExIdx;
   const today=strTodayKey();
@@ -2998,30 +3049,23 @@ function confirmReset(){
 }
 
 // ── Block Periodization ───────────────────────────────────────────────────────
-// 12-week cycles: weeks 1-3 Accumulation, 4 Deload, 5-7 Intensification,
-//                 8 Deload, 9-11 Realization, 12 Full Deload — then repeat.
+// 12-week cycles: Accumulation(1-4) → Deload(5) → Realization(6-9) → Deload(10-12)
 function weekInCycle(week){ return ((week-1)%12)+1; }
 function cycleNumber(week){ return Math.ceil(week/12); }
-function isDeloadWeek(week){ const p=weekInCycle(week); return p===4||p===8||p===12; }
+function isDeloadWeek(week){ const p=weekInCycle(week); return p===5||p===10||p===11||p===12; }
 function getStrengthBlock(week){
   const p=weekInCycle(week);
-  if(p===4||p===8||p===12) return{
+  if(isDeloadWeek(week)) return{
     name:'Deload',type:'deload',color:'var(--blue)',
     repRange:'10–15',sets:'2–3',intensity:'~60% of working weight',
     desc:'Cut volume by 40%. Keep the same movements but reduce load. Recovery is when adaptation happens.',
     chipClass:'brc-deload'
   };
-  if(p<=3) return{
+  if(p<=4) return{
     name:'Accumulation',type:'accumulation',color:'var(--orange)',
     repRange:'10–12',sets:'3–4',intensity:'65–75% of max',
     desc:'Build volume. Higher reps, moderate weight. Develop muscle endurance and set the base for heavier weeks.',
     chipClass:'brc-accum'
-  };
-  if(p<=7) return{
-    name:'Intensification',type:'intensification',color:'var(--lime)',
-    repRange:'6–8',sets:'4',intensity:'75–85% of max',
-    desc:'Go heavier. Lower reps, higher weight. Build raw strength and neural efficiency.',
-    chipClass:'brc-intens'
   };
   return{
     name:'Realization',type:'realization',color:'var(--red)',
@@ -3037,10 +3081,11 @@ function renderBlockCard(){
   const cycle=cycleNumber(S.week);
   const totalCycles=Math.ceil(52/12);
   const pos=weekInCycle(S.week);
-  // Segment colors for 12-week cycle visualization
-  const segCols=['var(--orange)','var(--orange)','var(--orange)','var(--blue)',
-                 'var(--lime)','var(--lime)','var(--lime)','var(--blue)',
-                 'var(--red)','var(--red)','var(--red)','var(--blue)'];
+  // Segment colors: Accumulation(1-4) orange, Deload(5) blue, Realization(6-9) red, Deload(10-12) blue
+  const segCols=['var(--orange)','var(--orange)','var(--orange)','var(--orange)',
+                 'var(--blue)',
+                 'var(--red)','var(--red)','var(--red)','var(--red)',
+                 'var(--blue)','var(--blue)','var(--blue)'];
   const segs=Array.from({length:12},(_,i)=>{
     const past=i<pos-1,current=i===pos-1;
     const op=past?'0.45':current?'1':'0.15';
@@ -3072,6 +3117,232 @@ loadState();
 const incompleteDays=DAYS.filter(d=>!isDayDone(S.week,d));
 if(incompleteDays.length)S.activeDay=incompleteDays[0];
 render();resetBoxingTimer();initSwipe();
+
+// ── App Version + Update Detection ───────────────────────────────────────────
+const APP_VERSION='2.5';
+(function checkVersion(){
+  const prev=localStorage.getItem('cw-app-version');
+  if(prev&&prev!==APP_VERSION){
+    const banner=document.getElementById('update-banner');
+    if(banner){
+      document.getElementById('update-banner-msg').textContent=`Updated to v${APP_VERSION} — your progress is safe`;
+      banner.classList.add('show');
+    }
+  }
+  localStorage.setItem('cw-app-version',APP_VERSION);
+})();
+function dismissUpdateBanner(){
+  const b=document.getElementById('update-banner');
+  if(b) b.classList.remove('show');
+}
+
+// ── Guided Workout ────────────────────────────────────────────────────────────
+const GW={active:false,exIdx:0,restIv:null,restSecs:0,restTotal:0};
+
+function startGuidedWorkout(){
+  const wIdx=S.activeStrengthWorkout;
+  const wo=STRENGTH[wIdx];
+  GW.active=true;
+  // Find first exercise that still needs sets
+  GW.exIdx=0;
+  for(let i=0;i<wo.exercises.length;i++){
+    if(strGetSets(wIdx,i).length<strTargetSets(wo.exercises[i])){GW.exIdx=i;break;}
+  }
+  document.getElementById('gw-overlay').classList.add('open');
+  document.body.style.overflow='hidden';
+  renderGuidedWorkout();
+}
+
+function exitGuidedWorkout(){
+  GW.active=false;
+  if(GW.restIv){clearInterval(GW.restIv);GW.restIv=null;}
+  document.getElementById('gw-overlay').classList.remove('open');
+  document.body.style.overflow='';
+  renderStrength();
+}
+
+function renderGuidedWorkout(){
+  const wIdx=S.activeStrengthWorkout;
+  const wo=STRENGTH[wIdx];
+  const e=wo.exercises[GW.exIdx];
+  const block=getStrengthBlock(S.week);
+  const isDeload=isDeloadWeek(S.week);
+  const sets=strGetSets(wIdx,GW.exIdx);
+  const target=strTargetSets(e);
+  const setNum=sets.length+1;
+
+  // Header
+  document.getElementById('gw-workout-name').textContent=wo.title.toUpperCase();
+  document.getElementById('gw-ex-progress').textContent=`Exercise ${GW.exIdx+1} of ${wo.exercises.length}`;
+
+  // Block tag
+  const bt=document.getElementById('gw-block-tag');
+  bt.textContent=block.name;
+  bt.style.background=`rgba(${block.type==='deload'?'142,202,230':block.type==='accumulation'?'196,122,30':'230,57,70'},.12)`;
+  bt.style.border=`1px solid rgba(${block.type==='deload'?'142,202,230':block.type==='accumulation'?'196,122,30':'230,57,70'},.3)`;
+  bt.style.color=block.color;
+
+  // Exercise info
+  document.getElementById('gw-ex-name').textContent=e.name;
+  document.getElementById('gw-set-label').textContent=`Set ${setNum} of ${target}`;
+  document.getElementById('gw-target-hint').textContent=`Target: ${block.repRange} reps · ${block.intensity}`;
+
+  // Previous best
+  const prev=strPrevWeight(wIdx,GW.exIdx);
+  const prevEl=document.getElementById('gw-prev-best');
+  if(prev){prevEl.textContent=`Last time: ${prev.weight}lbs × ${prev.reps}`;prevEl.style.display='block';}
+  else{prevEl.style.display='none';}
+
+  // Pre-fill inputs
+  const wInp=document.getElementById('gw-weight');
+  const rInp=document.getElementById('gw-reps');
+  if(sets.length){
+    wInp.value=sets[sets.length-1].weight;
+  } else if(prev){
+    wInp.value=isDeload?+(prev.weight*0.6).toFixed(0):prev.weight;
+  } else { wInp.value=''; }
+  rInp.value=parseInt(block.repRange.split('–')[0])||5;
+
+  updateGuidedWarmup();
+  renderGuidedChecklist();
+
+  // Show/hide complete button
+  const allDone=wo.exercises.every((_,i)=>strGetSets(wIdx,i).length>=strTargetSets(wo.exercises[i]));
+  document.getElementById('gw-complete-btn').style.display=allDone?'block':'none';
+
+  // Show logging state
+  document.getElementById('gw-logging-state').style.display='block';
+  document.getElementById('gw-rest-state').style.display='none';
+}
+
+function updateGuidedWarmup(){
+  const w=parseFloat(document.getElementById('gw-weight')?.value)||0;
+  const el=document.getElementById('gw-warmup');
+  if(!el)return;
+  if(!w){el.innerHTML='';return;}
+  el.innerHTML=`<div class="gw-warmup-lbl">Warm-up</div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap">
+      <span class="gw-wu-chip">30% · ${+(w*.3).toFixed(0)}lbs</span>
+      <span class="gw-wu-chip">50% · ${+(w*.5).toFixed(0)}lbs</span>
+      <span class="gw-wu-chip">80% · ${+(w*.8).toFixed(0)}lbs</span>
+    </div>`;
+}
+
+function guidedLogSet(){
+  const weight=parseFloat(document.getElementById('gw-weight').value);
+  const reps=parseInt(document.getElementById('gw-reps').value);
+  if(isNaN(weight)||weight<0){showToast('','Enter weight','');return;}
+  if(isNaN(reps)||reps<1){showToast('','Enter reps','');return;}
+  S.strLogWeight=weight;S.strLogReps=reps;
+  const wIdx=S.activeStrengthWorkout;
+  const eIdx=GW.exIdx;
+  const today=strTodayKey();
+  if(!S.strLog[today])S.strLog[today]={};
+  if(!S.strLog[today][wIdx])S.strLog[today][wIdx]={};
+  if(!S.strLog[today][wIdx][eIdx])S.strLog[today][wIdx][eIdx]=[];
+  S.strLog[today][wIdx][eIdx].push({weight,reps,ts:Date.now()});
+  const isPR=checkForPR(wIdx,eIdx,weight,reps);
+  saveState();
+  if(isPR)showToast('🏆','New PR!',`${STRENGTH[wIdx].exercises[eIdx]?.name} — ${weight}lbs × ${reps}`);
+  else showToast('','Set logged',`${weight}lbs × ${reps}`);
+  // Determine rest duration and next label
+  const exRest=STRENGTH[wIdx].exercises[eIdx]?.rest||'';
+  const restSecs=parseRestStr(exRest)||RT.duration;
+  const newSets=strGetSets(wIdx,eIdx);
+  const target=strTargetSets(STRENGTH[wIdx].exercises[eIdx]);
+  let nextLabel;
+  if(newSets.length>=target){
+    const nextEx=STRENGTH[wIdx].exercises[GW.exIdx+1];
+    nextLabel=nextEx?`Next: ${nextEx.name}`:'Last exercise done!';
+  } else {
+    nextLabel=`Set ${newSets.length+1} of ${target}`;
+  }
+  renderGuidedChecklist();
+  showGuidedRest(restSecs,nextLabel);
+}
+
+function showGuidedRest(secs,nextLabel){
+  document.getElementById('gw-logging-state').style.display='none';
+  const rs=document.getElementById('gw-rest-state');
+  rs.style.display='flex';
+  document.getElementById('gw-rest-next').textContent=nextLabel||'';
+  GW.restSecs=secs;GW.restTotal=secs;
+  updateGuidedRestUI();
+  if(GW.restIv)clearInterval(GW.restIv);
+  GW.restIv=setInterval(()=>{
+    GW.restSecs--;
+    if(GW.restSecs<=0){clearInterval(GW.restIv);GW.restIv=null;guidedAfterRest();}
+    else updateGuidedRestUI();
+  },1000);
+}
+
+function updateGuidedRestUI(){
+  const m=Math.floor(GW.restSecs/60),s=GW.restSecs%60;
+  document.getElementById('gw-rest-countdown').textContent=`${m}:${s.toString().padStart(2,'0')}`;
+  const pct=(1-GW.restSecs/GW.restTotal)*100;
+  document.getElementById('gw-rest-fill').style.width=pct+'%';
+}
+
+function guidedSkipRest(){
+  if(GW.restIv){clearInterval(GW.restIv);GW.restIv=null;}
+  guidedAfterRest();
+}
+
+function guidedAfterRest(){
+  const wIdx=S.activeStrengthWorkout;
+  const wo=STRENGTH[wIdx];
+  const sets=strGetSets(wIdx,GW.exIdx);
+  const target=strTargetSets(wo.exercises[GW.exIdx]);
+  if(sets.length>=target) guidedNextExercise();
+  else renderGuidedWorkout();
+}
+
+function guidedSkipExercise(){ guidedNextExercise(); }
+
+function guidedNextExercise(){
+  const wIdx=S.activeStrengthWorkout;
+  const wo=STRENGTH[wIdx];
+  let next=-1;
+  for(let i=GW.exIdx+1;i<wo.exercises.length;i++){
+    if(strGetSets(wIdx,i).length<strTargetSets(wo.exercises[i])){next=i;break;}
+  }
+  if(next>=0){GW.exIdx=next;renderGuidedWorkout();}
+  else {
+    const allDone=wo.exercises.every((_,i)=>strGetSets(wIdx,i).length>=strTargetSets(wo.exercises[i]));
+    if(allDone){
+      document.getElementById('gw-complete-btn').style.display='block';
+      document.getElementById('gw-logging-state').style.display='none';
+      document.getElementById('gw-rest-state').style.display='none';
+      renderGuidedChecklist();
+      showToast('🎉','All sets done!','Tap Complete Workout when ready');
+    } else {
+      GW.exIdx=0;renderGuidedWorkout();
+    }
+  }
+}
+
+function guidedCompleteWorkout(){
+  exitGuidedWorkout();
+  completeStrengthWorkout();
+}
+
+function renderGuidedChecklist(){
+  const el=document.getElementById('gw-check-list');
+  if(!el)return;
+  const wIdx=S.activeStrengthWorkout;
+  const wo=STRENGTH[wIdx];
+  el.innerHTML=wo.exercises.map((ex,i)=>{
+    const sets=strGetSets(wIdx,i);
+    const target=strTargetSets(ex);
+    const done=sets.length>=target;
+    const cur=i===GW.exIdx&&!done;
+    return`<div class="gw-check-item${done?' done':''}${cur?' current':''}">
+      <div class="gw-check-dot"></div>
+      <div class="gw-check-name">${ex.name}</div>
+      <div class="gw-check-sets">${sets.length}/${target} sets</div>
+    </div>`;
+  }).join('');
+}
 
 // ── PWA: Generate icon + manifest dynamically ─────────────────────────────────
 (function(){
@@ -3128,16 +3399,12 @@ render();resetBoxingTimer();initSwipe();
   <div class="str-drawer-inputs">
     <div class="str-input-grp">
       <div class="str-input-lbl">WEIGHT (LBS)</div>
-      <input type="number" class="str-input-val str-weight-input" id="log-weight" value="135" min="0" step="2.5" inputmode="decimal" oninput="syncWeightInput()">
+      <input type="number" class="str-input-val str-weight-input" id="log-weight" value="135" min="0" step="2.5" inputmode="decimal" oninput="syncWeightInput()" onfocus="setTimeout(()=>{this.setSelectionRange(this.value.length,this.value.length)},0)">
     </div>
     <div class="str-drawer-sep"></div>
     <div class="str-input-grp">
       <div class="str-input-lbl">REPS</div>
-      <div class="str-input-val" id="log-reps">5</div>
-      <div class="str-input-btns">
-        <button class="str-input-btn" onclick="adjustLog('reps',-1)">−</button>
-        <button class="str-input-btn" onclick="adjustLog('reps',1)">+</button>
-      </div>
+      <input type="number" class="str-input-val str-weight-input" id="log-reps" value="5" min="1" step="1" inputmode="numeric" oninput="syncRepsInput()" onfocus="setTimeout(()=>{this.setSelectionRange(this.value.length,this.value.length)},0)">
     </div>
   </div>
   <!-- Warm-up calculator -->
@@ -3151,6 +3418,65 @@ render();resetBoxingTimer();initSwipe();
     <span>LOG SET</span>
     <span class="str-confirm-arr">›</span>
   </button>
+</div>
+<!-- ── Update Banner ───────────────────────────────────────── -->
+<div class="update-banner" id="update-banner">
+  <span id="update-banner-msg">App updated — your data is safe</span>
+  <button class="update-banner-btn" onclick="dismissUpdateBanner()">Got it</button>
+</div>
+
+<!-- ── Guided Workout Overlay ──────────────────────────────── -->
+<div id="gw-overlay" class="gw-overlay">
+  <div class="gw-header">
+    <div class="gw-header-left">
+      <div class="gw-ex-progress" id="gw-ex-progress">Exercise 1 of 4</div>
+      <div class="gw-workout-name" id="gw-workout-name"></div>
+    </div>
+    <button class="gw-exit-btn" onclick="exitGuidedWorkout()">✕ Exit</button>
+  </div>
+
+  <div class="gw-body" id="gw-body">
+    <!-- Logging state -->
+    <div id="gw-logging-state">
+      <div class="gw-block-tag" id="gw-block-tag"></div>
+      <div class="gw-ex-name" id="gw-ex-name"></div>
+      <div class="gw-set-label" id="gw-set-label">Set 1 of 3</div>
+      <div class="gw-target-hint" id="gw-target-hint"></div>
+      <div class="gw-prev-best" id="gw-prev-best"></div>
+      <div class="gw-inputs">
+        <div class="gw-input-grp">
+          <div class="gw-input-lbl">WEIGHT (LBS)</div>
+          <input type="number" id="gw-weight" class="gw-input" inputmode="decimal" step="2.5" min="0"
+            oninput="updateGuidedWarmup()" onfocus="setTimeout(()=>{this.setSelectionRange(this.value.length,this.value.length)},0)">
+        </div>
+        <div class="gw-input-sep"></div>
+        <div class="gw-input-grp">
+          <div class="gw-input-lbl">REPS</div>
+          <input type="number" id="gw-reps" class="gw-input" inputmode="numeric" step="1" min="1"
+            onfocus="setTimeout(()=>{this.setSelectionRange(this.value.length,this.value.length)},0)">
+        </div>
+      </div>
+      <div class="gw-warmup" id="gw-warmup"></div>
+      <button class="gw-log-btn" onclick="guidedLogSet()">LOG SET →</button>
+      <button class="gw-skip-btn" onclick="guidedSkipExercise()">Skip Exercise</button>
+    </div>
+
+    <!-- Rest state -->
+    <div class="gw-rest-state" id="gw-rest-state">
+      <div class="gw-rest-lbl">Rest</div>
+      <div class="gw-rest-countdown" id="gw-rest-countdown">1:30</div>
+      <div class="gw-rest-bar-track"><div class="gw-rest-bar-fill" id="gw-rest-fill" style="width:0%"></div></div>
+      <div class="gw-rest-next" id="gw-rest-next"></div>
+      <button class="gw-rest-skip" onclick="guidedSkipRest()">Skip Rest →</button>
+    </div>
+  </div>
+
+  <div class="gw-checklist" id="gw-checklist">
+    <div class="gw-checklist-lbl">Exercises</div>
+    <div id="gw-check-list"></div>
+  </div>
+
+  <button class="gw-complete-btn" id="gw-complete-btn" onclick="guidedCompleteWorkout()">✓ COMPLETE WORKOUT</button>
 </div>
 </body>
 </html>
