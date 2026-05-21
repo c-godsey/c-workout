@@ -2,6 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
@@ -26,26 +29,25 @@
   /* ── Elevation ── */
   --glass:rgba(255,255,255,.025);--glass-border:rgba(255,255,255,.06);
   --card-shadow:0 4px 24px rgba(0,0,0,.55);
-  --r:16px;
+  --r:6px;
   /* ── Bottom Nav ── */
   --bnav-h:64px;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh}
+html,body{background:var(--bg);color:var(--text);font-family:'Montserrat',-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh}
 .app{max-width:900px;margin:0 auto;padding:0 16px calc(var(--bnav-h) + env(safe-area-inset-bottom) + 24px);padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right))}
 
 /* ── TOP BAR ─────────────────────────────────────── */
 .topbar{display:flex;align-items:center;justify-content:space-between;padding:20px 0 8px;gap:10px}
 .topbar-left{display:flex;flex-direction:column;gap:2px}
-.topbar-greeting{font-size:13px;font-weight:600;color:var(--dim)}
-.topbar-logo{font-size:22px;font-weight:900;letter-spacing:-0.5px;color:var(--text);line-height:1}
+.topbar-logo{font-size:16px;font-weight:900;letter-spacing:3px;text-transform:uppercase;color:var(--text);line-height:1}
 .topbar-logo span{color:var(--lime)}
 .topbar-meta{display:flex;align-items:center;gap:14px}
 .topbar-chip{display:flex;flex-direction:column;align-items:center;gap:1px}
 .topbar-chip-val{font-size:18px;font-weight:900;color:var(--text);line-height:1}
 .topbar-chip-lbl{font-size:8px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--dim)}
 .topbar-sep{width:1px;height:28px;background:var(--border)}
-.topbar-settings-btn{background:var(--surface2);border:1px solid var(--border);color:var(--dim);width:40px;height:40px;border-radius:12px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s}
+.topbar-settings-btn{background:var(--surface2);border:1px solid var(--border);color:var(--dim);width:40px;height:40px;border-radius:6px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s}
 .topbar-settings-btn:hover{background:var(--border);color:var(--text);border-color:var(--lime)}
 
 /* ── MAIN TABS — hidden, using bottom nav instead ── */
@@ -54,8 +56,7 @@ html,body{background:var(--bg);color:var(--text);font-family:-apple-system,Blink
 /* ── BOTTOM NAV ─────────────────────────────────── */
 .bottom-nav{
   position:fixed;bottom:0;left:0;right:0;z-index:400;
-  background:rgba(17,17,24,.92);
-  backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+  background:var(--bg);
   border-top:1px solid var(--border);
   display:flex;align-items:stretch;
   height:calc(var(--bnav-h) + env(safe-area-inset-bottom));
@@ -68,26 +69,22 @@ html,body{background:var(--bg);color:var(--text);font-family:-apple-system,Blink
   padding:8px 4px;position:relative;
 }
 .bnav-item.active{color:var(--lime)}
-.bnav-item.active::before{
-  content:'';position:absolute;top:0;left:20%;right:20%;height:2px;
-  background:var(--lime);border-radius:0 0 2px 2px;
-  box-shadow:0 0 8px rgba(174,212,63,.6);
-}
+.bnav-item.active::before{display:none}
 .bnav-icon{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round;transition:all .18s}
 .bnav-item.active .bnav-icon{stroke-width:2.2}
 .bnav-label{font-size:10px;font-weight:700;letter-spacing:.2px;line-height:1}
 
 /* ── GENERIC CARD ────────────────────────────────── */
-.card{background:var(--surface);border-radius:20px;margin-top:20px;overflow:hidden;box-shadow:var(--card-shadow)}
+.card{background:var(--surface);border-radius:6px;margin-top:20px;overflow:hidden;box-shadow:var(--card-shadow)}
 .tab-content{display:none}.tab-content.active{display:block}
-.btn-icon{background:var(--surface2);border:1px solid var(--border);color:var(--text);width:40px;height:40px;border-radius:12px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0}
+.btn-icon{background:var(--surface2);border:1px solid var(--border);color:var(--text);width:40px;height:40px;border-radius:6px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0}
 .btn-icon:hover{background:var(--border);border-color:var(--lime)}.btn-icon:disabled{opacity:.3;cursor:default}
 
 /* ── CYCLING HERO ─────────────────────────────────── */
 .cy-hero{padding:20px 0 10px}
 .cy-hero-eyebrow{font-size:10px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:var(--blue);margin-bottom:6px;display:flex;align-items:center;gap:6px}
 .cy-hero-eyebrow::before{content:'';width:20px;height:2px;background:var(--blue);border-radius:1px;display:inline-block}
-.cy-hero-title{font-size:52px;font-weight:900;text-transform:uppercase;letter-spacing:-2px;line-height:1;color:var(--text)}
+.cy-hero-title{font-size:72px;font-weight:400;text-transform:uppercase;letter-spacing:2px;line-height:1;color:var(--text);font-family:'Bebas Neue',sans-serif}
 .cy-hero-sub{font-size:11px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:var(--dim);margin-top:8px}
 
 /* ── STATS ROW ───────────────────────────────────── */
@@ -98,7 +95,7 @@ html,body{background:var(--bg);color:var(--text);font-family:-apple-system,Blink
 
 /* ── PHASE CARD ──────────────────────────────────── */
 .phase-card{padding:22px 20px 18px}
-.phase-badge{display:inline-flex;align-items:center;background:rgba(174,212,63,.07);border:1px solid rgba(174,212,63,.15);color:var(--lime);font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;padding:4px 12px;border-radius:100px;margin-bottom:14px}
+.phase-badge{display:inline-flex;align-items:center;background:rgba(174,212,63,.07);border:1px solid rgba(174,212,63,.15);color:var(--lime);font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;padding:4px 12px;border-radius:3px;margin-bottom:14px}
 .phase-name{font-size:34px;font-weight:900;margin-bottom:6px;line-height:1}
 .phase-focus{font-size:13px;color:var(--dim);margin-bottom:20px;line-height:1.5}
 .phase-bar-track{height:6px;background:var(--surface2);border-radius:3px;overflow:hidden;margin-bottom:8px}
@@ -106,7 +103,7 @@ html,body{background:var(--bg);color:var(--text);font-family:-apple-system,Blink
 .phase-markers{display:flex;justify-content:space-between;margin-bottom:16px}
 .phase-marker{font-size:10px;color:var(--dim)}
 .phase-buttons{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-.phase-btn{padding:12px 4px;border-radius:12px;border:1px solid var(--border);background:var(--surface);color:var(--dim);font-size:11px;font-weight:700;cursor:pointer;text-align:center;line-height:1.35;transition:all .15s}
+.phase-btn{padding:12px 4px;border-radius:4px;border:1px solid var(--border);background:var(--surface);color:var(--dim);font-size:11px;font-weight:700;cursor:pointer;text-align:center;line-height:1.35;transition:all .15s}
 .phase-btn:hover{color:var(--text);border-color:var(--dim)}
 .phase-btn.active{background:rgba(174,212,63,.08);border-color:var(--lime);color:var(--lime);box-shadow:0 0 10px rgba(174,212,63,.12)}
 .phase-btn-num{font-size:9px;opacity:.6;display:block;margin-bottom:2px}
@@ -114,14 +111,14 @@ html,body{background:var(--bg);color:var(--text);font-family:-apple-system,Blink
 /* ── WEEK NAV CARD ───────────────────────────────── */
 .week-nav-inner{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:20px 22px}
 .week-center{text-align:center;flex:1}
-.week-big{font-size:72px;font-weight:900;line-height:1;color:var(--text)}
+.week-big{font-size:88px;font-weight:400;line-height:1;color:var(--text);font-family:'Bebas Neue',sans-serif}
 .week-of{font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--dim);margin-top:4px}
 .week-dots{display:flex;gap:8px;justify-content:center;margin-top:12px}
 .week-dot{width:12px;height:12px;border-radius:50%;background:var(--surface2);border:2px solid var(--border);transition:all .2s}
 .week-dot.done{background:var(--lime);border-color:var(--lime);box-shadow:0 0 8px rgba(174,212,63,.5)}
 
 /* ── SECTION HEADER ──────────────────────────────── */
-.section-hdr{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--dim);padding:28px 0 14px;text-align:center}
+.section-hdr{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:3px;color:var(--dim);padding:28px 0 14px;text-align:left}
 
 /* ── WORKOUT CARDS GRID ──────────────────────────── */
 .workout-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
@@ -144,7 +141,7 @@ html,body{background:var(--bg);color:var(--text);font-family:-apple-system,Blink
 .wcard-title{font-size:13px;font-weight:700;line-height:1.3;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .wcard-sub{font-size:11px;color:var(--dim);margin-bottom:10px}
 .wcard-footer{display:flex;gap:7px;align-items:center}
-.wcard-log-btn{flex:1;padding:9px 0;border-radius:10px;font-size:12px;font-weight:800;cursor:pointer;border:1px solid rgba(174,212,63,.35);background:linear-gradient(160deg,#aed43f,#79991e);color:#fff;transition:all .15s;letter-spacing:.5px}
+.wcard-log-btn{flex:1;padding:9px 0;border-radius:4px;font-size:12px;font-weight:800;cursor:pointer;border:1px solid rgba(174,212,63,.35);background:linear-gradient(160deg,#aed43f,#79991e);color:#fff;transition:all .15s;letter-spacing:.5px}
 .wcard-log-btn:hover{background:linear-gradient(160deg,#bce054,#8aaa32);box-shadow:0 2px 10px rgba(174,212,63,.2)}
 .wcard-log-btn.edit{background:transparent;border:1px solid var(--border);color:var(--dim)}
 .wcard-log-btn.edit:hover{color:var(--text);border-color:var(--dim)}
@@ -159,10 +156,10 @@ html,body{background:var(--bg);color:var(--text);font-family:-apple-system,Blink
 .bx-hero{padding:20px 0 10px}
 .bx-hero-eyebrow{font-size:10px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:var(--orange);margin-bottom:6px;display:flex;align-items:center;gap:6px}
 .bx-hero-eyebrow::before{content:'';width:20px;height:2px;background:var(--orange);border-radius:1px;display:inline-block}
-.bx-hero-title{font-size:52px;font-weight:900;text-transform:uppercase;letter-spacing:-2px;line-height:1;color:var(--text)}
+.bx-hero-title{font-size:72px;font-weight:400;text-transform:uppercase;letter-spacing:2px;line-height:1;color:var(--text);font-family:'Bebas Neue',sans-serif}
 .bx-hero-sub{font-size:11px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:var(--dim);margin-top:8px}
 .day-tabs{display:flex;gap:8px;padding:16px 16px 0}
-.day-tab{flex:1;padding:11px;border-radius:12px;border:1px solid var(--border);background:var(--surface);cursor:pointer;text-align:center;transition:all .15s;font-size:13px;font-weight:700;color:var(--dim)}
+.day-tab{flex:1;padding:11px;border-radius:4px;border:1px solid var(--border);background:var(--surface);cursor:pointer;text-align:center;transition:all .15s;font-size:13px;font-weight:700;color:var(--dim)}
 .day-tab:hover{background:var(--surface2);color:var(--text)}
 .day-tab.active{background:rgba(174,212,63,.07);border-color:rgba(174,212,63,.5);color:var(--lime)}
 .boxing-header{padding:16px 20px;border-bottom:1px solid var(--border)}
@@ -171,7 +168,7 @@ html,body{background:var(--bg);color:var(--text);font-family:-apple-system,Blink
 
 /* Stations */
 .stations{padding:14px 18px;display:grid;gap:10px}
-.station-card{background:var(--surface2);border-radius:12px;padding:14px 16px;border:2px solid transparent;transition:all .2s}
+.station-card{background:var(--surface2);border-radius:4px;padding:14px 16px;border:2px solid transparent;transition:all .2s}
 .station-card.current{border-color:var(--lime);background:rgba(174,212,63,.05);box-shadow:0 0 12px rgba(174,212,63,.1)}
 .station-label{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--dim);margin-bottom:5px}
 .station-label.lbl-s1{color:#8ECAE6}.station-label.lbl-s2{color:#c084fc}.station-label.lbl-s3{color:#fb923c}.station-label.lbl-fin{color:var(--red)}
@@ -183,21 +180,21 @@ html,body{background:var(--bg);color:var(--text);font-family:-apple-system,Blink
 .timer-phase{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:2px;margin-bottom:4px;color:var(--dim);min-height:18px}
 .timer-phase.warmup{color:#8ECAE6}.timer-phase.work{color:var(--lime)}.timer-phase.rest{color:var(--blue)}.timer-phase.finisher{color:var(--red)}.timer-phase.getready{color:var(--orange)}
 .timer-round{font-size:12px;color:var(--dim);margin-bottom:8px;min-height:16px}
-.timer-countdown{font-size:72px;font-weight:900;font-variant-numeric:tabular-nums;line-height:1;letter-spacing:-2px}
+.timer-countdown{font-size:88px;font-weight:400;font-variant-numeric:tabular-nums;line-height:1;letter-spacing:2px;font-family:'Bebas Neue',sans-serif}
 .timer-countdown.warmup{color:#8ECAE6}.timer-countdown.work{color:var(--lime);text-shadow:0 0 20px rgba(174,212,63,.3)}.timer-countdown.rest{color:var(--blue)}.timer-countdown.done-clr{color:var(--green)}.timer-countdown.getready{color:var(--orange)}
 .timer-exercise{font-size:14px;font-weight:600;margin-top:10px;min-height:36px;color:var(--text);padding:0 20px;line-height:1.4}
 .timer-progress{margin:14px 18px 0;height:5px;background:var(--surface2);border-radius:3px;overflow:hidden}
 .timer-progress-fill{height:100%;background:var(--lime);border-radius:3px;transition:width .5s linear;box-shadow:0 0 6px rgba(174,212,63,.4)}
 .timer-controls{display:flex;align-items:center;justify-content:center;gap:12px;padding:16px 18px;flex-wrap:wrap}
-.btn-tstart{padding:14px 36px;border-radius:12px;font-size:15px;font-weight:900;cursor:pointer;border:1px solid #3A3A3C;background:linear-gradient(160deg,#3A3A3C,#1C1C1E);color:#fff;transition:all .15s;letter-spacing:1px;box-shadow:0 2px 12px rgba(0,0,0,.4)}
+.btn-tstart{padding:14px 36px;border-radius:6px;font-size:15px;font-weight:900;cursor:pointer;border:1px solid #3A3A3C;background:linear-gradient(160deg,#3A3A3C,#1C1C1E);color:#fff;transition:all .15s;letter-spacing:1px;box-shadow:0 2px 12px rgba(0,0,0,.4)}
 .btn-tstart:hover{background:linear-gradient(160deg,#454547,#252527);box-shadow:0 4px 20px rgba(0,0,0,.5)}
-.btn-tpause{padding:14px 36px;border-radius:12px;font-size:15px;font-weight:900;cursor:pointer;border:1px solid rgba(196,122,30,.4);background:linear-gradient(160deg,#C47A1E,#8B5510);color:#fff;letter-spacing:1px}
-.btn-treset{padding:11px 18px;border-radius:12px;font-size:13px;font-weight:700;cursor:pointer;border:1px solid var(--border);background:var(--surface2);color:var(--text);transition:all .15s}
-.btn-tskip{padding:11px 18px;border-radius:12px;font-size:13px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:var(--surface2);color:var(--dim);transition:all .15s}
+.btn-tpause{padding:14px 36px;border-radius:6px;font-size:15px;font-weight:900;cursor:pointer;border:1px solid rgba(196,122,30,.4);background:linear-gradient(160deg,#C47A1E,#8B5510);color:#fff;letter-spacing:1px}
+.btn-treset{padding:11px 18px;border-radius:6px;font-size:13px;font-weight:700;cursor:pointer;border:1px solid var(--border);background:var(--surface2);color:var(--text);transition:all .15s}
+.btn-tskip{padding:11px 18px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:var(--surface2);color:var(--dim);transition:all .15s}
 .btn-tskip:hover,.btn-treset:hover{background:var(--border);color:var(--text)}
 .timer-settings{padding:12px 18px 16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:12px;color:var(--dim);border-top:1px solid var(--border)}
 .tset-item{display:flex;align-items:center;gap:5px}
-.tset-input{width:46px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:12px;padding:5px 6px;outline:none;text-align:center;transition:border-color .15s}
+.tset-input{width:46px;background:var(--surface2);border:1px solid var(--border);border-radius:4px;color:var(--text);font-size:12px;padding:5px 6px;outline:none;text-align:center;transition:border-color .15s}
 .tset-input:focus{border-color:var(--lime)}
 .tset-sep{color:var(--border);margin:0 4px}
 .timer-settings-wrap{overflow:hidden;transition:max-height .3s ease}
@@ -209,7 +206,7 @@ html,body{background:var(--bg);color:var(--text);font-family:-apple-system,Blink
 .tset-toggle-arrow.open{transform:rotate(90deg)}
 /* Boxing presets */
 .bx-presets{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:14px 16px;border-top:1px solid var(--border)}
-.bx-preset-btn{padding:12px 8px;border-radius:14px;border:1px solid var(--border);background:var(--surface);cursor:pointer;text-align:center;transition:all .18s;color:var(--dim)}
+.bx-preset-btn{padding:12px 8px;border-radius:4px;border:1px solid var(--border);background:var(--surface);cursor:pointer;text-align:center;transition:all .18s;color:var(--dim)}
 .bx-preset-btn:hover{background:var(--surface2);border-color:var(--dim)}
 .bx-preset-btn.active{border-color:var(--lime);background:rgba(174,212,63,.07);box-shadow:0 0 12px rgba(174,212,63,.1)}
 .bx-preset-btn.active .bx-preset-name{color:var(--lime)}
@@ -229,19 +226,19 @@ html,body{background:var(--bg);color:var(--text);font-family:-apple-system,Blink
 .fs-topbar{position:absolute;top:0;left:0;right:0;display:flex;justify-content:space-between;align-items:center;padding:16px 20px}
 .fs-topbar-title{font-size:12px;font-weight:800;color:var(--dim);letter-spacing:2px;text-transform:uppercase}
 .fs-topbar-btns{display:flex;gap:8px}
-.fs-btn-minimize,.fs-btn-exit{padding:8px 16px;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;border:1px solid var(--border);background:var(--surface2);color:var(--dim);transition:all .15s}
+.fs-btn-minimize,.fs-btn-exit{padding:8px 16px;border-radius:4px;font-size:13px;font-weight:700;cursor:pointer;border:1px solid var(--border);background:var(--surface2);color:var(--dim);transition:all .15s}
 .fs-btn-minimize:hover,.fs-btn-exit:hover{color:var(--text);border-color:var(--lime)}
 .fs-phase{font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:2px;margin-bottom:8px;min-height:20px}
 .fs-phase.warmup{color:#8ECAE6}.fs-phase.work{color:var(--lime)}.fs-phase.rest{color:var(--blue)}.fs-phase.finisher{color:var(--red)}.fs-phase.getready{color:var(--orange)}
 .fs-round{font-size:14px;color:var(--dim);margin-bottom:16px;min-height:20px}
-.fs-countdown{font-size:clamp(80px,20vw,160px);font-weight:900;font-variant-numeric:tabular-nums;line-height:1;letter-spacing:-4px}
+.fs-countdown{font-size:clamp(80px,20vw,160px);font-weight:400;font-variant-numeric:tabular-nums;line-height:1;letter-spacing:3px;font-family:'Bebas Neue',sans-serif}
 .fs-countdown.warmup{color:#8ECAE6}.fs-countdown.work{color:var(--lime);text-shadow:0 0 40px rgba(174,212,63,.3)}.fs-countdown.rest{color:var(--blue)}.fs-countdown.getready{color:var(--orange)}.fs-countdown.done-clr{color:var(--green)}
 .fs-exercise{font-size:clamp(16px,3vw,24px);font-weight:600;margin-top:20px;max-width:700px;line-height:1.4;color:var(--text)}
 .fs-progress-wrap{width:min(500px,80vw);height:5px;background:var(--surface2);border-radius:3px;margin-top:32px;overflow:hidden}
 .fs-progress-fill{height:100%;background:var(--lime);border-radius:3px;transition:width .5s linear;box-shadow:0 0 8px rgba(174,212,63,.5)}
 .fs-controls{display:flex;gap:14px;margin-top:28px;flex-wrap:wrap;justify-content:center}
-.fs-btn-pause{padding:14px 36px;border-radius:12px;font-size:16px;font-weight:900;cursor:pointer;border:1px solid rgba(196,122,30,.4);background:linear-gradient(160deg,#C47A1E,#8B5510);color:#fff;letter-spacing:1px}
-.fs-btn-skip{padding:12px 22px;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:var(--surface2);color:var(--dim);transition:all .15s}
+.fs-btn-pause{padding:14px 36px;border-radius:4px;font-size:16px;font-weight:900;cursor:pointer;border:1px solid rgba(196,122,30,.4);background:linear-gradient(160deg,#C47A1E,#8B5510);color:#fff;letter-spacing:1px}
+.fs-btn-skip{padding:12px 22px;border-radius:4px;font-size:14px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:var(--surface2);color:var(--dim);transition:all .15s}
 .fs-btn-skip:hover{color:var(--text);border-color:var(--lime)}
 .fs-stations{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap;justify-content:center}
 .fs-st{padding:8px 16px;border-radius:10px;font-size:13px;font-weight:700;background:var(--surface2);border:1px solid var(--border);color:var(--dim)}
@@ -273,7 +270,7 @@ html,body{background:var(--bg);color:var(--text);font-family:-apple-system,Blink
   .fs-countdown{
     font-size:clamp(100px,38vh,260px) !important;
     line-height:1 !important;
-    letter-spacing:-6px;
+    letter-spacing:4px !important;
   }
   .fs-phase{font-size:10px;letter-spacing:2px;margin-bottom:3px;min-height:14px}
   .fs-round{font-size:11px;margin-bottom:6px;min-height:14px}
@@ -332,8 +329,8 @@ html,body{background:var(--bg);color:var(--text);font-family:-apple-system,Blink
 .prog-hero-eyebrow::before{content:'';width:20px;height:2px;background:var(--dim);border-radius:1px;display:inline-block}
 .prog-stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:6px}
 @media(max-width:480px){.prog-stats-row{grid-template-columns:repeat(2,1fr)!important}}
-.prog-stat-card{background:var(--surface);border-radius:16px;padding:14px 12px;text-align:center;box-shadow:var(--card-shadow)}
-.prog-stat-val{font-size:36px;font-weight:900;color:var(--lime);line-height:1;text-shadow:0 0 20px rgba(174,212,63,.2)}
+.prog-stat-card{background:var(--surface);border-radius:6px;padding:14px 12px;text-align:center;box-shadow:var(--card-shadow)}
+.prog-stat-val{font-size:36px;font-weight:900;color:var(--text);line-height:1}
 .prog-stat-lbl{font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--dim);margin-top:4px}
 .bottom-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:14px 0}
 @media(max-width:600px){.bottom-row{grid-template-columns:1fr}}
@@ -343,13 +340,13 @@ html,body{background:var(--bg);color:var(--text);font-family:-apple-system,Blink
 .panel-body{padding:14px 16px}.panel-body.hidden{display:none}
 .chev{color:var(--dim);font-size:12px}
 .ach-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:7px}
-.ach-item{display:flex;align-items:center;gap:8px;padding:10px;border-radius:12px;background:var(--surface2);opacity:.3;border:1px solid transparent}
+.ach-item{display:flex;align-items:center;gap:8px;padding:10px;border-radius:4px;background:var(--surface2);opacity:.3;border:1px solid transparent}
 .ach-item.earned{background:rgba(174,212,63,.06);border-color:rgba(174,212,63,.18);opacity:1;box-shadow:0 0 10px rgba(174,212,63,.06)}
 .ach-icon{font-size:18px;min-width:26px;text-align:center}
 .ach-name{font-size:11px;font-weight:700}.ach-req{font-size:10px;color:var(--dim)}
 .scroll-area{max-height:280px;overflow-y:auto;padding-right:4px}
 .scroll-area::-webkit-scrollbar{width:4px}.scroll-area::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
-.hist-row{display:flex;align-items:center;gap:10px;padding:9px 12px;background:var(--surface2);border-radius:10px;font-size:12px;margin-bottom:6px;border:1px solid var(--border)}
+.hist-row{display:flex;align-items:center;gap:10px;padding:9px 12px;background:var(--surface2);border-radius:4px;font-size:12px;margin-bottom:6px;border:1px solid var(--border)}
 .hist-del-btn{background:transparent;border:none;color:var(--dim);font-size:14px;cursor:pointer;padding:2px 6px;border-radius:6px;flex-shrink:0;line-height:1;transition:all .15s}
 .hist-del-btn:hover{color:var(--red);background:rgba(230,57,70,.1)}
 .hist-modal-entry{display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--surface2);border-radius:10px;margin-bottom:6px;border:1px solid var(--border)}
@@ -376,7 +373,7 @@ html,body{background:var(--bg);color:var(--text);font-family:-apple-system,Blink
 .str-hero{padding:20px 0 10px}
 .str-hero-eyebrow{font-size:10px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:var(--lime);margin-bottom:6px;display:flex;align-items:center;gap:6px}
 .str-hero-eyebrow::before{content:'';width:20px;height:2px;background:var(--lime);border-radius:1px;display:inline-block}
-.str-training-day{font-size:52px;font-weight:900;text-transform:uppercase;letter-spacing:-2px;line-height:1;color:var(--text)}
+.str-training-day{font-size:72px;font-weight:400;text-transform:uppercase;letter-spacing:2px;line-height:1;color:var(--text);font-family:'Bebas Neue',sans-serif}
 .str-focus-name{font-size:11px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:var(--dim);margin-top:8px}
 
 
@@ -386,7 +383,7 @@ html,body{background:var(--bg);color:var(--text);font-family:-apple-system,Blink
 
 /* Today's Lifts */
 .str-lifts-hdr{font-size:10px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:var(--dim);padding:22px 0 12px}
-.str-lift-item{background:var(--surface);border-radius:16px;margin-bottom:12px;overflow:hidden;box-shadow:var(--card-shadow)}
+.str-lift-item{background:var(--surface);border-radius:6px;margin-bottom:12px;overflow:hidden;box-shadow:var(--card-shadow)}
 .str-lift-name-row{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 8px;gap:10px}
 .str-lift-name{font-size:14px;font-weight:700;color:var(--text2);letter-spacing:.2px;flex:1}
 .str-lift-meta{font-size:10px;color:var(--dim);white-space:nowrap}
@@ -527,7 +524,7 @@ html,body{background:var(--bg);color:var(--text);font-family:-apple-system,Blink
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.8);z-index:200;display:none;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(6px)}
 .modal-overlay.open{display:flex}
 .modal-backdrop{position:absolute;inset:0;z-index:0;cursor:pointer}
-.modal{background:#1a1a1a;border:1px solid var(--glass-border);border-radius:22px;width:100%;max-width:420px;position:relative;z-index:1;overflow:hidden}
+.modal{background:#1a1a1a;border:1px solid var(--glass-border);border-radius:8px;width:100%;max-width:420px;position:relative;z-index:1;overflow:hidden}
 .modal-hdr{padding:18px 22px;border-bottom:1px solid var(--glass-border);display:flex;align-items:center;justify-content:space-between}
 .modal-title{font-size:16px;font-weight:900;text-transform:uppercase;letter-spacing:.5px}
 .modal-body{padding:22px}.modal-footer{padding:16px 22px;border-top:1px solid var(--glass-border);display:flex;gap:10px;justify-content:flex-end}
@@ -687,6 +684,23 @@ code{font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:4px
 .block-rep-chip.brc-intens{background:rgba(174,212,63,.09);border-color:rgba(174,212,63,.3);color:var(--lime)}
 .block-rep-chip.brc-real{background:rgba(230,57,70,.1);border-color:rgba(230,57,70,.3);color:var(--red)}
 .block-rep-chip.brc-deload{background:rgba(142,202,230,.1);border-color:rgba(142,202,230,.3);color:var(--blue)}
+/* ── STS Phase Card ── */
+.sts-card-inner{padding:20px}
+.sts-phase-badge{display:inline-flex;align-items:center;border:1px solid;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;padding:4px 12px;border-radius:3px;margin-bottom:12px}
+.sts-phase-title{font-size:32px;font-weight:900;line-height:1.1;margin-bottom:6px;letter-spacing:-.5px}
+.sts-phase-desc{font-size:13px;color:var(--dim);margin-bottom:16px;line-height:1.5}
+.sts-week-checks{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.sts-check{display:flex;align-items:center;gap:10px;opacity:.4;transition:opacity .2s}
+.sts-check.done{opacity:1}
+.sts-check-dot{width:20px;height:20px;border-radius:4px;border:1.5px solid var(--border);background:var(--surface2);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:900;color:var(--lime);flex-shrink:0;transition:all .2s}
+.sts-check.done .sts-check-dot{background:var(--lime-glow);border-color:var(--lime)}
+.sts-check-lbl{font-size:13px;font-weight:600;color:var(--text2)}
+.sts-check.done .sts-check-lbl{color:var(--text)}
+.sts-rep-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.sts-rep-chip{display:inline-flex;align-items:center;border:1px solid var(--border);color:var(--dim);font-size:11px;font-weight:700;padding:5px 12px;border-radius:4px;letter-spacing:.3px}
+.sts-bar-track{height:4px;background:var(--surface2);border-radius:2px;overflow:hidden;margin-bottom:8px}
+.sts-bar-fill{height:100%;border-radius:2px;transition:width .4s ease}
+.sts-bar-labels{display:flex;justify-content:space-between;font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase}
 /* Deload badge on week nav */
 .deload-week-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(142,202,230,.12);border:1px solid rgba(142,202,230,.3);color:var(--blue);font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;padding:4px 12px;border-radius:100px;margin-top:8px}
 /* Block hint on exercise row */
@@ -732,21 +746,21 @@ code{font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:4px
 /* ── Plan Edit UI ── */
 .plan-edit-toggle{width:100%;margin-top:14px;padding:12px;background:var(--surface);border:1px solid var(--border);color:var(--dim);font-size:13px;font-weight:800;letter-spacing:1px;text-transform:uppercase;border-radius:14px;cursor:pointer;transition:all .2s}
 .plan-edit-toggle:hover{border-color:var(--lime);color:var(--lime)}
-.plan-edit-panel{display:none;background:var(--glass);border:1px solid var(--glass-border);border-radius:20px;padding:20px;margin-top:10px}
+.plan-edit-panel{display:none;background:var(--glass);border:1px solid var(--glass-border);border-radius:6px;padding:20px;margin-top:10px}
 .plan-edit-panel.open{display:block}
 .plan-edit-hdr{font-size:10px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:var(--dim);margin-bottom:16px}
 .plan-edit-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--glass-border)}
 .plan-edit-row:last-of-type{border-bottom:none}
 .plan-edit-day{font-size:12px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--dim);width:36px;flex-shrink:0}
 .plan-type-pills{display:flex;gap:5px;flex:1}
-.plan-type-pill{padding:6px 10px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);color:var(--dim);font-size:11px;font-weight:700;cursor:pointer;transition:all .15s;white-space:nowrap}
+.plan-type-pill{padding:6px 10px;border-radius:3px;border:1px solid var(--border);background:var(--surface2);color:var(--dim);font-size:11px;font-weight:700;cursor:pointer;transition:all .15s;white-space:nowrap}
 .plan-type-pill.active-strength{background:rgba(174,212,63,.12);border-color:var(--lime);color:var(--lime)}
 .plan-type-pill.active-boxing{background:rgba(196,122,30,.12);border-color:var(--orange);color:var(--orange)}
 .plan-type-pill.active-cycling{background:rgba(142,202,230,.12);border-color:var(--blue);color:var(--blue)}
 .plan-type-pill.active-rest{background:rgba(161,161,170,.08);border-color:var(--border);color:var(--dim)}
-.plan-req-toggle{padding:5px 10px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);color:var(--dim);font-size:10px;font-weight:700;cursor:pointer;white-space:nowrap;transition:all .15s;flex-shrink:0}
+.plan-req-toggle{padding:5px 10px;border-radius:3px;border:1px solid var(--border);background:var(--surface2);color:var(--dim);font-size:10px;font-weight:700;cursor:pointer;white-space:nowrap;transition:all .15s;flex-shrink:0}
 .plan-req-toggle.on{background:rgba(174,212,63,.1);border-color:rgba(174,212,63,.3);color:var(--lime)}
-.plan-save-btn{width:100%;margin-top:16px;padding:14px;background:linear-gradient(135deg,#aed43f,#8aaa32);color:#fff;border:none;border-radius:14px;font-size:14px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer}
+.plan-save-btn{width:100%;margin-top:16px;padding:14px;background:linear-gradient(135deg,#aed43f,#8aaa32);color:#fff;border:none;border-radius:6px;font-size:14px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer}
 
 /* ── Plan Tab base (detail rules are in PLAN DASHBOARD section below) ── */
 /* Collapsible sections */
@@ -757,9 +771,9 @@ code{font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:4px
 .plan-collapse-body{display:none;padding-bottom:8px}
 .plan-collapse-body.open{display:block}
 /* Compliance bar card */
-.plan-compliance-card{background:var(--surface);border-radius:20px;padding:20px;margin-top:20px;box-shadow:var(--card-shadow)}
+.plan-compliance-card{background:var(--surface);border-radius:6px;padding:20px;margin-top:20px;box-shadow:var(--card-shadow)}
 .plan-compliance-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
-.plan-compliance-pct{font-size:42px;font-weight:900;color:var(--lime);line-height:1}
+.plan-compliance-pct{font-size:42px;font-weight:900;color:var(--text);line-height:1}
 .plan-compliance-lbl{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--dim);margin-top:2px}
 .plan-compliance-right{text-align:right}
 .plan-compliance-streak{font-size:28px;font-weight:900;color:var(--text)}
@@ -778,7 +792,7 @@ code{font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:4px
 .plan-week-dot-circle.optional{border-color:var(--border);border-style:dashed;color:var(--dim)}
 .plan-week-dot-lbl{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--dim)}
 /* Weekly schedule cards */
-.plan-section-hdr{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:2.5px;color:var(--dim);padding:20px 0 10px}
+.plan-section-hdr{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:3px;color:var(--dim);padding:24px 0 12px;border-top:1px solid var(--border);margin-top:8px}
 /* plan-day-card rules now in PLAN DASHBOARD section */
 .plan-day-icon{width:44px;height:44px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:900;letter-spacing:.5px;flex-shrink:0}
 .plan-day-icon.strength{background:rgba(174,212,63,.12);color:var(--lime)}
@@ -797,11 +811,17 @@ code{font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:4px
 .plan-rotation-card{background:var(--glass);border:1px solid var(--glass-border);border-radius:20px;padding:20px;margin-top:6px;margin-bottom:14px}
 .plan-rotation-hdr{font-size:10px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:var(--dim);margin-bottom:14px}
 .plan-rotation-row{display:flex;gap:10px;margin-bottom:8px}
-.plan-rotation-week{flex:1;background:var(--surface2);border-radius:14px;padding:12px;border:1px solid var(--border)}
+.plan-rotation-week{flex:1;background:var(--surface2);border-radius:4px;padding:12px;border:1px solid var(--border)}
 .plan-rotation-week.current{background:rgba(174,212,63,.06);border-color:rgba(174,212,63,.25)}
 .plan-rotation-wlbl{font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px}
 .plan-rotation-wlbl.current{color:var(--lime)}
 
+.plan-editorial-header{padding:8px 0 20px;border-bottom:1px solid var(--border);margin-bottom:4px}
+.plan-editorial-week{font-size:88px;font-weight:400;letter-spacing:2px;line-height:1;font-family:'Bebas Neue',sans-serif;color:var(--text)}
+.plan-editorial-subweek{font-size:13px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--dim);margin-top:4px}
+.plan-editorial-meta{font-size:12px;color:var(--dim);margin-top:6px;font-weight:500;letter-spacing:.3px}
+.plan-stat-row{display:none}
+.plan-stat-card{display:none}
 /* ── PLAN DASHBOARD ──────────────────────────────── */
 .plan-header{padding:4px 0 18px}
 .plan-header-eyebrow{font-size:12px;font-weight:600;color:var(--dim);margin-bottom:6px}
@@ -816,38 +836,34 @@ code{font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:4px
 .plan-stat-lbl{font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--dim);margin-top:4px}
 
 /* ── PLAN TODAY HERO ─────────────────────────────── */
-.plan-today-card{border-radius:22px;padding:28px 24px 24px;margin-top:20px;position:relative;overflow:hidden}
-.plan-today-card::after{content:'';position:absolute;top:-40px;right:-40px;width:180px;height:180px;border-radius:50%;opacity:.07;pointer-events:none}
-.plan-today-card.strength{background:linear-gradient(145deg,rgba(174,212,63,.13),rgba(174,212,63,.04) 60%,transparent);border:1px solid rgba(174,212,63,.2)}
-.plan-today-card.strength::after{background:var(--lime)}
-.plan-today-card.boxing{background:linear-gradient(145deg,rgba(212,135,60,.15),rgba(212,135,60,.04) 60%,transparent);border:1px solid rgba(212,135,60,.25)}
-.plan-today-card.boxing::after{background:var(--orange)}
-.plan-today-card.cycling{background:linear-gradient(145deg,rgba(142,202,230,.12),rgba(142,202,230,.04) 60%,transparent);border:1px solid rgba(142,202,230,.2)}
-.plan-today-card.cycling::after{background:var(--blue)}
-.plan-today-card.rest{background:var(--surface);border:1px solid var(--border)}
+.plan-today-card{border-radius:0;padding:24px 32px 24px;margin-top:20px;margin-left:-16px;margin-right:-16px;position:relative;overflow:hidden;border:none;border-left:4px solid var(--border)}
+.plan-today-card.strength{background:var(--surface);border-left-color:var(--lime)}
+.plan-today-card.boxing{background:var(--surface);border-left-color:var(--orange)}
+.plan-today-card.cycling{background:var(--surface);border-left-color:var(--blue)}
+.plan-today-card.rest{background:var(--surface);border-left-color:var(--border)}
 .plan-today-eyebrow{font-size:10px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:var(--dim);margin-bottom:10px;display:flex;align-items:center;gap:8px}
 .plan-today-eyebrow-dot{width:6px;height:6px;border-radius:50%;background:var(--dim)}
 .plan-today-card.strength .plan-today-eyebrow-dot{background:var(--lime);box-shadow:0 0 6px rgba(174,212,63,.6)}
 .plan-today-card.boxing .plan-today-eyebrow-dot{background:var(--orange);box-shadow:0 0 6px rgba(212,135,60,.6)}
 .plan-today-card.cycling .plan-today-eyebrow-dot{background:var(--blue);box-shadow:0 0 6px rgba(142,202,230,.6)}
-.plan-today-title{font-size:36px;font-weight:900;line-height:1.05;margin-bottom:8px;letter-spacing:-.5px}
-.plan-today-card.strength .plan-today-title{color:var(--lime)}
-.plan-today-card.boxing .plan-today-title{color:var(--orange)}
-.plan-today-card.cycling .plan-today-title{color:var(--blue)}
+.plan-today-title{font-size:38px;font-weight:900;line-height:1.05;margin-bottom:8px;letter-spacing:-.5px;color:var(--text)}
+.plan-today-card.strength .plan-today-title{color:var(--text)}
+.plan-today-card.boxing .plan-today-title{color:var(--text)}
+.plan-today-card.cycling .plan-today-title{color:var(--text)}
 .plan-today-card.rest .plan-today-title{color:var(--dim)}
 .plan-today-desc{font-size:13px;color:var(--dim);margin-bottom:24px;line-height:1.5}
-.plan-today-start{width:100%;padding:17px;border:none;border-radius:16px;font-size:15px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
+.plan-today-start{width:100%;padding:17px;border:none;border-radius:4px;font-size:15px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
 .plan-today-card.strength .plan-today-start{background:linear-gradient(135deg,#aed43f,#8aaa32);color:#0a0a0a;box-shadow:0 6px 24px rgba(174,212,63,.3)}
 .plan-today-card.boxing .plan-today-start{background:linear-gradient(135deg,#D4873C,#a06218);color:#fff;box-shadow:0 6px 24px rgba(212,135,60,.3)}
 .plan-today-card.cycling .plan-today-start{background:linear-gradient(135deg,#8ECAE6,#6ab0d4);color:#0a0a0a;box-shadow:0 6px 24px rgba(142,202,230,.3)}
 .plan-today-card.rest .plan-today-start{background:var(--surface2);color:var(--dim);border:1px solid var(--border)}
 .plan-today-start:hover{opacity:.9;transform:translateY(-1px)}
-.plan-today-done{display:flex;align-items:center;gap:12px;padding:16px;background:rgba(174,212,63,.09);border:1px solid rgba(174,212,63,.22);border-radius:16px;font-size:15px;font-weight:800;color:var(--lime)}
+.plan-today-done{display:flex;align-items:center;gap:12px;padding:16px;background:rgba(174,212,63,.09);border:1px solid rgba(174,212,63,.22);border-radius:4px;font-size:15px;font-weight:800;color:var(--lime)}
 .plan-today-done-check{font-size:22px;font-weight:900;width:40px;height:40px;background:rgba(174,212,63,.15);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .plan-today-extra{font-size:12px;color:var(--dim);margin-top:3px;font-weight:500}
 
 /* ── PLAN DAY CARDS ──────────────────────────────── */
-.plan-day-card{background:var(--surface);border-radius:16px;padding:14px 16px;margin-bottom:10px;display:flex;align-items:center;gap:14px;box-shadow:var(--card-shadow);border-left:3px solid var(--border);transition:border-color .2s}
+.plan-day-card{background:var(--surface);border-radius:4px;padding:14px 16px;margin-bottom:10px;display:flex;align-items:center;gap:14px;box-shadow:var(--card-shadow);border-left:3px solid var(--border);transition:border-color .2s}
 .plan-day-card.today{border-left-color:var(--lime);box-shadow:0 0 0 1px rgba(174,212,63,.15),var(--card-shadow)}
 .plan-day-card.done{border-left-color:rgba(174,212,63,.4)}
 .plan-day-card[data-type="boxing"]{border-left-color:rgba(212,135,60,.4)}
@@ -857,12 +873,12 @@ code{font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:4px
 
 /* ── PLAN ADHOC ──────────────────────────────────── */
 .plan-adhoc-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:4px}
-.plan-adhoc-btn{padding:14px 8px;border-radius:16px;border:1px solid var(--border);background:var(--surface);font-size:12px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;transition:all .2s;color:var(--dim);display:flex;flex-direction:column;align-items:center;gap:6px}
-.plan-adhoc-btn:hover{transform:translateY(-2px);box-shadow:var(--card-shadow)}
+.plan-adhoc-btn{padding:14px 8px;border-radius:4px;border:1px solid var(--border);background:var(--surface);font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .2s;color:var(--dim);display:flex;flex-direction:column;align-items:center;gap:6px}
+.plan-adhoc-btn:hover{background:var(--surface2);color:var(--text);border-color:var(--text)}
 .plan-adhoc-btn-icon{font-size:18px;line-height:1}
-.plan-adhoc-btn.cycling{border-color:rgba(142,202,230,.25);color:var(--blue);background:rgba(142,202,230,.04)}
-.plan-adhoc-btn.boxing{border-color:rgba(212,135,60,.25);color:var(--orange);background:rgba(212,135,60,.04)}
-.plan-adhoc-btn.strength{border-color:rgba(174,212,63,.25);color:var(--lime);background:rgba(174,212,63,.04)}
+.plan-adhoc-btn.cycling{border-color:var(--border);color:var(--dim);background:var(--surface)}
+.plan-adhoc-btn.boxing{border-color:var(--border);color:var(--dim);background:var(--surface)}
+.plan-adhoc-btn.strength{border-color:var(--border);color:var(--dim);background:var(--surface)}
 .plan-rotation-wlbl.next{color:var(--dim)}
 .plan-rotation-slot{font-size:11px;color:var(--text2);line-height:1.6}
 .plan-rotation-day{font-size:10px;font-weight:700;color:var(--dim)}
@@ -913,7 +929,6 @@ code{font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:4px
   <!-- Top bar -->
   <div class="topbar">
     <div class="topbar-left">
-      <div class="topbar-greeting" id="topbar-greeting">Good morning</div>
       <div class="topbar-logo">C<span>•WORKOUT</span></div>
     </div>
     <button class="topbar-settings-btn" onclick="toggleSettings()" title="Settings">
@@ -1109,6 +1124,13 @@ code{font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:4px
   <!-- ── STRENGTH TAB ─────────────────────────────────── -->
   <div class="tab-content" id="tab-strength">
 
+    <!-- Hero -->
+    <div class="str-hero">
+      <div class="str-hero-eyebrow">Strength Training</div>
+      <div class="str-training-day">STRENGTH<br>DAY</div>
+      <div class="str-focus-name" id="str-focus-name">CHEST &amp; TRICEPS</div>
+    </div>
+
     <!-- Workout selector pills -->
     <div class="str-selector" id="str-selector"></div>
 
@@ -1127,17 +1149,11 @@ code{font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:4px
       </div>
     </div>
 
-    <!-- Block Periodization Card -->
-    <div id="str-block-card" class="block-card accumulation"><!-- rendered by JS --></div>
+    <!-- STS Phase Progress Card -->
+    <div class="card" id="sts-phase-card"><!-- rendered by JS --></div>
 
     <!-- Training Day Dashboard -->
     <div id="str-dashboard">
-      <!-- Hero -->
-      <div class="str-hero">
-        <div class="str-hero-eyebrow">Strength Training</div>
-        <div class="str-training-day">STRENGTH<br>DAY</div>
-        <div class="str-focus-name" id="str-focus-name">CHEST &amp; TRICEPS</div>
-      </div>
 
       <!-- Today's Lifts -->
       <div class="str-lifts-hdr">TODAY'S LIFTS</div>
@@ -1549,30 +1565,157 @@ const ACH_DEFS=[
 const DAYS=['day1','day2','day3'];
 const DAY_LABELS={day1:'Day 1',day2:'Day 2',day3:'Day 3'};
 const RPE_LABELS=['','Very Easy','Easy','Moderate','Somewhat Hard','Hard','Hard','Very Hard','Very Hard','Extremely Hard','Max Effort!'];
+// ── Shortcut to Size — Phase Exercise Data ────────────────────────────────────
+// 3 phases × 4 weeks each. Exercises change per phase; reps are set by getStrengthBlock().
+const STS_PHASES=[
+  // ── Workout 0: Chest / Triceps / Calves ──────────────────────────────────────
+  [
+    // Phase 1 (STS weeks 1-4)
+    [
+      {name:"Barbell Bench Press",sets:"4",reps:"per block",rest:"2m",notes:"Primary press. Arch with shoulder blades pulled back; control the descent. Rest-Pause weeks 1-2, Drop Sets weeks 3-4.",warmup:true,swaps:["DB Bench Press","Smith Machine Press","Machine Chest Press"]},
+      {name:"Incline Barbell Press",sets:"3",reps:"per block",rest:"90s",notes:"Set bench to 30-45°. Keep elbows at ~45° to protect shoulders.",swaps:["Incline DB Press","Smith Machine Incline","Hammer Strength Incline"]},
+      {name:"Incline DB Flye",sets:"3",reps:"per block",rest:"60s",notes:"Slight bend in elbows throughout; stretch at bottom, squeeze at top.",swaps:["Pec Dec","Cable Crossover","Low Cable Fly"]},
+      {name:"Cable Crossover",sets:"3",reps:"per block",rest:"60s",notes:"Set cables high; bring hands together and slightly down. Focus on the mid-chest squeeze.",swaps:["DB Fly","Machine Fly","Resistance Band Fly"]},
+      {name:"Cable Triceps Pressdown",sets:"3",reps:"per block",rest:"60s",notes:"Elbows pinned at sides; full lockout at the bottom. Rope or straight bar.",swaps:["Band Pushdown","Machine Triceps Extension","DB Kickback"]},
+      {name:"Lying Triceps Extension",sets:"3",reps:"per block",rest:"60s",notes:"EZ-bar or dumbbells. Lower to forehead or slightly behind for the stretch.",swaps:["Cable Lying Triceps Extension","Skull Crushers","DB Overhead Extension"]},
+      {name:"Cable Overhead Triceps Extension",sets:"3",reps:"per block",rest:"60s",notes:"Face away from cable stack, rope overhead. Full stretch at the bottom.",swaps:["DB Overhead Extension","Band Overhead Triceps Extension","Dip Machine"]},
+      {name:"Standing Calf Raise",sets:"4",reps:"25-30",rest:"60s",notes:"Full ROM — pause at bottom for stretch, rise as high as possible.",swaps:["Leg Press Calf Raise","Donkey Calf Raise","Smith Machine Calf Raise"]},
+      {name:"Seated Calf Raise",sets:"4",reps:"25-30",rest:"60s",notes:"Targets soleus. Slow controlled reps with a full stretch at the bottom.",swaps:["Leg Press Calf Raise","DB Seated Calf Raise","Resistance Band Calf Raise"]},
+    ],
+    // Phase 2 (STS weeks 5-8)
+    [
+      {name:"Incline DB Press",sets:"4",reps:"per block",rest:"2m",notes:"Primary press for Phase 2. Bench at 30-45° — dumbbells allow a greater stretch.",warmup:true,swaps:["Incline Barbell Press","Smith Machine Incline","Hammer Strength Incline"]},
+      {name:"DB Bench Press",sets:"3",reps:"per block",rest:"90s",notes:"Flat dumbbell press — greater range of motion than barbell.",swaps:["Barbell Bench Press","Machine Chest Press","Push-Up"]},
+      {name:"DB Flye",sets:"3",reps:"per block",rest:"60s",notes:"Slight bend in elbows; focus on the chest stretch and squeeze, not the weight.",swaps:["Pec Dec","Cable Fly","Resistance Band Fly"]},
+      {name:"Incline Cable Flye",sets:"3",reps:"per block",rest:"60s",notes:"Set cables low, bench at 30°. Pull upward and inward for upper chest emphasis.",swaps:["Incline DB Flye","High Cable Fly","Machine Incline Fly"]},
+      {name:"DB Overhead Triceps Extension",sets:"3",reps:"per block",rest:"60s",notes:"Both hands on one DB, elbows forward. Full stretch behind head.",swaps:["Cable Overhead Extension","EZ-Bar Skull Crusher","Resistance Band Overhead"]},
+      {name:"Cable Lying Triceps Extension",sets:"3",reps:"per block",rest:"60s",notes:"Lying on bench facing low cable. Extend from forehead. Long-head emphasis.",swaps:["EZ-Bar Skull Crusher","DB Skull Crusher","Machine Extension"]},
+      {name:"Triceps Pressdown",sets:"3",reps:"per block",rest:"60s",notes:"Cable rope or straight bar. Elbows locked at sides, full lockout each rep.",swaps:["Band Pushdown","DB Kickback","Machine Triceps"]},
+      {name:"Standing Calf Raise",sets:"4",reps:"20-25",rest:"60s",notes:"Full ROM — pause at bottom for stretch, rise as high as possible.",swaps:["Leg Press Calf Raise","Donkey Calf Raise","Smith Machine Calf Raise"]},
+      {name:"Seated Calf Raise",sets:"4",reps:"20-25",rest:"60s",notes:"Targets soleus. Slow controlled reps with a full stretch at the bottom.",swaps:["Leg Press Calf Raise","DB Seated Calf Raise","Resistance Band Calf Raise"]},
+    ],
+    // Phase 3 (STS weeks 9-12)
+    [
+      {name:"Barbell Bench Press",sets:"4",reps:"per block",rest:"2m",notes:"Return to barbell primary for Phase 3. Maximum strength loading — controlled descent.",warmup:true,swaps:["DB Bench Press","Smith Machine Press","Machine Chest Press"]},
+      {name:"Reverse-Grip Incline DB Press",sets:"3",reps:"per block",rest:"90s",notes:"Palms facing you (supinated) on incline. Isolates upper chest and shifts triceps emphasis.",swaps:["Incline DB Press","Incline Barbell Press","Hammer Strength Incline"]},
+      {name:"Incline DB Flye",sets:"3",reps:"per block",rest:"60s",notes:"Slight bend in elbows throughout; stretch at bottom, squeeze at top.",swaps:["Pec Dec","Cable Crossover","Low Cable Fly"]},
+      {name:"Cable Crossover",sets:"3",reps:"per block",rest:"60s",notes:"Set cables high; bring hands together slightly down. Focus on the mid-chest squeeze.",swaps:["DB Fly","Machine Fly","Resistance Band Fly"]},
+      {name:"Triceps Pressdown",sets:"3",reps:"per block",rest:"60s",notes:"Rope or straight bar. Elbows locked at sides, full lockout at the bottom.",swaps:["Band Pushdown","Machine Triceps Extension","DB Kickback"]},
+      {name:"One-Arm Overhead Cable Triceps Extension",sets:"3",reps:"per block",rest:"60s",notes:"Single arm overhead cable — greater stretch on the long head than two-arm variation.",swaps:["DB Overhead Extension","Band Overhead Extension","Incline Skull Crusher"]},
+      {name:"Close-Grip Bench Press",sets:"3",reps:"per block",rest:"90s",notes:"Hands shoulder-width or slightly inside. Keep elbows tight. Heavy compound triceps finisher.",swaps:["Dip","Triceps Pushdown","Board Press"]},
+      {name:"Standing Calf Raise",sets:"4",reps:"15-20",rest:"60s",notes:"Full ROM — pause at bottom for stretch, rise as high as possible.",swaps:["Leg Press Calf Raise","Donkey Calf Raise","Smith Machine Calf Raise"]},
+      {name:"Seated Calf Raise",sets:"4",reps:"15-20",rest:"60s",notes:"Targets soleus. Slow controlled reps with a full stretch at the bottom.",swaps:["Leg Press Calf Raise","DB Seated Calf Raise","Resistance Band Calf Raise"]},
+    ],
+  ],
+  // ── Workout 1: Back / Biceps / Abs ───────────────────────────────────────────
+  [
+    // Phase 1
+    [
+      {name:"DB Bent-Over Row",sets:"4",reps:"per block",rest:"2m",notes:"Hinge until torso is near parallel. Pull DB toward hip — row with back, not bicep.",warmup:true,swaps:["Barbell Bent-Over Row","T-Bar Row","Chest-Supported Row"]},
+      {name:"Wide-Grip Pulldown",sets:"3",reps:"per block",rest:"90s",notes:"Pull bar to upper chest; drive elbows down and back. Full stretch at top.",swaps:["Wide-Grip Pull-Up","Neutral-Grip Pulldown","Machine Pulldown"]},
+      {name:"Standing Pulldown",sets:"3",reps:"per block",rest:"60s",notes:"Stand at cable, use rope or bar — pull from overhead down to thighs, arms nearly straight.",swaps:["Seated Straight-Arm Pulldown","DB Pullover","Band Pulldown"]},
+      {name:"Straight-Arm Pulldown",sets:"3",reps:"per block",rest:"60s",notes:"Arms nearly straight; pull bar from face-level down to thighs. Lat isolation.",swaps:["Single-Arm Cable Pullover","DB Pullover","Resistance Band Straight Arm"]},
+      {name:"Barbell Curl",sets:"4",reps:"per block",rest:"90s",notes:"Strict form — no swinging. Elbows pinned at sides through the full curl.",swaps:["EZ-Bar Curl","DB Curl","Machine Biceps Curl"]},
+      {name:"DB Incline Curl",sets:"3",reps:"per block",rest:"60s",notes:"Seated on incline bench, arms hanging. Full stretch at bottom — targets the long head.",swaps:["Spider Curl","Low-Cable Curl","Preacher Curl"]},
+      {name:"One-Arm High Cable Curl",sets:"3",reps:"per block",rest:"60s",notes:"Cable set at shoulder height. Curl toward your ear — peak contraction at the top.",swaps:["Machine Preacher Curl","Concentration Curl","DB High Cable Curl"]},
+      {name:"Hip Thrust (Abs)",sets:"3",reps:"20-30",rest:"60s",notes:"Lying on back, legs up. Drive hips and lower back off the floor. Lower-back crunch.",swaps:["Hanging Knee Raise","Ab Wheel Rollout","Reverse Crunch"]},
+      {name:"Crunch",sets:"3",reps:"20-30",rest:"60s",notes:"Focus on upper abs. Don't pull on your neck; squeeze hard at the top.",swaps:["Machine Crunch","Cable Crunch","Weighted Crunch"]},
+      {name:"Oblique Crunch",sets:"3",reps:"20-30",rest:"60s",notes:"Twist toward opposite knee — both sides count as one set.",swaps:["Cable Oblique Crunch","Russian Twist","DB Side Bend"]},
+    ],
+    // Phase 2
+    [
+      {name:"Behind-Neck Pulldown",sets:"4",reps:"per block",rest:"2m",notes:"Wide grip, lean slightly forward. Pull bar behind head to base of skull. Warm up thoroughly — requires shoulder mobility.",warmup:true,swaps:["Wide-Grip Pulldown","Neutral-Grip Pulldown","Machine Pulldown"]},
+      {name:"Seated Cable Row",sets:"3",reps:"per block",rest:"90s",notes:"Sit tall, pull handle to lower abs — squeeze shoulder blades together at the peak.",swaps:["Barbell Bent-Over Row","T-Bar Row","Machine Row"]},
+      {name:"Reverse-Grip Pulldown",sets:"3",reps:"per block",rest:"60s",notes:"Underhand grip, slightly narrower than shoulder-width. More biceps involvement.",swaps:["Neutral-Grip Pulldown","Underhand Bent-Over Row","Machine Pulldown"]},
+      {name:"Straight-Arm Pulldown",sets:"3",reps:"per block",rest:"60s",notes:"Arms nearly straight; pull bar from face-level down to thighs. Lat isolation.",swaps:["Single-Arm Cable Pullover","DB Pullover","Resistance Band Straight Arm"]},
+      {name:"Preacher Curl",sets:"4",reps:"per block",rest:"90s",notes:"Full stretch at the bottom, squeeze at the top. No momentum. Barbell or EZ-bar.",swaps:["Machine Preacher Curl","DB Preacher Curl","Spider Curl"]},
+      {name:"Behind-Back Cable Curl",sets:"3",reps:"per block",rest:"60s",notes:"Cable behind you, curl from hip to shoulder. Unique angle targets the short head.",swaps:["DB Concentration Curl","Machine Curl","Low Cable Curl"]},
+      {name:"DB Incline Curl",sets:"3",reps:"per block",rest:"60s",notes:"Seated on incline bench, arms hanging. Full stretch at bottom — targets the long head.",swaps:["Spider Curl","Low-Cable Curl","Machine Biceps Curl"]},
+      {name:"Hip Thrust (Abs)",sets:"3",reps:"20-25",rest:"60s",notes:"Lying on back, legs up. Drive hips and lower back off the floor.",swaps:["Hanging Knee Raise","Ab Wheel Rollout","Reverse Crunch"]},
+      {name:"Weighted Crunch",sets:"3",reps:"15-20",rest:"60s",notes:"Hold a plate at your chest or behind your head for added resistance.",swaps:["Machine Crunch","Cable Crunch","Crunch"]},
+      {name:"DB Side Bend",sets:"3",reps:"15-20",rest:"60s",notes:"One DB at your side. Bend laterally — stretch the opposite oblique, then pull back up.",swaps:["Cable Side Bend","Russian Twist","Oblique Crunch"]},
+    ],
+    // Phase 3
+    [
+      {name:"DB Bent-Over Row",sets:"4",reps:"per block",rest:"2m",notes:"Return to dumbbell primary for Phase 3. Hinge until torso is near parallel, pull to hip.",warmup:true,swaps:["Barbell Bent-Over Row","T-Bar Row","Chest-Supported Row"]},
+      {name:"Wide-Grip Pulldown",sets:"3",reps:"per block",rest:"90s",notes:"Pull bar to upper chest; drive elbows down and back. Full stretch at top.",swaps:["Wide-Grip Pull-Up","Neutral-Grip Pulldown","Machine Pulldown"]},
+      {name:"Straight-Arm Pulldown",sets:"3",reps:"per block",rest:"60s",notes:"Arms nearly straight; pull bar from face-level down to thighs. Lat isolation.",swaps:["Single-Arm Cable Pullover","DB Pullover","Resistance Band Straight Arm"]},
+      {name:"Seated Cable Row",sets:"3",reps:"per block",rest:"60s",notes:"Sit tall, pull handle to lower abs — squeeze shoulder blades together at the peak.",swaps:["Barbell Bent-Over Row","T-Bar Row","Machine Row"]},
+      {name:"Barbell Curl",sets:"4",reps:"per block",rest:"90s",notes:"Strict form — no swinging. Elbows pinned at sides through the full curl.",swaps:["EZ-Bar Curl","DB Curl","Machine Biceps Curl"]},
+      {name:"Incline Cable Curl",sets:"3",reps:"per block",rest:"60s",notes:"Low cable, incline bench. Long head stretch and peak contraction.",swaps:["DB Incline Curl","Machine Preacher Curl","Spider Curl"]},
+      {name:"DB Concentration Curl",sets:"3",reps:"per block",rest:"60s",notes:"Seated, elbow braced on inner thigh. Full ROM — squeeze hard at the top.",swaps:["Machine Curl","Behind-Back Cable Curl","Preacher Curl"]},
+      {name:"Hanging Leg Raise",sets:"3",reps:"15-20",rest:"60s",notes:"Hang from pull-up bar. Raise legs to parallel or higher. Control the descent.",swaps:["Lying Leg Raise","Ab Machine","Reverse Crunch"]},
+      {name:"Weighted Crunch",sets:"3",reps:"15-20",rest:"60s",notes:"Hold a plate at your chest or behind your head for added resistance.",swaps:["Machine Crunch","Cable Crunch","Crunch"]},
+      {name:"Cable Oblique Crunch",sets:"3",reps:"15-20",rest:"60s",notes:"Side-facing cable at high position. Crunch toward opposite hip for oblique emphasis.",swaps:["Russian Twist","DB Side Bend","Oblique Crunch"]},
+    ],
+  ],
+  // ── Workout 2: Shoulders / Traps / Calves ─────────────────────────────────────
+  [
+    // Phase 1
+    [
+      {name:"DB Shoulder Press",sets:"4",reps:"per block",rest:"2m",notes:"Seated or standing. Press dumbbells up and slightly inward. Control the descent.",warmup:true,swaps:["Barbell OHP","Machine Shoulder Press","Smith Machine Press"]},
+      {name:"DB Lateral Raise",sets:"3",reps:"per block",rest:"60s",notes:"Slight bend in elbows; lead with the elbows, not the hands. Raise to shoulder height.",swaps:["Cable Lateral Raise","Machine Lateral Raise","Band Lateral Raise"]},
+      {name:"One-Arm Cable Front Raise",sets:"3",reps:"per block",rest:"60s",notes:"Cable from low position. Raise arm to eye level, pause, lower slowly.",swaps:["DB Front Raise","Plate Front Raise","Band Front Raise"]},
+      {name:"High Cable Rear Delt Fly",sets:"3",reps:"per block",rest:"60s",notes:"Both cables at shoulder height, arms crossed. Pull out and back for rear delts.",swaps:["Reverse Pec Dec","DB Rear Delt Fly","Face Pull"]},
+      {name:"DB Shrug",sets:"4",reps:"per block",rest:"60s",notes:"Heavy dumbbells at sides. Shrug straight up — no rolling. Pause at the top.",swaps:["Barbell Shrug","Machine Shrug","Smith Machine Shrug"]},
+      {name:"Standing Calf Raise",sets:"4",reps:"25-30",rest:"60s",notes:"Full ROM — pause at bottom for stretch, rise as high as possible.",swaps:["Leg Press Calf Raise","Donkey Calf Raise","Smith Machine Calf Raise"]},
+      {name:"Seated Calf Raise",sets:"4",reps:"25-30",rest:"60s",notes:"Targets soleus. Slow controlled reps with a full stretch at the bottom.",swaps:["Leg Press Calf Raise","DB Seated Calf Raise","Resistance Band Calf Raise"]},
+    ],
+    // Phase 2
+    [
+      {name:"Smith Machine Upright Row",sets:"4",reps:"per block",rest:"2m",notes:"Grip slightly inside shoulder-width. Pull to chin — lead with elbows flared out.",warmup:true,swaps:["Barbell Upright Row","DB Upright Row","Cable Upright Row"]},
+      {name:"One-Arm Cable Lateral Raise",sets:"3",reps:"per block",rest:"60s",notes:"Cable at hip level on opposite side. Single-arm raise to shoulder height — full range.",swaps:["DB Lateral Raise","Machine Lateral Raise","Band Lateral Raise"]},
+      {name:"Bent-Over Lateral Raise",sets:"3",reps:"per block",rest:"60s",notes:"Hinge forward 45°+. Raise dumbbells out to sides — rear delt and upper back.",swaps:["Reverse Pec Dec","High Cable Rear Delt Fly","Face Pull"]},
+      {name:"DB Shoulder Press",sets:"3",reps:"per block",rest:"90s",notes:"Secondary compound for Phase 2. Seated — press dumbbells overhead.",swaps:["Barbell OHP","Machine Shoulder Press","Smith Machine Press"]},
+      {name:"Barbell Shrug",sets:"4",reps:"per block",rest:"60s",notes:"Barbell at thighs. Shrug straight up — pause at top, no rolling.",swaps:["DB Shrug","Machine Shrug","Smith Machine Shrug"]},
+      {name:"Standing Calf Raise",sets:"4",reps:"20-25",rest:"60s",notes:"Full ROM — pause at bottom for stretch, rise as high as possible.",swaps:["Leg Press Calf Raise","Donkey Calf Raise","Smith Machine Calf Raise"]},
+      {name:"Seated Calf Raise",sets:"4",reps:"20-25",rest:"60s",notes:"Targets soleus. Slow controlled reps with a full stretch at the bottom.",swaps:["Leg Press Calf Raise","DB Seated Calf Raise","Resistance Band Calf Raise"]},
+    ],
+    // Phase 3
+    [
+      {name:"DB Shoulder Press",sets:"4",reps:"per block",rest:"2m",notes:"Return to DB press as primary for Phase 3. Seated or standing — maximum load.",warmup:true,swaps:["Barbell OHP","Machine Shoulder Press","Smith Machine Press"]},
+      {name:"DB Lateral Raise",sets:"3",reps:"per block",rest:"60s",notes:"Slight bend in elbows; lead with elbows, not hands. Raise to shoulder height.",swaps:["Cable Lateral Raise","Machine Lateral Raise","Band Lateral Raise"]},
+      {name:"DB Upright Row",sets:"3",reps:"per block",rest:"60s",notes:"Dumbbells at thighs; pull straight up, elbows flaring out to the sides.",swaps:["Barbell Upright Row","Cable Upright Row","Smith Machine Upright Row"]},
+      {name:"Bent-Over Lateral Raise",sets:"3",reps:"per block",rest:"60s",notes:"Hinge forward 45°+. Raise dumbbells out to sides — rear delt and upper back focus.",swaps:["Reverse Pec Dec","High Cable Rear Delt Fly","Face Pull"]},
+      {name:"One-Arm Smith Machine Shrug",sets:"4",reps:"per block",rest:"60s",notes:"Single arm on Smith — allows rotation at the top for a fuller trap contraction.",swaps:["DB Shrug","Barbell Shrug","Cable Shrug"]},
+      {name:"Standing Calf Raise",sets:"4",reps:"15-20",rest:"60s",notes:"Full ROM — pause at bottom for stretch, rise as high as possible.",swaps:["Leg Press Calf Raise","Donkey Calf Raise","Smith Machine Calf Raise"]},
+      {name:"Seated Calf Raise",sets:"4",reps:"15-20",rest:"60s",notes:"Targets soleus. Slow controlled reps with a full stretch at the bottom.",swaps:["Leg Press Calf Raise","DB Seated Calf Raise","Resistance Band Calf Raise"]},
+    ],
+  ],
+];
+
+// Helper: STS phase/week derived from S.stsWeek (1-12), not cycling week
+function getStsPhaseIdx(stsWeek){return Math.min(2,Math.floor(((stsWeek||1)-1)/4));}
+function getStsWeekInPhase(stsWeek){return(((stsWeek||1)-1)%4)+1;}
+
+// Which of the 3 STS workouts (0=Chest, 1=Back, 2=Shoulders) are done this STS week
+function stsWeekDone(wIdx){return!!(S.stsDone[S.stsWeek]?.[wIdx]);}
+function stsAllDoneThisWeek(){return stsWeekDone(0)&&stsWeekDone(1)&&stsWeekDone(2);}
+
+// Advance STS week after all 3 workouts are logged
+function advanceStsWeekIfComplete(){
+  if(!stsAllDoneThisWeek()) return false;
+  if(S.stsWeek>=12){
+    S.stsWeek=1;
+    S.stsCycle=(S.stsCycle||1)+1;
+  } else {
+    S.stsWeek++;
+  }
+  return true;
+}
+
+// Sync STRENGTH[0-2].exercises from STS_PHASES based on current STS week
+function syncStsExercises(){
+  const pi=getStsPhaseIdx(S.stsWeek||1);
+  STRENGTH[0].exercises=STS_PHASES[0][pi];
+  STRENGTH[1].exercises=STS_PHASES[1][pi];
+  STRENGTH[2].exercises=STS_PHASES[2][pi];
+}
+
 const STRENGTH=[
-  {id:1,title:"Chest & Triceps",time:"~42 min",muscles:"Chest · Triceps",exercises:[
-    {name:"Barbell Bench Press",sets:"3 (+3 warm-up)",reps:"6–8",rest:"90s",notes:"The main lift. Focus on a controlled descent.",warmup:true,swaps:["Dumbbell Bench Press","Cable Chest Fly","Machine Chest Press"]},
-    {name:"Landmine Press",sets:"3",reps:"10–12",rest:"60s",notes:"Standing or kneeling; drive the bar up and inward.",swaps:["DB Shoulder Press","Cable Chest Press","Weighted Push-Up"]},
-    {name:"Dumbbell Floor Press",sets:"2",reps:"12–15",rest:"60s",notes:"Tuck elbows 45° to save shoulders and torch triceps.",swaps:["Pec Dec Machine","Cable Crossover","DB Chest Fly"]},
-    {name:"EZ-Bar Skullcrushers",sets:"3",reps:"10–12",rest:"60s",notes:"Lower the bar to your forehead or slightly behind.",swaps:["DB Skullcrushers","Cable Overhead Tricep Extension","JM Press"]},
-    {name:"DB Overhead Extension",sets:"3",reps:"12–15",rest:"60s",notes:"Use one heavy DB held with both hands.",swaps:["Cable Tricep Pushdown","Overhead Band Extension","Dip Machine"]},
-    {name:"Close-Grip Pushups",sets:"2",reps:"AMRAP",rest:"45s",notes:"Hands inside shoulder width.",swaps:["Diamond Push-Ups","Tricep Band Pushdown","Bench Dips"]},
-  ]},
-  {id:2,title:"Back & Biceps",time:"~44 min",muscles:"Back · Biceps",exercises:[
-    {name:"Lat Pulldown",sets:"3 (+3 warm-up)",reps:"10–12",rest:"75s",notes:"Drive elbows to ribs; don't use momentum.",warmup:true,swaps:["Pull-Ups / Assisted Pull-Ups","Seated Cable Row (Wide Grip)","Machine Pull-Down"]},
-    {name:"Landmine Meadow's Row",sets:"3",reps:"8–10",rest:"60s",notes:"Stand perpendicular to the bar; use a staggered stance.",swaps:["Single-Arm Dumbbell Row","Cable Row","Chest-Supported Row"]},
-    {name:"Barbell Bent-Over Row",sets:"3",reps:"8–10",rest:"75s",notes:"Pull the bar to your belly button.",swaps:["T-Bar Row","Seal Row","Smith Machine Bent-Over Row"]},
-    {name:"EZ-Bar 21s",sets:"2",reps:"21",rest:"60s",notes:"7 bottom half, 7 top half, 7 full reps.",swaps:["Concentration Curls","DB Preacher Curl","Cable Bicep Curl"]},
-    {name:"Incline DB Curls",sets:"3",reps:"10–12",rest:"60s",notes:"Keep elbows locked back behind your torso.",swaps:["Spider Curls","Machine Bicep Curl","Cable Curl (Low Pulley)"]},
-    {name:"Straight-Arm Pulldown",sets:"2",reps:"15",rest:"45s",notes:"Use the lat pulldown bar with arms locked straight.",swaps:["Single-Arm Cable Pullover","DB Pullover","Resistance Band Pulldown"]},
-  ]},
-  {id:3,title:"Shoulders & Arms",time:"~45 min",muscles:"Shoulders · Arms",exercises:[
-    {name:"Standing Barbell OHP",sets:"3 (+3 warm-up)",reps:"6–8",rest:"90s",notes:"Squeeze glutes and core to stay stable.",warmup:true,swaps:["DB Seated Shoulder Press","Machine Shoulder Press","Cable Overhead Press"]},
-    {name:"DB Lateral Raises",sets:"4",reps:"12–15",rest:"45s",notes:"Lean slightly forward; lead with the elbows.",swaps:["Cable Lateral Raise","Machine Lateral Raise","Band Lateral Raise"]},
-    {name:"Landmine Rear Delt Row",sets:"3",reps:"15",rest:"60s",notes:"Pull the end of the bar toward your ear.",swaps:["Face Pulls (Cable)","Reverse Pec Dec","DB Reverse Fly"]},
-    {name:"Superset: Curls / Dips",sets:"3",reps:"10–15",rest:"60s",notes:"Perform curls, then immediately perform bench dips.",swaps:["DB Curl + Tricep Pushdown","Cable Curl + Overhead Extension","EZ-Bar Curl + Skullcrushers"]},
-    {name:"Hammer Curls",sets:"3",reps:"10–12",rest:"60s",notes:"Palms facing in; no swinging.",swaps:["Cross-Body Hammer Curl","Cable Rope Hammer Curl","DB Reverse Curl"]},
-  ]},
+  {id:1,title:"Chest & Triceps",time:"~45 min",muscles:"Chest · Triceps · Calves",exercises:[]},
+  {id:2,title:"Back & Biceps",time:"~48 min",muscles:"Back · Biceps · Abs",exercises:[]},
+  {id:3,title:"Shoulders & Traps",time:"~45 min",muscles:"Shoulders · Traps · Calves",exercises:[]},
   {id:4,title:"Kettlebell Shoulders & Arms",time:"~50 min",muscles:"Shoulders · Biceps · Triceps",exercises:[
     {name:"Kettlebell Halos",sets:"3",reps:"10–12",rest:"60s",notes:"Hold bell upside-down by the horns at your chest. Orbit it around your head in a tight, controlled circle — alternate directions each set. Primes the deltoids, rotator cuff, and upper traps.",warmup:true,swaps:["Band Pull-Aparts","DB Shoulder Circles","Wall Slides"]},
     {name:"KB Clean & Strict Press",sets:"3–4",reps:"6–10",rest:"60s",notes:"Per side. Clean to rack position, core and glutes tight, press strictly overhead — no leg drive. Take 3 full seconds to lower the bell back to your shoulder.",swaps:["DB Strict Press","KB Push Press","Band Overhead Press"]},
@@ -1583,7 +1726,7 @@ const STRENGTH=[
   ]},
 ];
 
-const K={hist:'cw-history',ach:'cw-ach',timers:'cw-timers',week:'cw-week',strlog:'cw-str-log',strhist:'cw-str-hist',bodylog:'cw-body-log',bxhist:'cw-bx-hist',actlog:'cw-act-log',prs:'cw-prs',goals:'cw-goals',strswaps:'cw-str-swaps',plandays:'cw-plan-days'};
+const K={hist:'cw-history',ach:'cw-ach',timers:'cw-timers',week:'cw-week',strlog:'cw-str-log',strhist:'cw-str-hist',bodylog:'cw-body-log',bxhist:'cw-bx-hist',actlog:'cw-act-log',prs:'cw-prs',goals:'cw-goals',strswaps:'cw-str-swaps',plandays:'cw-plan-days',stsweek:'cw-sts-week',stsdone:'cw-sts-done',stscycle:'cw-sts-cycle'};
 const WORKOUT_DATA={
   phases:[
     {range:[1,13],name:"Foundation",focus:"Building aerobic base and pedal stroke efficiency."},
@@ -1636,6 +1779,7 @@ let S={
   strLog:{},strHistory:[],strSwaps:{},
   strLogWeight:135,strLogReps:5,strLogExIdx:0,
   strAnalyticsOpen:false,
+  stsWeek:1,stsDone:{},stsCycle:1,
   bodyLog:[],
   bxHistory:[],
   activityLog:[],
@@ -1669,6 +1813,9 @@ function loadState(){
   try{const g=JSON.parse(localStorage.getItem(K.goals)||'{}');S.goals={...S.goals,...g};}catch{}
   try{S.strSwaps=JSON.parse(localStorage.getItem(K.strswaps)||'{}');}catch{}
   try{const pd=JSON.parse(localStorage.getItem(K.plandays)||'null');if(pd&&pd.length===7)S.planDays=pd;}catch{}
+  try{S.stsWeek=Math.max(1,Math.min(12,parseInt(localStorage.getItem(K.stsweek)||'1')||1));}catch{}
+  try{S.stsDone=JSON.parse(localStorage.getItem(K.stsdone)||'{}');}catch{}
+  try{S.stsCycle=Math.max(1,parseInt(localStorage.getItem(K.stscycle)||'1')||1);}catch{}
 }
 function saveState(){
   try{
@@ -1685,6 +1832,9 @@ function saveState(){
     localStorage.setItem(K.goals,JSON.stringify(S.goals));
     localStorage.setItem(K.strswaps,JSON.stringify(S.strSwaps||{}));
     localStorage.setItem(K.plandays,JSON.stringify(S.planDays));
+    localStorage.setItem(K.stsweek,String(S.stsWeek));
+    localStorage.setItem(K.stsdone,JSON.stringify(S.stsDone));
+    localStorage.setItem(K.stscycle,String(S.stsCycle));
   }catch{}
 }
 
@@ -1974,6 +2124,7 @@ function updateTimerBar(){
 
 // ── Render ────────────────────────────────────────────────────────────────────
 function render(){
+  syncStsExercises(); // ensure exercises match current STS phase
   const w=S.week;
   const earned=S.achievements.filter(a=>a.earned).length;
   const streak=getStreak();
@@ -2178,6 +2329,57 @@ function toggleWarmup(){
   if(arrow) arrow.classList.toggle('open',!isOpen);
 }
 
+// ── STS Phase Card ────────────────────────────────────────────────────────────
+function renderStsPhaseCard(){
+  const el=document.getElementById('sts-phase-card');
+  if(!el)return;
+  const stsWeek=S.stsWeek||1;
+  const stsCycle=S.stsCycle||1;
+  const phaseIdx=getStsPhaseIdx(stsWeek); // 0, 1, 2
+  const wInPhase=getStsWeekInPhase(stsWeek); // 1-4
+  const phaseNum=phaseIdx+1;
+  const phaseNames=['Hypertrophy','Strength','Peak Strength'];
+  const phaseColors=['var(--orange)','var(--blue)','var(--red)'];
+  const repRanges=['12–15','9–11','6–8','3–5'];
+  const techniques=['Rest-Pause','Rest-Pause','Drop Sets','Drop Sets'];
+  const phaseDescs=[
+    'Moderate weight, higher reps — build the muscle base.',
+    'Increasing load, lower reps — develop strength.',
+    'Near-maximal effort — peak strength and PRs.'
+  ];
+  const repRange=repRanges[wInPhase-1];
+  const technique=techniques[wInPhase-1];
+  const col=phaseColors[phaseIdx];
+  // Progress bar: 12 weeks total
+  const pct=Math.round(((stsWeek-1)/12)*100);
+  // Workout check marks for this week (wIdx 0=Chest, 1=Back, 2=Shoulders)
+  const workoutLabels=['Chest & Triceps','Back & Biceps','Shoulders & Traps'];
+  const checks=workoutLabels.map((lbl,i)=>{
+    const done=stsWeekDone(i);
+    return`<div class="sts-check${done?' done':''}">
+      <div class="sts-check-dot">${done?'✓':''}</div>
+      <div class="sts-check-lbl">${lbl}</div>
+    </div>`;
+  }).join('');
+  el.innerHTML=`<div class="sts-card-inner">
+    <div class="sts-phase-badge" style="background:rgba(0,0,0,.3);border-color:${col};color:${col}">STS · PHASE ${phaseNum} OF 3 · WEEK ${wInPhase} OF 4</div>
+    <div class="sts-phase-title" style="color:${col}">${phaseNames[phaseIdx]}</div>
+    <div class="sts-phase-desc">${phaseDescs[phaseIdx]}</div>
+    <div class="sts-week-checks">${checks}</div>
+    <div class="sts-rep-row">
+      <div class="sts-rep-chip" style="border-color:${col};color:${col}">${repRange} reps</div>
+      <div class="sts-rep-chip" style="border-color:${col};color:${col}">${technique}</div>
+      <div class="sts-rep-chip">Cycle ${stsCycle}</div>
+    </div>
+    <div class="sts-bar-track"><div class="sts-bar-fill" style="width:${pct}%;background:${col}"></div></div>
+    <div class="sts-bar-labels">
+      <span style="color:var(--orange)">Phase 1</span>
+      <span style="color:var(--blue)">Phase 2</span>
+      <span style="color:var(--red)">Phase 3</span>
+    </div>
+  </div>`;
+}
+
 // ── Strength helpers ─────────────────────────────────────────────────────────
 function strTodayKey(){return new Date().toDateString();}
 function strGetSets(wIdx,eIdx){return(S.strLog[strTodayKey()]?.[wIdx]?.[eIdx])||[];}
@@ -2189,17 +2391,16 @@ function strTodaySetCount(wIdx){
 
 // ── renderStrength ────────────────────────────────────────────────────────────
 function renderStrength(){
+  syncStsExercises();
+  renderStsPhaseCard();
   const wo=STRENGTH[S.activeStrengthWorkout];
   // Selector pills
   const sel=document.getElementById('str-selector');
   if(sel) sel.innerHTML=STRENGTH.map((s,i)=>`
     <button class="str-wbtn${i===S.activeStrengthWorkout?' active':''}" onclick="selectStrengthWorkout(${i})">
       <div class="str-wbtn-title">${s.title}</div>
-      <div class="str-wbtn-meta">${s.time} · ${s.muscles}</div>
+      <div class="str-wbtn-meta">${s.muscles}</div>
     </button>`).join('');
-
-  // Render block card (always, even when analytics open)
-  renderBlockCard();
 
   // Toggle dashboard / analytics
   const dash=document.getElementById('str-dashboard');
@@ -2213,17 +2414,17 @@ function renderStrength(){
 
   // Block info for rep range hints
   const block=getStrengthBlock(S.week);
-  const isDeload=block.type==='deload';
+  const isDeload=false; // STS has no deload
 
   // Today's lifts
   const wIdx=S.activeStrengthWorkout;
   const ll=document.getElementById('str-lifts-list');
   if(ll) ll.innerHTML=wo.exercises.map((e,i)=>{
     const sets=strGetSets(wIdx,i);
-    const target=strTargetSets(e);
-    // Read-only outline — logging happens only in guided mode
-    const blockMeta=`<span class="ex-block-tag ${block.type}">${block.repRange}</span>`;
-    const deloadNote=isDeload?` <span style="font-size:10px;color:var(--blue);font-weight:600">· 60% weight</span>`:'';
+    // Use STS rep range for workouts 0-2 (STS workouts); kettlebell keeps its own reps
+    const displayReps=(wIdx<3&&e.reps==='per block')?block.repRange:e.reps;
+    const blockMeta=`<span class="ex-block-tag ${block.type}">${displayReps}</span>`;
+    const techNote=wIdx<3?`<span style="font-size:10px;color:var(--dim);font-weight:600;margin-left:6px">· ${block.technique}</span>`:'';
     const loggedSets=sets.length;
     const progressNote=loggedSets>0?`<span class="str-sets-done">${loggedSets} set${loggedSets!==1?'s':''} logged</span>`:'';
     const displayName=getExName(wIdx,i);
@@ -2234,7 +2435,7 @@ function renderStrength(){
         <div class="str-lift-name">${displayName}${blockMeta}</div>
         ${swapBtn}
       </div>
-      <div class="str-lift-meta" style="padding:0 16px 8px">${e.sets} sets · ${e.reps} reps · ${e.rest}${deloadNote}</div>
+      <div class="str-lift-meta" style="padding:0 16px 8px">${e.sets} sets · ${displayReps} reps · ${e.rest}${techNote}</div>
       ${e.notes&&!isSwapped?`<div class="str-lift-notes">${e.notes}</div>`:''}
       ${progressNote?`<div class="str-lift-progress">${progressNote}</div>`:''}
     </div>`;
@@ -2268,15 +2469,16 @@ function updateDrawerUI(){
   document.getElementById('log-weight').value=S.strLogWeight%1?S.strLogWeight.toFixed(1):S.strLogWeight;
   document.getElementById('log-reps').value=S.strLogReps;
   updateWarmupCalc();
-  // Block periodization hint in drawer
+  // STS periodization hint in drawer
   const blockHint=document.getElementById('block-drawer-hint');
   if(blockHint){
     const block=getStrengthBlock(S.week);
-    const labels={accumulation:'Accumulation — aim for '+block.repRange+' reps at '+block.intensity,
-                  realization:'Realization — aim for '+block.repRange+' reps at '+block.intensity,
-                  deload:'Deload Week — use ~60% of your normal weight'};
+    const wIdx=S.activeStrengthWorkout;
+    const hintText=wIdx<3
+      ?`${block.name} — target ${block.repRange} reps at ${block.intensity} · ${block.technique}`
+      :`Aim for ${block.repRange} reps — Kettlebell session`;
     blockHint.className=`block-drawer-hint ${block.type}`;
-    blockHint.textContent=labels[block.type]||'';
+    blockHint.textContent=hintText;
     blockHint.style.display='block';
   }
   // Progressive overload hint
@@ -2285,15 +2487,12 @@ function updateDrawerUI(){
     const prev=strPrevWeight(S.activeStrengthWorkout,S.strLogExIdx);
     if(prev){
       const block=getStrengthBlock(S.week);
-      // Use block's target rep range top end for the progression check
-      const targetReps=block.type==='realization'?5:block.type==='intensification'?8:block.type==='deload'?15:12;
+      const wInPhase=getStsWeekInPhase(S.week);
+      // Target top of rep range for this week
+      const targetReps=wInPhase===1?15:wInPhase===2?11:wInPhase===3?8:5;
       const hitReps=prev.reps>=targetReps;
-      const suggested=block.type==='deload'
-        ?+(prev.weight*0.6).toFixed(0)*1  // snap to nearest lb
-        :hitReps?+(prev.weight+2.5).toFixed(1):prev.weight;
-      const nudge=block.type==='deload'
-        ?`<strong>Use ~${suggested}lbs (deload)</strong>`
-        :hitReps?`<strong>Try ${suggested}lbs today</strong>`:`<strong>Stick at ${suggested}lbs</strong>`;
+      const suggested=hitReps?+(prev.weight+2.5).toFixed(1):prev.weight;
+      const nudge=hitReps?`<strong>Try ${suggested}lbs today</strong>`:`<strong>Stick at ${suggested}lbs</strong>`;
       hint.innerHTML=`Last session: <strong>${prev.weight}lbs × ${prev.reps}</strong> — ${nudge}`;
       hint.style.display='block';
     } else {
@@ -2350,11 +2549,22 @@ function completeStrengthWorkout(){
   const totalSets=strTodaySetCount(wIdx);
   if(totalSets===0) return;
   // Save to strength history
-  S.strHistory.push({date:today,wIdx,title:STRENGTH[wIdx].title,totalSets,ts:Date.now()});
+  S.strHistory.push({date:today,wIdx,title:STRENGTH[wIdx].title,totalSets,ts:Date.now(),stsWeek:S.stsWeek,stsCycle:S.stsCycle});
+  // Mark this workout done in STS progress (only workouts 0-2 count for STS progression)
+  let weekAdvanced=false;
+  if(wIdx<=2){
+    if(!S.stsDone[S.stsWeek]) S.stsDone[S.stsWeek]={};
+    S.stsDone[S.stsWeek][wIdx]=true;
+    weekAdvanced=advanceStsWeekIfComplete();
+    if(weekAdvanced) syncStsExercises();
+  }
   // Clear today's session for this workout (so exercises reset)
   if(S.strLog[today]) delete S.strLog[today][wIdx];
   saveState();renderStrength();renderCalendar();
-  showToast('','Workout Complete!',`${STRENGTH[wIdx].title} — ${totalSets} sets logged`);
+  const msg=weekAdvanced
+    ?`All 3 done — now on STS Week ${S.stsWeek}`
+    :`${STRENGTH[wIdx].title} — ${totalSets} sets logged`;
+  showToast('','Workout Complete!',msg);
 }
 function unlogSet(wIdx,eIdx,setIdx){
   const today=strTodayKey();
@@ -2795,8 +3005,8 @@ const PLAN_TYPE_META={
 
 // Strength rotation: alternate pairs week by week
 const PLAN_ROTATION=[
-  [{wIdx:0,day:'Mon'},{wIdx:2,day:'Thu'}], // Chest & Triceps + Shoulders & Arms
-  [{wIdx:1,day:'Mon'},{wIdx:3,day:'Thu'}], // Back & Biceps + Kettlebell Shoulders & Arms
+  [{wIdx:0,day:'Mon'},{wIdx:2,day:'Thu'}], // Chest & Triceps + Shoulders & Traps
+  [{wIdx:1,day:'Mon'},{wIdx:3,day:'Thu'}], // Back & Biceps + Kettlebell
 ];
 
 const planSections={schedule:false,rotation:false,edit:false};
@@ -2950,20 +3160,17 @@ function renderPlan(){
     const streak=S.streak||0;
     const week=S.week||1;
     const total=((S.strHistory||[]).length+(S.bxHistory||[]).length+Object.values(S.history||{}).reduce((a,wh)=>a+Object.values(wh.days||{}).filter(d=>d.completedAt).length,0));
-    headerSection.innerHTML=`<div class="plan-stat-row">
-      <div class="plan-stat-card">
-        <div class="plan-stat-val">${streak}</div>
-        <div class="plan-stat-lbl">Day Streak</div>
-      </div>
-      <div class="plan-stat-card blue">
-        <div class="plan-stat-val">${week}</div>
-        <div class="plan-stat-lbl">Program Wk</div>
-      </div>
-      <div class="plan-stat-card orange">
-        <div class="plan-stat-val">${total}</div>
-        <div class="plan-stat-lbl">Sessions</div>
-      </div>
-    </div>`;
+    // Today's workout type for headline
+    const todayType=S.planDays[todayDow]?.type||'rest';
+    const typeHeadlines={strength:'Strength Day',boxing:'Boxing Day',cycling:'Cycling Day',rest:'Rest Day'};
+    const typeColors={strength:'var(--lime)',boxing:'var(--orange)',cycling:'var(--blue)',rest:'var(--dim)'};
+    const headline=(typeHeadlines[todayType]||'Rest Day').toUpperCase();
+    const subColor=typeColors[todayType]||'var(--dim)';
+    headerSection.innerHTML=`<div class="plan-editorial-header">
+  <div class="plan-editorial-week">${headline}</div>
+  <div class="plan-editorial-subweek" style="color:${subColor}">Week ${String(week).padStart(2,'0')}</div>
+  <div class="plan-editorial-meta">${streak > 0 ? streak+' day streak' : 'Start your streak'} &nbsp;·&nbsp; ${total} sessions total</div>
+</div>`;
   }
 
   // ── Today card ──
@@ -3836,7 +4043,7 @@ function showToast(icon,title,sub){
 // ── Reset ─────────────────────────────────────────────────────────────────────
 function confirmReset(){
   if(confirm('Reset ALL workout data? This cannot be undone.')){
-    S.history={};S.timerUses={done:0};S.week=1;S.activeDay='day1';
+    S.history={};S.timerUses={done:0};S.week=1;S.activeDay='day1';S.stsWeek=1;S.stsDone={};S.stsCycle=1;
     S.achievements=ACH_DEFS.map(d=>({...d,earned:false,earnedAt:null}));
     S.strLog={};S.strHistory=[];S.bodyLog=[];S.bxHistory=[];S.prs={};S.activityLog=[];
     [K.hist,K.ach,K.timers,K.strlog,K.strhist,K.bodylog,K.bxhist,K.prs,K.actlog].forEach(k=>localStorage.removeItem(k));
@@ -3849,26 +4056,33 @@ function confirmReset(){
 // 12-week cycles: Accumulation(1-4) → Deload(5) → Realization(6-9) → Deload(10-12)
 function weekInCycle(week){ return ((week-1)%12)+1; }
 function cycleNumber(week){ return Math.ceil(week/12); }
-function isDeloadWeek(week){ const p=weekInCycle(week); return p===5||p===10||p===11||p===12; }
+function isDeloadWeek(week){ return false; } // STS has no deload weeks
 function getStrengthBlock(week){
-  const p=weekInCycle(week);
-  if(isDeloadWeek(week)) return{
-    name:'Deload',type:'deload',color:'var(--blue)',
-    repRange:'10–15',sets:'2–3',intensity:'~60% of working weight',
-    desc:'Cut volume by 40%. Keep the same movements but reduce load. Recovery is when adaptation happens.',
-    chipClass:'brc-deload'
-  };
-  if(p<=4) return{
-    name:'Accumulation',type:'accumulation',color:'var(--orange)',
-    repRange:'10–12',sets:'3–4',intensity:'65–75% of max',
-    desc:'Build volume. Higher reps, moderate weight. Develop muscle endurance and set the base for heavier weeks.',
-    chipClass:'brc-accum'
-  };
+  // Uses S.stsWeek (program-progress-based) not cycling week
+  const pos=S.stsWeek||1;
+  const phase=Math.ceil(pos/4); // 1, 2, 3
+  const wInPhase=((pos-1)%4)+1; // 1–4
+  const repRanges=['12–15','9–11','6–8','3–5'];
+  const intensities=['65–70% 1RM','70–75% 1RM','78–83% 1RM','85–90% 1RM'];
+  const techniques=['Rest-Pause','Rest-Pause','Drop Set','Drop Set'];
+  const descs=[
+    'Hypertrophy focus — moderate weight, higher reps. Rest-Pause: at failure, rest 20s, then squeeze out more reps.',
+    'Progressive overload — step up the weight from Week 1. Rest-Pause: push for extra reps after a short rest.',
+    'Strength focus — heavier loads, lower reps. Drop Sets: at failure, drop weight ~20% and continue.',
+    'Max strength week — near-maximal effort. Drop Sets: at failure, reduce weight and push for more reps.'
+  ];
+  const isHeavy=wInPhase>=3;
+  const type=isHeavy?'realization':'accumulation';
   return{
-    name:'Realization',type:'realization',color:'var(--red)',
-    repRange:'3–5',sets:'3',intensity:'85–95% of max',
-    desc:'Peak performance. Near-maximal effort, low reps. Test your PRs — this is what you have been building toward.',
-    chipClass:'brc-real'
+    name:`Phase ${phase} · Week ${wInPhase}`,
+    type,
+    color:isHeavy?'var(--red)':'var(--orange)',
+    repRange:repRanges[wInPhase-1],
+    sets:'3–4',
+    intensity:intensities[wInPhase-1],
+    desc:descs[wInPhase-1],
+    technique:techniques[wInPhase-1],
+    chipClass:isHeavy?'brc-real':'brc-accum'
   };
 }
 function renderBlockCard(){
@@ -3878,11 +4092,10 @@ function renderBlockCard(){
   const cycle=cycleNumber(S.week);
   const totalCycles=Math.ceil(52/12);
   const pos=weekInCycle(S.week);
-  // Segment colors: Accumulation(1-4) orange, Deload(5) blue, Realization(6-9) red, Deload(10-12) blue
+  // STS: Phase 1 (wks 1-4) orange, Phase 2 (wks 5-8) blue, Phase 3 (wks 9-12) red
   const segCols=['var(--orange)','var(--orange)','var(--orange)','var(--orange)',
-                 'var(--blue)',
-                 'var(--red)','var(--red)','var(--red)','var(--red)',
-                 'var(--blue)','var(--blue)','var(--blue)'];
+                 'var(--blue)','var(--blue)','var(--blue)','var(--blue)',
+                 'var(--red)','var(--red)','var(--red)','var(--red)'];
   const segs=Array.from({length:12},(_,i)=>{
     const past=i<pos-1,current=i===pos-1;
     const op=past?'0.45':current?'1':'0.15';
@@ -3895,12 +4108,12 @@ function renderBlockCard(){
     <div class="block-name" style="color:${block.color}">${block.name}</div>
     <div class="block-desc">${block.desc}</div>
     <div class="block-cycle-meta">
-      <span>Cycle ${cycle} / ${totalCycles}</span>
-      <span>Week ${pos} of 12 in cycle</span>
+      <span>STS Cycle ${cycle} / ${totalCycles}</span>
+      <span>Week ${pos} of 12</span>
     </div>
     <div class="block-segs">${segs}</div>
     <div class="block-seg-labels">
-      <span>Accum.</span><span style="margin-left:auto;margin-right:auto">Intens.</span><span>Realiz.</span>
+      <span>Phase 1</span><span style="margin-left:auto;margin-right:auto">Phase 2</span><span>Phase 3</span>
     </div>
     <div class="block-rep-guide">
       <div class="block-rep-chip ${block.chipClass}">${block.repRange} reps</div>
@@ -3911,13 +4124,14 @@ function renderBlockCard(){
 
 // ── Boot ──────────────────────────────────────────────────────────────────────
 loadState();
+syncStsExercises(); // load exercises for current STS phase
 const incompleteDays=DAYS.filter(d=>!isDayDone(S.week,d));
 if(incompleteDays.length)S.activeDay=incompleteDays[0];
 render();resetBoxingTimer();initSwipe();
 switchWorkoutTab('plan');
 
 // ── App Version + Update Detection ───────────────────────────────────────────
-const APP_VERSION='3.0';
+const APP_VERSION='3.1';
 (function checkVersion(){
   const prev=localStorage.getItem('cw-app-version');
   if(prev&&prev!==APP_VERSION){
@@ -3970,7 +4184,7 @@ function renderGuidedWorkout(){
   const wo=STRENGTH[wIdx];
   const e=wo.exercises[GW.exIdx];
   const block=getStrengthBlock(S.week);
-  const isDeload=isDeloadWeek(S.week);
+  const isDeload=false;
   const sets=strGetSets(wIdx,GW.exIdx);
   const target=strTargetSets(e);
   const setNum=sets.length+1;
