@@ -684,6 +684,52 @@ code{font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:4px
 .block-rep-chip.brc-intens{background:rgba(174,212,63,.09);border-color:rgba(174,212,63,.3);color:var(--lime)}
 .block-rep-chip.brc-real{background:rgba(230,57,70,.1);border-color:rgba(230,57,70,.3);color:var(--red)}
 .block-rep-chip.brc-deload{background:rgba(142,202,230,.1);border-color:rgba(142,202,230,.3);color:var(--blue)}
+/* ── KB View: List ── */
+.kb-list-view{display:flex;flex-direction:column;gap:8px;margin-top:16px}
+.kb-list-card{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer;text-align:left;transition:border-color .15s}
+.kb-list-card:hover{border-color:var(--lime)}
+.kb-list-card.done{border-color:rgba(174,212,63,.25)}
+.kb-list-card-left{flex:1;display:flex;flex-direction:column;gap:3px}
+.kb-list-card-title{font-size:14px;font-weight:700;color:var(--text)}
+.kb-list-card-sub{font-size:11px;color:var(--lime);font-weight:600;text-transform:uppercase;letter-spacing:.5px}
+.kb-list-card-meta{font-size:11px;color:var(--dim);margin-top:1px}
+.kb-list-card-right{display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0}
+/* ── KB View: Detail ── */
+.kb-back-btn{background:none;border:none;color:var(--dim);font-size:13px;font-weight:700;cursor:pointer;padding:12px 0 4px;letter-spacing:.3px}
+.kb-back-btn:hover{color:var(--text)}
+.kb-detail-header{padding:8px 0 4px}
+.kb-detail-exercises{display:flex;flex-direction:column;gap:0}
+.kb-detail-ex{padding:12px 0;border-bottom:1px solid var(--border)}
+.kb-detail-ex:last-child{border-bottom:none}
+.kb-detail-ex-name{font-size:14px;font-weight:700;color:var(--text)}
+.kb-detail-ex-meta{font-size:12px;color:var(--lime);font-weight:600;margin-top:2px}
+.kb-detail-ex-notes{font-size:12px;color:var(--dim);margin-top:4px;line-height:1.5}
+/* ── KB Timer ── */
+.kb-timer-label{font-size:10px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:var(--dim);margin-bottom:8px}
+.kb-timer-countdown{font-family:'Bebas Neue',sans-serif;font-size:80px;font-weight:400;letter-spacing:3px;line-height:1;color:var(--text);margin-bottom:12px}
+.kb-timer-track{height:4px;background:var(--surface2);border-radius:2px;overflow:hidden;margin-bottom:16px}
+.kb-timer-fill{height:100%;background:var(--lime);border-radius:2px;transition:width .5s linear}
+.kb-timer-btns{display:flex;gap:10px;align-items:center}
+.kb-timer-btn-sm{flex:0 0 auto;background:var(--surface2);border:1px solid var(--border);color:var(--dim);padding:10px 16px;border-radius:var(--r);font-size:12px;font-weight:700;cursor:pointer;letter-spacing:.5px}
+.kb-timer-btn-sm:hover{border-color:var(--border);color:var(--text)}
+.kb-timer-btn-main{flex:1;background:linear-gradient(160deg,#aed43f,#79991e);border:none;color:#fff;padding:14px;border-radius:var(--r);font-size:14px;font-weight:900;letter-spacing:2px;text-transform:uppercase;cursor:pointer}
+.kbs-card{background:var(--surface);border-radius:var(--r);border:1px solid var(--border);overflow:hidden;transition:border-color .2s}
+.kbs-card.done{border-color:rgba(174,212,63,.2)}
+.kbs-card.active-kb{border-color:var(--lime)}
+.kbs-card-header{width:100%;background:none;border:none;color:var(--text);cursor:pointer;display:flex;align-items:center;justify-content:space-between;padding:14px 16px;text-align:left;gap:10px}
+.kbs-card-left{flex:1;display:flex;flex-direction:column;gap:3px}
+.kbs-card-title{font-size:14px;font-weight:700;color:var(--text)}
+.kbs-card-meta{font-size:11px;color:var(--dim);font-weight:500}
+.kbs-card-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.kbs-format-tag{font-size:9px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--lime);background:var(--lime-glow);border:1px solid rgba(174,212,63,.2);padding:3px 8px;border-radius:3px}
+.kbs-done-dot{font-size:11px;color:var(--lime);font-weight:900}
+.kbs-card-arrow{font-size:16px;color:var(--dim);transition:transform .2s;display:inline-block}
+.kbs-card-arrow.open{transform:rotate(90deg)}
+.kbs-exercises{padding:0 16px 4px;display:flex;flex-direction:column;gap:6px;border-top:1px solid var(--border)}
+.kbs-ex-row{font-size:13px;color:var(--text2);padding:5px 0;border-bottom:1px solid rgba(255,255,255,.03)}
+.kbs-log-btn{width:calc(100% - 32px);margin:12px 16px 16px;padding:13px;background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:var(--r);font-size:13px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;transition:all .2s}
+.kbs-log-btn:hover{border-color:var(--lime);color:var(--lime)}
+.kbs-log-btn.done{background:var(--lime-glow);border-color:var(--lime);color:var(--lime);cursor:default}
 /* ── STS Phase Card ── */
 .sts-card-inner{padding:20px}
 .sts-phase-badge{display:inline-flex;align-items:center;border:1px solid;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;padding:4px 12px;border-radius:3px;margin-bottom:12px}
@@ -1131,44 +1177,44 @@ code{font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:4px
       <div class="str-focus-name" id="str-focus-name">CHEST &amp; TRICEPS</div>
     </div>
 
-    <!-- Workout selector pills -->
+    <!-- Workout selector: STS + Kettlebell tab -->
     <div class="str-selector" id="str-selector"></div>
 
-    <!-- Warm-up protocol (collapsible card) -->
-    <div class="card" id="warmup-card" style="margin-top:14px">
-      <button class="tset-toggle" onclick="toggleWarmup()" style="border-top:none">
-        <span class="tset-toggle-arrow" id="warmup-arrow">›</span> Warm-Up Protocol (first lift only)
-      </button>
-      <div class="timer-settings-wrap collapsed" id="warmup-wrap">
-        <div style="padding:14px 18px 16px;display:flex;flex-direction:column;gap:8px">
-          <div class="warmup-step"><span class="warmup-num">1</span><div><strong>Set 1</strong> — 10 reps at just the bar (or 30% of working weight)</div></div>
-          <div class="warmup-step"><span class="warmup-num">2</span><div><strong>Set 2</strong> — 5 reps at 50% of working weight</div></div>
-          <div class="warmup-step"><span class="warmup-num">3</span><div><strong>Set 3</strong> — 2 reps at 80% of working weight (primes the nervous system without fatigue)</div></div>
-          <div style="font-size:12px;color:var(--dim);margin-top:4px">Later exercises work similar muscle groups — no additional warm-up sets needed.</div>
+    <!-- ── STS view (default) ── -->
+    <div id="str-sts-view">
+      <!-- STS Phase Progress Card -->
+      <div class="card" id="sts-phase-card"><!-- rendered by JS --></div>
+
+      <!-- Warm-up protocol (collapsible card) -->
+      <div class="card" id="warmup-card" style="margin-top:14px">
+        <button class="tset-toggle" onclick="toggleWarmup()" style="border-top:none">
+          <span class="tset-toggle-arrow" id="warmup-arrow">›</span> Warm-Up Protocol (first lift only)
+        </button>
+        <div class="timer-settings-wrap collapsed" id="warmup-wrap">
+          <div style="padding:14px 18px 16px;display:flex;flex-direction:column;gap:8px">
+            <div class="warmup-step"><span class="warmup-num">1</span><div><strong>Set 1</strong> — 10 reps at just the bar (or 30% of working weight)</div></div>
+            <div class="warmup-step"><span class="warmup-num">2</span><div><strong>Set 2</strong> — 5 reps at 50% of working weight</div></div>
+            <div class="warmup-step"><span class="warmup-num">3</span><div><strong>Set 3</strong> — 2 reps at 80% of working weight (primes the nervous system without fatigue)</div></div>
+            <div style="font-size:12px;color:var(--dim);margin-top:4px">Later exercises work similar muscle groups — no additional warm-up sets needed.</div>
+          </div>
         </div>
       </div>
+
+      <!-- Training Day Dashboard -->
+      <div id="str-dashboard">
+        <div class="str-lifts-hdr">TODAY'S LIFTS</div>
+        <div id="str-lifts-list"><!-- rendered by JS --></div>
+        <button class="str-start-btn" onclick="startGuidedWorkout()">▶ START WORKOUT</button>
+        <button class="str-complete-btn" id="str-complete-btn" onclick="completeStrengthWorkout()">✓ COMPLETE WORKOUT</button>
+        <button class="str-analytics-btn" onclick="openStrengthAnalytics()">View Progress Analytics</button>
+      </div>
+
+      <!-- Analytics view -->
+      <div id="str-analytics-view" style="display:none"><!-- rendered by JS --></div>
     </div>
 
-    <!-- STS Phase Progress Card -->
-    <div class="card" id="sts-phase-card"><!-- rendered by JS --></div>
-
-    <!-- Training Day Dashboard -->
-    <div id="str-dashboard">
-
-      <!-- Today's Lifts -->
-      <div class="str-lifts-hdr">TODAY'S LIFTS</div>
-      <div id="str-lifts-list"><!-- rendered by JS --></div>
-
-      <!-- Complete Workout -->
-      <button class="str-start-btn" onclick="startGuidedWorkout()">▶ START WORKOUT</button>
-      <button class="str-complete-btn" id="str-complete-btn" onclick="completeStrengthWorkout()">✓ COMPLETE WORKOUT</button>
-
-      <!-- Analytics link -->
-      <button class="str-analytics-btn" onclick="openStrengthAnalytics()">View Progress Analytics</button>
-    </div>
-
-    <!-- Analytics view (toggled in-place) -->
-    <div id="str-analytics-view" style="display:none"><!-- rendered by JS --></div>
+    <!-- ── Kettlebell view ── -->
+    <div id="str-kb-view" style="display:none"><!-- rendered by JS --></div>
 
   </div>
 
@@ -1725,6 +1771,50 @@ const STRENGTH=[
     {name:"KB Lateral Raise",sets:"3",reps:"12–15",rest:"60s",notes:"Per side. Stand tall, slight elbow bend, raise arm out to shoulder height. Lower slowly over 2–3 seconds — resist gravity the whole way down.",swaps:["DB Lateral Raise","Cable Lateral Raise","Band Lateral Raise"]},
   ]},
 ];
+
+// ── Supplemental Kettlebell Workouts ──────────────────────────────────────────
+const KB_SUPPLEMENTAL=[
+  {id:'kbs1',title:'20 Min AMRAP',subtitle:'Full Body',duration:'20 min',format:'AMRAP',kb:'1 KB',
+   exercises:['10 × Sumo Squat High Pulls','10 × American Swings','5 each side × Waiter Press','10 each side × Single Arm Row','10 × Reverse Lunge to Press']},
+  {id:'kbs2',title:'20 Min Flow',subtitle:'Full Body',duration:'20 min',format:'Flow',kb:'1 KB',
+   exercises:['10 × Push-Ups','10 × Deep Squat Curls','6 × Corkscrews','6 × Thrusters','6 × Windmills','10 × Halos']},
+  {id:'kbs3',title:'20 Min AMRAP',subtitle:'Full Body Output',duration:'20 min',format:'AMRAP',kb:'1 KB',
+   exercises:['3 × Swings','3 × Snatches','3 × Shoulder Press','3 × Thrusters','— Swap sides = 1 round']},
+  {id:'kbs4',title:'Fight Gone Bad',subtitle:'Kettlebell Style',duration:'~20 min',format:'5-min rounds · 1-min rest · 3 rounds',kb:'1 KB',
+   exercises:['1 min × Kettlebell Swings','1 min × Sumo Squats','30s × Clean & Press Left','30s × Clean & Press Right','1 min × Bent Over Rows','1 min × Alternating Reverse Lunges']},
+  {id:'kbs5',title:'15 Min AMRAP',subtitle:'Upper Body / Core',duration:'15 min',format:'AMRAP',kb:'1 KB',
+   exercises:['10 × Curls','10 × Pull Overs','10 each side × Half Kneel Rows','6 each side × Kneeling Press','10 × Wood Chops','10 × Around The World Deadstops']},
+  {id:'kbs6',title:'20 Min Full Body Complex',subtitle:'Full Body',duration:'20 min',format:'Complex',kb:'1 KB',
+   exercises:['10 each side × Dead Cleans','10 × Rotational Lunges','10 × Squats','20 × Marches','5 each side × Overhead Lunges']},
+  {id:'kbs7',title:'20 Min Leg Workout',subtitle:'Lower Body AMRAP',duration:'20 min',format:'AMRAP',kb:'1 KB',
+   exercises:['6 each side × Single Leg Deadlifts','10 × Swings','6 × Thrusters','6 each side × Bulgarian Split Squats','6 × Commando Squats']},
+  {id:'kbs8',title:'The 16 of Suffering',subtitle:'16kg · 3–4 rounds · 60–120s rest',duration:'~45 min',format:'3–4 rounds',kb:'1 KB (16kg)',
+   exercises:['16 × High Pulls','16 × Around The World Lunges','16 × Side Swings','8 each arm × Kneeling Press','16 × Goblet Squats','8 each arm × Single Arm Snatch','16 × Halos','16 × Single Arm Rows','16 × Kettlebell Push Ups','16 × Sit Ups']},
+  {id:'kbs9',title:'15 Min Core AMRAP',subtitle:'Core Focus',duration:'15 min',format:'AMRAP',kb:'1 KB',
+   exercises:['10 × V-Sit Halos','10 × V-Ups','10 × Alternating Deadbug Press','5 each side × Turkish Sit-Ups','10 × Plank Pull Throughs']},
+  {id:'kbs10',title:'15 Min AMRAP',subtitle:'Athletic Conditioning',duration:'15 min',format:'AMRAP',kb:'2 KBs',
+   exercises:['3 × Deadlifts','3 × Rows','3 × Cleans','3 × High Pulls','3 × Snatches']},
+  {id:'kbs11',title:'10 Rounds in 15 Min',subtitle:'32kg Heavy Bell',duration:'15 min',format:'10 rounds',kb:'1 KB (32kg)',
+   exercises:['5 × Swings','5 × Overhead Press','5 each side × Single Arm Rows','5 × Push Ups','10 × Mountain Climbers','6 × Plank Pull Throughs']},
+  {id:'kbs12',title:'15 Min AMRAP',subtitle:'Upper Body & Core Burnout · 20kg',duration:'15 min',format:'AMRAP',kb:'1 KB (20kg)',
+   exercises:['10 × Ballistic High Pulls','8 × Around The World Wood Chops','6 × Curl / Press / Dip','10 × Push Ups','10 × Alternating Kneeling Clean & Press','10 × Side Swings','10 × Russian Twists']},
+  {id:'kbs13',title:'30 Min Full Body Conditioning',subtitle:'4 Rounds',duration:'30 min',format:'4 rounds',kb:'1 KB',
+   exercises:['10 each side × Snatches','5 each side × Front Rack Lunges','8 × High Pulls','10 × Goblet Squats','5 each side × Around The World Lunges','10 × Swings']},
+  {id:'kbs14',title:'15 Min Upper Body',subtitle:'16kg',duration:'15 min',format:'AMRAP',kb:'1 KB (16kg)',
+   exercises:['8 × Kneeling Bicep Curls','8 × Kneeling Tricep Extensions','8 × Kneeling Orbit Passes','8 × Kneeling Waiter Press','8 × Pullovers','8 × Horizontal Presses']},
+  {id:'kbs15',title:'15 Min Kneeling Upper Body / Core',subtitle:'AMRAP',duration:'15 min',format:'AMRAP',kb:'1 KB',
+   exercises:['5 × Clock Swings','5 × Halo to Hip','5 each arm × Single Arm High Pull','5 each arm × Gunslinger Curls','10 × Deadstop Around The Worlds']},
+  {id:'kbs16',title:'Lower Body Complex',subtitle:'3–4 rounds · 60–90s rest',duration:'~30 min',format:'3–4 rounds',kb:'1 KB',
+   exercises:['10 × Deadlifts','10 × Swings','10 each side × Reverse Lunge','10 × Goblet Squat']},
+  {id:'kbs17',title:'15 Min Kneeling Upper Body',subtitle:'AMRAP',duration:'15 min',format:'AMRAP',kb:'1 KB',
+   exercises:['6 × Sword Draws','6 × High Pulls','6 × Curl and Press','6 × Halos','6 × Horizontal Press','6 × Around The Worlds']},
+  {id:'kbs18',title:'15 Min AMRAP Circuit',subtitle:'Double Kettlebell',duration:'15 min',format:'AMRAP',kb:'2 KBs',
+   exercises:['20 × Gorilla Rows','10 × Push-Ups','10 × Renegade Rows','10 × Double Kettlebell Swings']},
+  {id:'kbs19',title:"20 Min Don't-Put-It-Down",subtitle:'Full Body',duration:'20 min',format:'AMRAP',kb:'1 KB',
+   exercises:['3 × Rows','3 × Swings','3 × High Pulls','3 × Squats','3 × Thrusters']},
+];
+
+let kbSuppExpanded=null; // index of expanded KB supplemental card
 
 const K={hist:'cw-history',ach:'cw-ach',timers:'cw-timers',week:'cw-week',strlog:'cw-str-log',strhist:'cw-str-hist',bodylog:'cw-body-log',bxhist:'cw-bx-hist',actlog:'cw-act-log',prs:'cw-prs',goals:'cw-goals',strswaps:'cw-str-swaps',plandays:'cw-plan-days',stsweek:'cw-sts-week',stsdone:'cw-sts-done',stscycle:'cw-sts-cycle'};
 const WORKOUT_DATA={
@@ -2329,6 +2419,158 @@ function toggleWarmup(){
   if(arrow) arrow.classList.toggle('open',!isOpen);
 }
 
+// ── Kettlebell View ───────────────────────────────────────────────────────────
+let kbViewActive=false;
+let kbSelected=null; // null=list, {type:'kb3'|'supp',idx:number}=detail
+
+// KB countdown timer
+let KBT={secs:0,totalSecs:0,running:false,iv:null};
+
+function activateKbView(){
+  kbViewActive=true;
+  kbSelected=null;
+  clearInterval(KBT.iv);KBT.running=false;
+  renderStrength();
+}
+function deactivateKbView(){
+  kbViewActive=false;
+  kbSelected=null;
+  clearInterval(KBT.iv);KBT.running=false;
+  renderStrength();
+}
+function selectKbWorkout(type,idx){
+  kbSelected={type,idx};
+  // Init timer from workout duration
+  let dur=20;
+  if(type==='kb3') dur=50;
+  else{const m=KB_SUPPLEMENTAL[idx].duration.match(/(\d+)\s*min/);if(m)dur=parseInt(m[1]);}
+  clearInterval(KBT.iv);KBT.running=false;
+  KBT.totalSecs=dur*60;KBT.secs=dur*60;
+  renderKbView();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function backToKbList(){
+  kbSelected=null;
+  clearInterval(KBT.iv);KBT.running=false;
+  renderKbView();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function toggleKbTimer(){
+  if(KBT.secs<=0){KBT.secs=KBT.totalSecs;}
+  if(KBT.running){clearInterval(KBT.iv);KBT.running=false;updateKbTimerUI();}
+  else{
+    KBT.running=true;
+    KBT.iv=setInterval(()=>{
+      KBT.secs--;
+      if(KBT.secs<=0){KBT.secs=0;clearInterval(KBT.iv);KBT.running=false;bell(3);}
+      updateKbTimerUI();
+    },1000);
+    updateKbTimerUI();
+  }
+}
+function resetKbTimer(){
+  clearInterval(KBT.iv);KBT.running=false;KBT.secs=KBT.totalSecs;updateKbTimerUI();
+}
+function updateKbTimerUI(){
+  const el=document.getElementById('kb-timer-display');
+  if(!el)return;
+  const pct=KBT.totalSecs>0?Math.round(((KBT.totalSecs-KBT.secs)/KBT.totalSecs)*100):0;
+  const done=KBT.secs<=0;
+  const mins=Math.floor(KBT.totalSecs/60);
+  el.innerHTML=`
+    <div class="kb-timer-label">${mins} MIN${KBT.totalSecs%60?' '+KBT.totalSecs%60+'s':''}</div>
+    <div class="kb-timer-countdown">${fmtTime(KBT.secs)}</div>
+    <div class="kb-timer-track"><div class="kb-timer-fill" style="width:${pct}%"></div></div>
+    <div class="kb-timer-btns">
+      <button class="kb-timer-btn-sm" onclick="resetKbTimer()">↺ Reset</button>
+      <button class="kb-timer-btn-main" onclick="toggleKbTimer()">${KBT.running?'⏸ Pause':done?'↺ Restart':'▶ Start'}</button>
+    </div>`;
+}
+function logKbSupplemental(idx){
+  const wb=KB_SUPPLEMENTAL[idx];
+  const today=strTodayKey();
+  S.strHistory.push({date:today,wIdx:-1,title:wb.title+' — '+wb.subtitle,totalSets:0,ts:Date.now(),kbSupp:true,kbId:wb.id});
+  saveState();renderCalendar();
+  showToast('','Workout Logged!',`${wb.title} · ${wb.subtitle}`);
+  renderKbView();
+}
+function isKbDoneToday(id){
+  const today=strTodayKey();
+  return(S.strHistory||[]).some(h=>h.date===today&&h.kbId===id);
+}
+
+function renderKbView(){
+  const el=document.getElementById('str-kb-view');
+  if(!el)return;
+
+  // Render selector with KB tab active
+  const sel=document.getElementById('str-selector');
+  if(sel) sel.innerHTML=STRENGTH.slice(0,3).map((s,i)=>`
+    <button class="str-wbtn" onclick="deactivateKbView();selectStrengthWorkout(${i})">
+      <div class="str-wbtn-title">${s.title}</div>
+      <div class="str-wbtn-meta">${s.muscles}</div>
+    </button>`).join('')+`
+    <button class="str-wbtn active" onclick="backToKbList()">
+      <div class="str-wbtn-title">Kettlebell</div>
+      <div class="str-wbtn-meta">20 workouts</div>
+    </button>`;
+
+  if(!kbSelected){
+    // ── List view ──
+    const kb3=STRENGTH[3];
+    const allWorkouts=[
+      {type:'kb3',label:kb3.title,sub:kb3.muscles,meta:'~50 min · 1 KB',format:'Sets',id:'kb3'},
+      ...KB_SUPPLEMENTAL.map((wb,i)=>({type:'supp',idx:i,label:wb.title,sub:wb.subtitle,meta:`${wb.duration} · ${wb.kb}`,format:wb.format,id:wb.id}))
+    ];
+    el.innerHTML=`<div class="kb-list-view">
+      ${allWorkouts.map((w,i)=>{
+        const done=isKbDoneToday(w.id);
+        const onclick=w.type==='kb3'?`selectKbWorkout('kb3',3)`:`selectKbWorkout('supp',${w.idx})`;
+        return`<button class="kb-list-card${done?' done':''}" onclick="${onclick}">
+          <div class="kb-list-card-left">
+            <div class="kb-list-card-title">${w.label}</div>
+            <div class="kb-list-card-sub">${w.sub}</div>
+            <div class="kb-list-card-meta">${w.meta}</div>
+          </div>
+          <div class="kb-list-card-right">
+            <div class="kbs-format-tag">${w.format}</div>
+            ${done?'<div class="kbs-done-dot" style="font-size:13px">✓</div>':'<span style="color:var(--dim);font-size:18px">›</span>'}
+          </div>
+        </button>`;
+      }).join('')}
+    </div>`;
+  } else {
+    // ── Detail view ──
+    const isKb3=kbSelected.type==='kb3';
+    const wb=isKb3?null:KB_SUPPLEMENTAL[kbSelected.idx];
+    const title=isKb3?STRENGTH[3].title:wb.title;
+    const subtitle=isKb3?STRENGTH[3].muscles:wb.subtitle;
+    const done=isKbDoneToday(isKb3?'kb3':wb.id);
+    const exercises=isKb3
+      ?STRENGTH[3].exercises.map(e=>`<div class="kb-detail-ex"><div class="kb-detail-ex-name">${e.name}</div><div class="kb-detail-ex-meta">${e.sets} sets · ${e.reps} reps</div>${e.notes?`<div class="kb-detail-ex-notes">${e.notes}</div>`:''}</div>`)
+      :wb.exercises.map(e=>`<div class="kb-detail-ex"><div class="kb-detail-ex-name">${e}</div></div>`);
+    const logBtn=isKb3
+      ?''
+      :`<button class="str-complete-btn${done?' disabled':''}" style="margin-top:20px" onclick="logKbSupplemental(${kbSelected.idx})"${done?' disabled':''}>${done?'✓ Logged Today':'✓ Log as Completed'}</button>`;
+
+    el.innerHTML=`
+      <button class="kb-back-btn" onclick="backToKbList()">‹ All Workouts</button>
+      <div class="kb-detail-header">
+        <div class="str-hero-eyebrow">Kettlebell Workout</div>
+        <div class="str-training-day" style="font-size:52px;line-height:1.05">${title.toUpperCase()}</div>
+        <div style="font-size:13px;color:var(--dim);margin-top:6px;font-weight:600">${subtitle}</div>
+      </div>
+      <div class="card" style="margin-top:16px">
+        <div id="kb-timer-display" style="padding:24px 20px"></div>
+      </div>
+      <div class="str-lifts-hdr" style="margin-top:20px">EXERCISES</div>
+      <div class="kb-detail-exercises">${exercises.join('')}</div>
+      ${logBtn}`;
+
+    updateKbTimerUI();
+  }
+}
+
 // ── STS Phase Card ────────────────────────────────────────────────────────────
 function renderStsPhaseCard(){
   const el=document.getElementById('sts-phase-card');
@@ -2392,15 +2634,27 @@ function strTodaySetCount(wIdx){
 // ── renderStrength ────────────────────────────────────────────────────────────
 function renderStrength(){
   syncStsExercises();
-  renderStsPhaseCard();
   const wo=STRENGTH[S.activeStrengthWorkout];
-  // Selector pills
+  // Show/hide STS vs KB view
+  const stsView=document.getElementById('str-sts-view');
+  const kbView=document.getElementById('str-kb-view');
+  if(stsView) stsView.style.display=kbViewActive?'none':'block';
+  if(kbView)  kbView.style.display=kbViewActive?'block':'none';
+  if(kbViewActive){renderKbView();return;}
+
+  renderStsPhaseCard();
+
+  // Selector pills: STS workouts (0-2) + Kettlebell tab
   const sel=document.getElementById('str-selector');
-  if(sel) sel.innerHTML=STRENGTH.map((s,i)=>`
+  if(sel) sel.innerHTML=STRENGTH.slice(0,3).map((s,i)=>`
     <button class="str-wbtn${i===S.activeStrengthWorkout?' active':''}" onclick="selectStrengthWorkout(${i})">
       <div class="str-wbtn-title">${s.title}</div>
       <div class="str-wbtn-meta">${s.muscles}</div>
-    </button>`).join('');
+    </button>`).join('')+`
+    <button class="str-wbtn" onclick="activateKbView()">
+      <div class="str-wbtn-title">Kettlebell</div>
+      <div class="str-wbtn-meta">20 workouts</div>
+    </button>`;
 
   // Toggle dashboard / analytics
   const dash=document.getElementById('str-dashboard');
