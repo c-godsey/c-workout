@@ -1182,8 +1182,6 @@ code{font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:4px
 
     <!-- ── STS view (default) ── -->
     <div id="str-sts-view">
-      <!-- STS Phase Progress Card -->
-      <div class="card" id="sts-phase-card"><!-- rendered by JS --></div>
 
       <!-- Warm-up protocol (collapsible card) -->
       <div class="card" id="warmup-card" style="margin-top:14px">
@@ -1207,6 +1205,18 @@ code{font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:4px
         <button class="str-start-btn" onclick="startGuidedWorkout()">▶ START WORKOUT</button>
         <button class="str-complete-btn" id="str-complete-btn" onclick="completeStrengthWorkout()">✓ COMPLETE WORKOUT</button>
         <button class="str-analytics-btn" onclick="openStrengthAnalytics()">View Progress Analytics</button>
+      </div>
+
+      <!-- STS Phase Progress (collapsible, bottom) -->
+      <div class="card" id="sts-phase-collapsible" style="margin-top:14px">
+        <button class="tset-toggle" onclick="toggleStsPhase()" style="border-top:none">
+          <span class="tset-toggle-arrow" id="sts-phase-arrow">›</span> Program Progress (STS)
+        </button>
+        <div class="timer-settings-wrap collapsed" id="sts-phase-wrap">
+          <div style="padding:4px 0 8px">
+            <div class="card" id="sts-phase-card" style="margin:0;box-shadow:none;background:transparent;border:none"><!-- rendered by JS --></div>
+          </div>
+        </div>
       </div>
 
       <!-- Analytics view -->
@@ -1443,7 +1453,7 @@ code{font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:4px
     <span class="bnav-label">Cycling</span>
   </button>
   <button class="bnav-item" id="bnav-progress" onclick="switchWorkoutTab('progress')">
-    <svg class="bnav-icon" viewBox="0 0 24 24"><rect x="3" y="14" width="4" height="7" rx="1"/><rect x="10" y="9" width="4" height="12" rx="1"/><rect x="17" y="4" width="4" height="17" rx="1"/><path d="M3 7l5-4 4 3 5-4"/></svg>
+    <svg class="bnav-icon" viewBox="0 0 24 24"><rect x="3" y="14" width="4" height="7" rx="1"/><rect x="10" y="9" width="4" height="12" rx="1"/><rect x="17" y="4" width="4" height="17" rx="1"/></svg>
     <span class="bnav-label">Progress</span>
   </button>
 </nav>
@@ -2418,6 +2428,15 @@ function toggleWarmup(){
   wrap.classList.toggle('expanded',!isOpen);
   if(arrow) arrow.classList.toggle('open',!isOpen);
 }
+function toggleStsPhase(){
+  const wrap=document.getElementById('sts-phase-wrap');
+  const arrow=document.getElementById('sts-phase-arrow');
+  const isOpen=wrap.classList.contains('expanded');
+  wrap.classList.toggle('collapsed',isOpen);
+  wrap.classList.toggle('expanded',!isOpen);
+  if(arrow) arrow.classList.toggle('open',!isOpen);
+  if(!isOpen) renderStsPhaseCard();
+}
 
 // ── Kettlebell View ───────────────────────────────────────────────────────────
 let kbViewActive=false;
@@ -2524,9 +2543,8 @@ function renderKbView(){
     ];
     el.innerHTML=`<div class="kb-list-view">
       ${allWorkouts.map((w,i)=>{
-        const done=isKbDoneToday(w.id);
         const onclick=w.type==='kb3'?`selectKbWorkout('kb3',3)`:`selectKbWorkout('supp',${w.idx})`;
-        return`<button class="kb-list-card${done?' done':''}" onclick="${onclick}">
+        return`<button class="kb-list-card" onclick="${onclick}">
           <div class="kb-list-card-left">
             <div class="kb-list-card-title">${w.label}</div>
             <div class="kb-list-card-sub">${w.sub}</div>
@@ -2534,7 +2552,7 @@ function renderKbView(){
           </div>
           <div class="kb-list-card-right">
             <div class="kbs-format-tag">${w.format}</div>
-            ${done?'<div class="kbs-done-dot" style="font-size:13px">✓</div>':'<span style="color:var(--dim);font-size:18px">›</span>'}
+            <span style="color:var(--dim);font-size:18px">›</span>
           </div>
         </button>`;
       }).join('')}
@@ -2642,7 +2660,9 @@ function renderStrength(){
   if(kbView)  kbView.style.display=kbViewActive?'block':'none';
   if(kbViewActive){renderKbView();return;}
 
-  renderStsPhaseCard();
+  // STS phase card only renders when collapsible is open
+  const stsPhaseWrap=document.getElementById('sts-phase-wrap');
+  if(stsPhaseWrap&&stsPhaseWrap.classList.contains('expanded')) renderStsPhaseCard();
 
   // Selector pills: STS workouts (0-2) + Kettlebell tab
   const sel=document.getElementById('str-selector');
@@ -2919,43 +2939,34 @@ function drawStrChart(canvasId,data,labels){
   ctx.clearRect(0,0,W,H);
 
   const max=Math.max(...data,1);
-  const pad={l:4,r:4,t:10,b:20};
-  const pts=data.map((v,i)=>({
-    x:pad.l+(i/(data.length-1||1))*(W-pad.l-pad.r),
-    y:pad.t+(1-v/max)*(H-pad.t-pad.b)
-  }));
+  const pad={l:4,r:4,t:8,b:20};
+  const n=data.length;
+  const gap=3;
+  const barW=Math.max(4,(W-pad.l-pad.r-gap*(n-1))/n);
+  const chartH=H-pad.t-pad.b;
 
-  // Gradient fill
-  const grad=ctx.createLinearGradient(0,pad.t,0,H-pad.b);
-  grad.addColorStop(0,'rgba(174,212,63,.35)');
-  grad.addColorStop(1,'rgba(174,212,63,.02)');
-
-  ctx.beginPath();
-  ctx.moveTo(pts[0].x,H-pad.b);
-  pts.forEach(p=>ctx.lineTo(p.x,p.y));
-  ctx.lineTo(pts[pts.length-1].x,H-pad.b);
-  ctx.closePath();
-  ctx.fillStyle=grad;ctx.fill();
-
-  // Stroke line (red→green gradient)
-  const lineGrad=ctx.createLinearGradient(0,0,W,0);
-  lineGrad.addColorStop(0,'#e63946');
-  lineGrad.addColorStop(.5,'#C47A1E');
-  lineGrad.addColorStop(1,'#aed43f');
-  ctx.beginPath();
-  pts.forEach((p,i)=>i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y));
-  ctx.strokeStyle=lineGrad;ctx.lineWidth=2.5;ctx.lineJoin='round';ctx.stroke();
-
-  // Dots
-  pts.forEach((p,i)=>{
-    ctx.beginPath();ctx.arc(p.x,p.y,3,0,Math.PI*2);
-    ctx.fillStyle='#aed43f';ctx.fill();
+  data.forEach((v,i)=>{
+    const x=pad.l+i*(barW+gap);
+    const bh=Math.max(2,(v/max)*chartH);
+    const y=pad.t+chartH-bh;
+    const ratio=i/(n-1||1);
+    // Color gradient: orange → lime based on position
+    const r=Math.round(214+(174-214)*ratio);
+    const g=Math.round(135+(212-135)*ratio);
+    const b=Math.round(60+(63-60)*ratio);
+    ctx.fillStyle=`rgba(${r},${g},${b},0.85)`;
+    ctx.beginPath();
+    ctx.roundRect(x,y,barW,bh,2);
+    ctx.fill();
   });
 
   // Labels
   ctx.fillStyle='rgba(90,90,128,.8)';ctx.font='9px sans-serif';ctx.textAlign='center';
   labels.forEach((l,i)=>{
-    if(l) ctx.fillText(l,pts[i].x,H-4);
+    if(l){
+      const x=pad.l+i*(barW+gap)+barW/2;
+      ctx.fillText(l,x,H-4);
+    }
   });
 }
 // ── Export / Import ───────────────────────────────────────────────────────────
