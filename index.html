@@ -928,6 +928,25 @@ code{font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:4px
 .plan-rotation-wlbl.next{color:var(--dim)}
 .plan-rotation-slot{font-size:11px;color:var(--text2);line-height:1.6}
 .plan-rotation-day{font-size:10px;font-weight:700;color:var(--dim)}
+.nut-cal-summary{display:flex;align-items:center;justify-content:space-between;text-align:center;margin-bottom:10px}
+.nut-cal-col{flex:1}
+.nut-cal-num{font-size:26px;font-weight:900;color:var(--text);line-height:1}
+.nut-cal-num.accent{color:var(--lime)}
+.nut-cal-num.over{color:var(--red)}
+.nut-cal-cap{font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--dim);margin-top:4px}
+.nut-cal-op{color:var(--dim);font-size:16px;padding:0 4px}
+.nut-cal-bar{height:6px;background:var(--surface2);border-radius:3px;overflow:hidden;margin:4px 0}
+.nut-cal-bar-fill{height:100%;background:var(--lime);border-radius:3px;transition:width .3s}
+.nut-cal-bar-fill.over{background:var(--red)}
+.nut-field-lbl{font-size:10px;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:1px}
+.nut-chip{background:var(--surface2);border:1px solid var(--border);color:var(--text2);border-radius:20px;padding:5px 11px;font-size:11px;cursor:pointer}
+.nut-chip:hover{border-color:var(--lime);color:var(--lime)}
+.nut-log-row{display:flex;align-items:center;gap:8px;padding:9px 0;border-top:1px solid var(--border)}
+.nut-log-row:first-child{border-top:none}
+.nut-log-btn{background:transparent;border:none;color:var(--dim);font-size:14px;cursor:pointer;padding:2px 6px;flex-shrink:0}
+.nut-log-btn:hover{color:var(--lime)}
+.nut-log-remove:hover{color:var(--red)}
+.nut-log-edit{display:none;gap:8px;align-items:flex-end;padding:8px 0 12px;border-bottom:1px solid var(--border)}
 </style>
 </head>
 <body>
@@ -1462,6 +1481,40 @@ code{font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:4px
 
   </div>
 
+  <!-- ── NUTRITION TAB ─────────────────────────────── -->
+  <div class="tab-content" id="tab-nutrition">
+    <div class="str-hero">
+      <div class="str-hero-eyebrow">Nutrition</div>
+      <div class="str-training-day">DAILY<br>INTAKE</div>
+      <div class="str-focus-name">TRACK WHAT YOU EAT</div>
+    </div>
+    <div class="card" style="padding:16px 18px">
+      <div class="nut-cal-summary">
+        <div class="nut-cal-col"><div class="nut-cal-num" id="nut-goal-display">2200</div><div class="nut-cal-cap">Goal</div></div>
+        <div class="nut-cal-op">−</div>
+        <div class="nut-cal-col"><div class="nut-cal-num" id="nut-cal-food">0</div><div class="nut-cal-cap">Food</div></div>
+        <div class="nut-cal-op">=</div>
+        <div class="nut-cal-col"><div class="nut-cal-num accent" id="nut-cal-remaining">2200</div><div class="nut-cal-cap">Remaining</div></div>
+      </div>
+      <div class="nut-cal-bar"><div class="nut-cal-bar-fill" id="nut-cal-bar-fill" style="width:0%"></div></div>
+      <label class="nut-field-lbl" for="nut-goal-input" style="margin-top:10px;display:block">Daily calorie goal</label>
+      <input class="finput" type="number" id="nut-goal-input" min="0" max="20000" step="50" value="2200" style="margin-top:6px" onchange="nutSetGoal(this.value)"/>
+    </div>
+    <div class="card" style="padding:16px 18px">
+      <div id="nut-recent-foods" style="margin-bottom:4px"></div>
+      <div style="font-size:11px;color:var(--dim);margin-bottom:8px">Describe what you ate — plain words work.</div>
+      <div style="display:flex;gap:8px">
+        <input class="finput" type="text" id="nut-food-desc" placeholder="e.g. 2 cups rice, 1 lb chicken, 3 eggs" autocomplete="off" style="flex:1" oninput="nutUpdateParsePreview()" onkeydown="if(event.key==='Enter'){event.preventDefault();nutAddFromDesc();}"/>
+        <button class="btn btn-primary" style="flex-shrink:0" onclick="nutAddFromDesc()">Add</button>
+      </div>
+      <div id="nut-parse-preview" style="font-size:12px;min-height:18px;margin-top:8px"></div>
+    </div>
+    <div class="card" style="padding:16px 18px">
+      <div style="font-size:10px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:var(--dim);margin-bottom:12px">Today's Food Log</div>
+      <div id="nut-food-log"></div>
+    </div>
+  </div>
+
 </div><!-- /app -->
 
 <!-- ── BOTTOM NAV ─────────────────────────────────── -->
@@ -1485,6 +1538,10 @@ code{font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:4px
   <button class="bnav-item" id="bnav-progress" onclick="switchWorkoutTab('progress')">
     <svg class="bnav-icon" viewBox="0 0 24 24"><rect x="3" y="14" width="4" height="7" rx="1"/><rect x="10" y="9" width="4" height="12" rx="1"/><rect x="17" y="4" width="4" height="17" rx="1"/></svg>
     <span class="bnav-label">Progress</span>
+  </button>
+  <button class="bnav-item" id="bnav-nutrition" onclick="switchWorkoutTab('nutrition')">
+    <svg class="bnav-icon" viewBox="0 0 24 24"><path d="M7 2v7a2 2 0 0 0 2 2h0a2 2 0 0 0 2-2V2M9 2v20M15 2v8a3 3 0 0 0 3 3v9M18 2v6"/></svg>
+    <span class="bnav-label">Nutrition</span>
   </button>
 </nav>
 
@@ -1929,7 +1986,393 @@ const KB_SUPPLEMENTAL=[
 
 let kbSuppExpanded=null; // index of expanded KB supplemental card
 
-const K={hist:'cw-history',ach:'cw-ach',timers:'cw-timers',week:'cw-week',strlog:'cw-str-log',strhist:'cw-str-hist',bodylog:'cw-body-log',bxhist:'cw-bx-hist',actlog:'cw-act-log',prs:'cw-prs',goals:'cw-goals',strswaps:'cw-str-swaps',plandays:'cw-plan-days',stsweek:'cw-sts-week',stsdone:'cw-sts-done',stscycle:'cw-sts-cycle',strprogram:'cw-str-program',reminders:'cw-reminders',energylog:'cw-energy-log'};
+// ══════════════════════════════════════════════════════════════════════════
+// NUTRITION — natural-language food estimator (ported from the Steady app)
+// Parses "<quantity> <unit> <food>" from plain text, converts to grams,
+// and multiplies by the food's kcal/100g. Pure logic, no network calls.
+// ══════════════════════════════════════════════════════════════════════════
+const NUT_RAW_FOODS = [
+  ["rice|white rice|cooked rice|jasmine rice",130,{cup:158},1,"cup"],
+  ["brown rice",123,{cup:195},1,"cup"],
+  ["oats|oatmeal|rolled oats|porridge",389,{cup:81},0.5,"cup"],
+  ["banana",89,{medium:118,large:136,small:101},1,"medium"],
+  ["apple",52,{medium:182,small:149},1,"medium"],
+  ["orange",47,{medium:131},1,"medium"],
+  ["strawberries|strawberry",32,{cup:152},1,"cup"],
+  ["blueberries|blueberry",57,{cup:148},1,"cup"],
+  ["grapes",69,{cup:151},1,"cup"],
+  ["egg|eggs",143,{each:50,large:50},1,"each"],
+  ["bread|toast|white bread",265,{slice:28},1,"slice"],
+  ["whole wheat bread|wheat bread",247,{slice:28},1,"slice"],
+  ["bagel",250,{each:105},1,"each"],
+  ["chicken|chicken breast|grilled chicken",165,{breast:174,cup:140},1,"breast"],
+  ["chicken thigh",209,{each:52},1,"each"],
+  ["beef|steak|beef steak",271,{},6,"oz"],
+  ["ground beef|hamburger meat",250,{cup:200},4,"oz"],
+  ["salmon",208,{fillet:170},1,"fillet"],
+  ["tuna|canned tuna",116,{can:142,cup:154},1,"can"],
+  ["shrimp",99,{cup:145},4,"oz"],
+  ["bacon",541,{slice:8},2,"slice"],
+  ["turkey|turkey breast",135,{slice:28},2,"slice"],
+  ["pork chop|pork",231,{each:145},1,"each"],
+  ["milk|whole milk",61,{cup:244},1,"cup"],
+  ["skim milk",34,{cup:245},1,"cup"],
+  ["greek yogurt|yogurt",59,{cup:245},1,"cup"],
+  ["cheese|cheddar|cheddar cheese",403,{slice:28},1,"slice"],
+  ["butter",717,{tbsp:14,tsp:5,pat:5,stick:113},1,"tbsp"],
+  ["olive oil|oil",884,{tbsp:14,tsp:5},1,"tbsp"],
+  ["peanut butter",588,{tbsp:16},1,"tbsp"],
+  ["almonds|almond",579,{cup:143,handful:30},1,"handful"],
+  ["peanuts",567,{cup:146,handful:30},1,"handful"],
+  ["mixed nuts|nuts",607,{cup:137,handful:30},1,"handful"],
+  ["walnuts",654,{cup:117,handful:30},1,"handful"],
+  ["avocado",160,{medium:150,cup:150},1,"medium"],
+  ["potato|baked potato",87,{medium:173},1,"medium"],
+  ["sweet potato",90,{medium:130},1,"medium"],
+  ["french fries|fries",312,{serving:117,cup:50},1,"serving"],
+  ["pasta|spaghetti|noodles",158,{cup:140},1,"cup"],
+  ["quinoa",120,{cup:185},1,"cup"],
+  ["black beans|beans",132,{cup:172},1,"cup"],
+  ["lentils",116,{cup:198},1,"cup"],
+  ["broccoli",35,{cup:156},1,"cup"],
+  ["spinach",23,{cup:30},1,"cup"],
+  ["carrot|carrots",41,{medium:61,cup:128},1,"medium"],
+  ["tomato",18,{medium:123},1,"medium"],
+  ["cucumber",15,{cup:133},1,"cup"],
+  ["lettuce|salad greens",15,{cup:47},1,"cup"],
+  ["corn",86,{cup:154,ear:90},1,"cup"],
+  ["pizza",266,{slice:107},1,"slice"],
+  ["hamburger|burger",295,{each:110},1,"each"],
+  ["sandwich",250,{each:150},1,"each"],
+  ["cereal",379,{cup:30},1,"cup"],
+  ["granola",471,{cup:122},0.5,"cup"],
+  ["chocolate|dark chocolate",546,{square:10,bar:43},1,"oz"],
+  ["ice cream",207,{cup:132,scoop:66},1,"scoop"],
+  ["sugar",387,{tsp:4,tbsp:12,cup:200},1,"tsp"],
+  ["honey",304,{tbsp:21,tsp:7},1,"tbsp"],
+  ["coffee|black coffee",1,{cup:237},1,"cup"],
+  ["orange juice|oj",45,{cup:248},1,"cup"],
+  ["soda|cola|soft drink",42,{can:355,bottle:500},1,"can"],
+  ["beer",43,{can:356,bottle:356,pint:473},1,"bottle"],
+  ["wine",83,{glass:147},1,"glass"],
+  ["water",0,{cup:237},1,"cup"],
+  ["protein powder|protein shake|whey",375,{scoop:30},1,"scoop"],
+  ["hummus",166,{tbsp:15,cup:246},2,"tbsp"],
+  ["pancake|pancakes",227,{each:38},2,"each"],
+  ["waffle|waffles",291,{each:75},1,"each"],
+  ["donut|doughnut",452,{each:60},1,"each"],
+  ["cookie|cookies",480,{each:16},2,"each"],
+  ["raisins",299,{tbsp:9,cup:145,handful:30},1,"handful"],
+  ["soup",56,{cup:245,can:305},1,"cup"],
+  ["cottage cheese",98,{cup:210},0.5,"cup"],
+  ["mozzarella",280,{slice:28},1,"oz"],
+  ["peach",39,{medium:150},1,"medium"],
+  ["pear",57,{medium:178},1,"medium"],
+  ["plum",46,{each:66},1,"each"],
+  ["mango",60,{cup:165,medium:200},1,"medium"],
+  ["pineapple",50,{cup:165},1,"cup"],
+  ["watermelon",30,{cup:152},1,"cup"],
+  ["cantaloupe|melon",34,{cup:160},1,"cup"],
+  ["grapefruit",42,{medium:123},1,"medium"],
+  ["cherries|cherry",63,{cup:154},1,"cup"],
+  ["raspberries|raspberry",52,{cup:123},1,"cup"],
+  ["blackberries|blackberry",43,{cup:144},1,"cup"],
+  ["kiwi",61,{each:69},1,"each"],
+  ["lemon",29,{each:58},1,"each"],
+  ["lime",30,{each:67},1,"each"],
+  ["pomegranate",83,{cup:174},1,"cup"],
+  ["apricot",48,{each:35},1,"each"],
+  ["pineapple juice|juice|apple juice",46,{cup:248},1,"cup"],
+  ["bell pepper|pepper|capsicum",31,{medium:119},1,"medium"],
+  ["onion",40,{medium:110},1,"medium"],
+  ["mushroom",22,{cup:70},1,"cup"],
+  ["zucchini|courgette",17,{cup:124},1,"cup"],
+  ["green beans",31,{cup:100},1,"cup"],
+  ["peas",81,{cup:145},1,"cup"],
+  ["asparagus",20,{cup:134},1,"cup"],
+  ["cauliflower",25,{cup:107},1,"cup"],
+  ["kale",35,{cup:67},1,"cup"],
+  ["celery",16,{cup:101},1,"cup"],
+  ["cabbage",25,{cup:89},1,"cup"],
+  ["eggplant|aubergine",25,{cup:82},1,"cup"],
+  ["tofu",76,{cup:248},0.5,"cup"],
+  ["chickpeas|garbanzo",164,{cup:164},1,"cup"],
+  ["edamame",121,{cup:155},1,"cup"],
+  ["ham",145,{slice:28},2,"slice"],
+  ["sausage",301,{each:75},1,"each"],
+  ["meatball|meatballs",197,{each:30},3,"each"],
+  ["tortilla|wrap",218,{each:45},1,"each"],
+  ["pita",275,{each:60},1,"each"],
+  ["couscous",112,{cup:157},1,"cup"],
+  ["mashed potato|mashed potatoes",88,{cup:210},1,"cup"],
+  ["potato chips|chips|crisps",536,{oz:28.35,handful:30},1,"handful"],
+  ["popcorn",387,{cup:8},3,"cup"],
+  ["pretzels",380,{oz:28.35,handful:30},1,"handful"],
+  ["cracker|crackers",502,{each:3},5,"each"],
+  ["granola bar|protein bar",450,{bar:40},1,"bar"],
+  ["tea|green tea|black tea",1,{cup:237},1,"cup"],
+  ["latte|cappuccino",55,{cup:240},1,"cup"],
+  ["smoothie",60,{cup:240},1,"cup"],
+  ["energy drink",45,{can:250},1,"can"]
+];
+const NUT_FOODS = NUT_RAW_FOODS.map(f => ({ names:f[0].split("|"), kcal100:f[1], units:f[2], defQty:f[3], defUnit:f[4] }));
+const NUT_MASS = { g:1, mg:0.001, kg:1000, oz:28.35, lb:453.6 };
+const NUT_GEN  = { cup:150, tbsp:15, tsp:5, slice:30, piece:60, medium:120, large:160, small:90,
+  handful:30, scoop:30, can:330, bottle:500, glass:200, serving:150, ear:90, fillet:150,
+  breast:170, bar:40, square:10, pat:5, pint:473, stick:113, each:100 };
+const NUT_WORD = { a:1, an:1, one:1, two:2, three:3, four:4, five:5, six:6, seven:7, eight:8,
+  nine:9, ten:10, eleven:11, twelve:12, half:0.5, quarter:0.25, third:1/3, couple:2, dozen:12 };
+
+function nutNormUnit(t){
+  const map = { c:"cup",cup:"cup",cups:"cup", tbsp:"tbsp",tbs:"tbsp",tablespoon:"tbsp",tablespoons:"tbsp",
+    tsp:"tsp",teaspoon:"tsp",teaspoons:"tsp", g:"g",gram:"g",grams:"g",gm:"g", mg:"mg",
+    kg:"kg",kilogram:"kg",kilograms:"kg", oz:"oz",ounce:"oz",ounces:"oz",
+    lb:"lb",lbs:"lb",pound:"lb",pounds:"lb", slice:"slice",slices:"slice",
+    piece:"piece",pieces:"piece", medium:"medium",med:"medium", large:"large",lg:"large",
+    small:"small",sm:"small", handful:"handful",handfuls:"handful", scoop:"scoop",scoops:"scoop",
+    can:"can",cans:"can", bottle:"bottle",bottles:"bottle", glass:"glass",glasses:"glass",
+    serving:"serving",servings:"serving", ear:"ear",ears:"ear", fillet:"fillet",fillets:"fillet",
+    breast:"breast",breasts:"breast", bar:"bar",bars:"bar", square:"square",squares:"square",
+    pat:"pat",pats:"pat", pint:"pint",pints:"pint", stick:"stick",sticks:"stick" };
+  return map[t.replace(/\.$/,"")] || null;
+}
+function nutGramsPerUnit(u, food){
+  if (NUT_MASS[u] != null) return NUT_MASS[u];
+  if (food && food.units && food.units[u] != null) return food.units[u];
+  return NUT_GEN[u] != null ? NUT_GEN[u] : 100;
+}
+function nutSingWord(w){
+  if(w.length<=3) return w;
+  if(/ies$/.test(w)) return w.slice(0,-3)+"y";
+  if(/(ch|sh|x|z|s|o)es$/.test(w)) return w.slice(0,-2);
+  if(/ss$/.test(w)) return w;
+  if(/s$/.test(w)) return w.slice(0,-1);
+  return w;
+}
+function nutSingularize(str){ return str.split(" ").map(nutSingWord).join(" "); }
+function nutFindFood(text){
+  const cleanRaw = text.toLowerCase()
+    .replace(/\b(of|cooked|raw|fresh|boiled|grilled|baked|fried|roasted|steamed|plain|organic|the|a|an|some)\b/g," ")
+    .replace(/[^a-z\s]/g," ").replace(/\s+/g," ").trim();
+  const clean = " " + nutSingularize(cleanRaw) + " ";
+  let best = null, bestLen = 0;
+  for (const f of NUT_FOODS){
+    for (const n of f.names){
+      const ns = nutSingularize(n);
+      if (clean.includes(" "+ns+" ") && ns.length > bestLen){ best = f; bestLen = ns.length; }
+    }
+  }
+  return best;
+}
+function nutTitleCase(s){ return s.replace(/\b\w/g, c => c.toUpperCase()); }
+function nutEstimate(desc){
+  const s = (desc||"").trim();
+  if (!s) return null;
+  const cal = s.toLowerCase().match(/(\d+(?:\.\d+)?)\s*(kcal|kcals|cal|cals|calories|calorie)\b/);
+  if (cal){
+    const kcal = Math.round(parseFloat(cal[1]));
+    let name = s.replace(new RegExp(cal[0], "i"), "").replace(/\b(of|a|an)\b/gi, "").trim();
+    return { ok:true, kcal, grams:null, name: nutTitleCase(name || "Quick add") };
+  }
+  const s2 = s.toLowerCase()
+    .replace(/[½¼¾⅓⅔⅛]/g, m => ({ "½":" 1/2","¼":" 1/4","¾":" 3/4","⅓":" 1/3","⅔":" 2/3","⅛":" 1/8" }[m]))
+    .replace(/(\d)([a-z])/g, "$1 $2");
+  const tok = s2.split(/\s+/).filter(Boolean);
+  const num = t => {
+    if (/^\d+\/\d+$/.test(t)) { const [a,b]=t.split("/"); return +a/+b; }
+    if (/^\d*\.?\d+$/.test(t)) return parseFloat(t);
+    return NUT_WORD[t] != null ? NUT_WORD[t] : null;
+  };
+  let i = 0, qty = 1, hadNum = false;
+  const n0 = num(tok[0]);
+  if (n0 != null){
+    qty = n0; hadNum = true; i = 1;
+    if (tok[i] && /^\d+\/\d+$/.test(tok[i])) { const [a,b]=tok[i].split("/"); qty += +a/+b; i++; }
+    if (tok[i] === "a" || tok[i] === "an") i++;
+  }
+  let unit = null;
+  if (tok[i]){ const u = nutNormUnit(tok[i]); if (u){ unit = u; i++; if (tok[i] === "of") i++; } }
+  const foodText = tok.slice(i).join(" ").trim();
+  const food = nutFindFood(foodText || s);
+  if (!food) return { ok:false, foodText, unit, qty, hadNum, name: nutTitleCase(s) };
+  let grams;
+  if (unit){
+    grams = qty * nutGramsPerUnit(unit, food);
+  } else {
+    const q = hadNum ? qty : food.defQty;
+    grams = q * nutGramsPerUnit(food.defUnit, food);
+  }
+  const kcal = Math.round(food.kcal100 / 100 * grams);
+  return { ok:true, kcal, grams:Math.round(grams), name: nutTitleCase(s) };
+}
+function nutSplitFoods(s){ return s.split(/\s*(?:,|;|\n|\+|&|\band\b)\s*/i).map(x=>x.trim()).filter(Boolean); }
+function nutEsc(s){ return (s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+// ── Nutrition: storage + UI (uses S.nutrition, saveState(), strTodayKey()) ──
+function nutGetDay(dateKey){ return S.nutrition.log[dateKey]||[]; }
+function nutDayCalories(dateKey){ return nutGetDay(dateKey).reduce((s,f)=>s+(f.kcal||0),0); }
+function nutAddFood(dateKey,food){
+  if(!S.nutrition.log[dateKey]) S.nutrition.log[dateKey]=[];
+  S.nutrition.log[dateKey].push(food);
+  saveState();
+  nutRecordRecent(food);
+}
+function nutRemoveFood(dateKey,i){
+  const arr=S.nutrition.log[dateKey]||[];
+  arr.splice(i,1);
+  saveState();
+}
+function nutEditFood(dateKey,index,patch){
+  const arr=S.nutrition.log[dateKey]||[];
+  if(!arr[index])return;
+  arr[index]=Object.assign({},arr[index],patch);
+  saveState();
+}
+function nutRecordRecent(food){
+  if(!food||!food.name)return;
+  if(!S.nutrition.recents)S.nutrition.recents={};
+  const key=food.name.toLowerCase().trim();
+  const prev=S.nutrition.recents[key]||{};
+  S.nutrition.recents[key]={name:food.name,kcal:food.kcal||0,grams:food.grams!=null?food.grams:null,per100:food.per100!=null?food.per100:null,count:(prev.count||0)+1,last:Date.now()};
+  const keys=Object.keys(S.nutrition.recents);
+  if(keys.length>60){keys.sort((a,b)=>(S.nutrition.recents[a].last||0)-(S.nutrition.recents[b].last||0));for(let i=0;i<keys.length-60;i++)delete S.nutrition.recents[keys[i]];}
+}
+let nutRecentMode='recent';
+function nutGetRecents(mode){
+  const arr=Object.values(S.nutrition.recents||{});
+  arr.sort((a,b)=> mode==='frequent' ? (b.count-a.count)||(b.last-a.last) : (b.last-a.last));
+  return arr.slice(0,12);
+}
+function nutToggleRecentMode(){
+  nutRecentMode=nutRecentMode==='frequent'?'recent':'frequent';
+  renderNutritionRecents();
+}
+function nutSetGoal(val){
+  S.nutrition.goal=Math.max(0,parseInt(val)||0);
+  saveState();
+  renderNutritionSummary();
+}
+function renderNutritionSummary(){
+  const dateKey=strTodayKey();
+  const goal=S.nutrition.goal||2200;
+  const food=nutDayCalories(dateKey);
+  const remaining=goal-food;
+  const goalEl=document.getElementById('nut-goal-display'); if(goalEl)goalEl.textContent=goal.toLocaleString();
+  const foodEl=document.getElementById('nut-cal-food'); if(foodEl)foodEl.textContent=food.toLocaleString();
+  const remEl=document.getElementById('nut-cal-remaining');
+  if(remEl){remEl.textContent=remaining.toLocaleString();remEl.classList.toggle('over',remaining<0);}
+  const pct=goal>0?Math.min(100,Math.round((food/goal)*100)):0;
+  const fill=document.getElementById('nut-cal-bar-fill');
+  if(fill){fill.style.width=pct+'%';fill.classList.toggle('over',food>goal);}
+  const goalInput=document.getElementById('nut-goal-input');
+  if(goalInput&&document.activeElement!==goalInput) goalInput.value=goal;
+}
+function renderNutritionRecents(){
+  const box=document.getElementById('nut-recent-foods');
+  if(!box)return;
+  const list=nutGetRecents(nutRecentMode);
+  if(!list.length){box.innerHTML='';return;}
+  box.innerHTML=`
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+      <span style="font-size:9px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--dim)">${nutRecentMode==='frequent'?'Frequent':'Recent'} foods</span>
+      <button style="background:none;border:none;color:var(--lime);font-size:11px;font-weight:600;cursor:pointer;padding:0" onclick="nutToggleRecentMode()">${nutRecentMode==='frequent'?'Show recent':'Show frequent'}</button>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px">${list.map((r,i)=>`<span class="nut-chip" data-i="${i}">${nutEsc(r.name)} · ${r.kcal} cal</span>`).join('')}</div>`;
+  box.querySelectorAll('.nut-chip').forEach(c=>c.onclick=()=>{
+    const r=list[parseInt(c.dataset.i,10)];
+    nutAddFood(strTodayKey(),{name:r.name,kcal:r.kcal,grams:r.grams,per100:r.per100});
+    renderNutritionTab();
+    showToast('','Added',r.kcal+' cal');
+  });
+}
+function renderNutritionLog(){
+  const dateKey=strTodayKey();
+  const foods=nutGetDay(dateKey);
+  const box=document.getElementById('nut-food-log');
+  if(!box)return;
+  if(!foods.length){box.innerHTML='<div style="color:var(--dim);font-size:12px;padding:6px 0">Nothing logged yet. Describe a food above to add it.</div>';return;}
+  box.innerHTML=foods.map((f,i)=>{
+    const amt=f.grams?`${f.grams} g · `:'';
+    const canGrams=f.per100!=null&&f.grams!=null;
+    return `<div class="nut-log-row">
+      <div style="flex:1;min-width:0">
+        <div style="font-size:13px;color:var(--text)">${nutEsc(f.name)}</div>
+        <div style="font-size:11px;color:var(--dim)">${amt}${f.kcal} cal</div>
+      </div>
+      <button class="nut-log-btn" data-i="${i}" data-act="edit">✎</button>
+      <button class="nut-log-btn nut-log-remove" data-i="${i}" data-act="remove">✕</button>
+    </div>
+    <div class="nut-log-edit" id="nut-ledit-${i}">
+      ${canGrams?`<div style="flex:1"><label class="nut-field-lbl">Amount (g)</label><input class="finput" type="number" id="nut-edg-${i}" min="1" step="5" value="${f.grams}" style="font-size:12px;padding:6px 8px;margin-top:4px"/></div>`:''}
+      <div style="flex:1"><label class="nut-field-lbl">Calories</label><input class="finput" type="number" id="nut-edc-${i}" min="0" step="5" value="${f.kcal}" style="font-size:12px;padding:6px 8px;margin-top:4px"/></div>
+      <button class="settings-action-btn" id="nut-eds-${i}" style="flex-shrink:0">Save</button>
+    </div>`;
+  }).join('');
+  box.querySelectorAll('.nut-log-btn[data-act="remove"]').forEach(b=>b.addEventListener('click',()=>{
+    nutRemoveFood(dateKey,parseInt(b.dataset.i,10));renderNutritionTab();
+  }));
+  box.querySelectorAll('.nut-log-btn[data-act="edit"]').forEach(b=>b.addEventListener('click',()=>{
+    const p=document.getElementById('nut-ledit-'+b.dataset.i);
+    if(p)p.style.display=p.style.display==='flex'?'none':'flex';
+  }));
+  foods.forEach((f,i)=>{
+    const g=document.getElementById('nut-edg-'+i),c=document.getElementById('nut-edc-'+i),s=document.getElementById('nut-eds-'+i);
+    if(g&&c&&f.per100!=null) g.addEventListener('input',()=>{c.value=Math.round(f.per100*(parseFloat(g.value)||0)/100);});
+    if(s) s.addEventListener('click',()=>{
+      const patch={kcal:parseInt(c.value,10)||0};
+      if(g)patch.grams=parseInt(g.value,10)||null;
+      nutEditFood(dateKey,i,patch);renderNutritionTab();
+      showToast('','Updated','');
+    });
+  });
+}
+function nutUpdateParsePreview(){
+  const inp=document.getElementById('nut-food-desc');
+  const box=document.getElementById('nut-parse-preview');
+  if(!inp||!box)return;
+  const v=inp.value;
+  if(!v.trim()){box.innerHTML='';return;}
+  const parts=nutSplitFoods(v);
+  let total=0,ok=0,unknown=0;
+  parts.forEach(p=>{const e=nutEstimate(p);if(e&&e.ok){total+=e.kcal;ok++;}else unknown++;});
+  if(parts.length>1){box.innerHTML=`<span style="color:var(--lime);font-weight:600">≈ ${total.toLocaleString()} cal · ${ok} item${ok===1?'':'s'}${unknown?` · ${unknown} not found`:''}</span>`;}
+  else if(ok){const e=nutEstimate(parts[0]);box.innerHTML=`<span style="color:var(--lime);font-weight:600">≈ ${e.kcal} cal${e.grams?` · ${e.grams} g`:''}</span>`;}
+  else{box.innerHTML=`<span style="color:var(--dim)">Add an amount and a food (e.g. "2 cups rice"), or type calories like "300 cal".</span>`;}
+}
+function nutAddFromDesc(){
+  const inp=document.getElementById('nut-food-desc');
+  if(!inp)return;
+  const raw=inp.value.trim();
+  if(!raw)return;
+  const parts=nutSplitFoods(raw);
+  let added=0,total=0;
+  const failed=[];
+  parts.forEach(p=>{
+    const est=nutEstimate(p);
+    if(est&&est.ok){
+      nutAddFood(strTodayKey(),{name:est.name,kcal:est.kcal,grams:est.grams,per100:est.grams?Math.round(est.kcal/est.grams*100):null});
+      added++;total+=est.kcal;
+    } else failed.push(p);
+  });
+  renderNutritionTab();
+  const previewEl=document.getElementById('nut-parse-preview');
+  if(added&&!failed.length){
+    inp.value='';if(previewEl)previewEl.innerHTML='';
+    showToast('','Added',`${added} food${added===1?'':'s'} · ${total.toLocaleString()} cal`);
+  } else if(added){
+    inp.value=failed.join(', ');
+    if(previewEl)previewEl.innerHTML=`<span style="color:var(--dim)">Added ${added}. Couldn't read: ${nutEsc(failed.join(', '))}.</span>`;
+  } else {
+    showToast('','Not found','Try "1 cup rice, 2 eggs", or type calories like "300 cal"');
+  }
+}
+function renderNutritionTab(){
+  renderNutritionSummary();
+  renderNutritionRecents();
+  renderNutritionLog();
+}
+
+const K={hist:'cw-history',ach:'cw-ach',timers:'cw-timers',week:'cw-week',strlog:'cw-str-log',strhist:'cw-str-hist',bodylog:'cw-body-log',bxhist:'cw-bx-hist',actlog:'cw-act-log',prs:'cw-prs',goals:'cw-goals',strswaps:'cw-str-swaps',plandays:'cw-plan-days',stsweek:'cw-sts-week',stsdone:'cw-sts-done',stscycle:'cw-sts-cycle',strprogram:'cw-str-program',reminders:'cw-reminders',energylog:'cw-energy-log',nutrition:'cw-nutrition'};
 const WORKOUT_DATA={
   phases:[
     {range:[1,13],name:"Foundation",focus:"Building aerobic base and pedal stroke efficiency."},
@@ -1985,6 +2428,7 @@ let S={
   strProgram:'spinesafe',
   reminders:{enabled:false,thresholdDays:3,lastNotified:null},
   energyLog:{},
+  nutrition:{goal:2200,log:{},recents:{}},
   stsWeek:1,stsDone:{},stsCycle:1,
   bodyLog:[],
   bxHistory:[],
@@ -2096,6 +2540,7 @@ function loadState(){
   try{S.stsCycle=Math.max(1,parseInt(localStorage.getItem(K.stscycle)||'1')||1);}catch{}
   try{const r=JSON.parse(localStorage.getItem(K.reminders)||'null');if(r)S.reminders={...S.reminders,...r};}catch{}
   try{S.energyLog=JSON.parse(localStorage.getItem(K.energylog)||'{}');}catch{}
+  try{const n=JSON.parse(localStorage.getItem(K.nutrition)||'null');if(n)S.nutrition={goal:2200,log:{},recents:{},...n};}catch{}
   try{S.strProgram=localStorage.getItem(K.strprogram)||'spinesafe';}catch{S.strProgram='spinesafe';}
 }
 function saveState(){
@@ -2119,6 +2564,7 @@ function saveState(){
     localStorage.setItem(K.strprogram,S.strProgram);
     localStorage.setItem(K.reminders,JSON.stringify(S.reminders));
     localStorage.setItem(K.energylog,JSON.stringify(S.energyLog));
+    localStorage.setItem(K.nutrition,JSON.stringify(S.nutrition));
   }catch{}
 }
 
@@ -2583,7 +3029,7 @@ const NAV_TITLES={cycling:'Cycling',boxing:'Boxing',strength:'Strength',progress
 
 function switchWorkoutTab(tab){
   S.activeWorkoutTab=tab;
-  ['cycling','boxing','strength','progress','plan'].forEach(t=>{
+  ['cycling','boxing','strength','progress','plan','nutrition'].forEach(t=>{
     const tc=document.getElementById('tab-'+t);
     if(tc) tc.classList.toggle('active',t===tab);
     // Bottom nav active state
@@ -2593,6 +3039,7 @@ function switchWorkoutTab(tab){
   if(tab==='strength') renderStrength();
   if(tab==='progress') renderCalendar();
   if(tab==='plan') renderPlan();
+  if(tab==='nutrition') renderNutritionTab();
 }
 
 // Legacy nav menu functions — no-ops with bottom nav
@@ -4626,6 +5073,7 @@ loadGhConfig();
 updateSyncStatusUI();
 updateReminderSettingsUI();
 syncStsExercises(); // load exercises for current STS phase
+renderNutritionSummary();
 const incompleteDays=DAYS.filter(d=>!isDayDone(S.week,d));
 if(incompleteDays.length)S.activeDay=incompleteDays[0];
 render();resetBoxingTimer();initSwipe();
