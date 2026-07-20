@@ -1029,6 +1029,30 @@ code{font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:4px
         <button class="settings-action-btn danger" onclick="confirmReset()">Reset All</button>
       </div>
     </div>
+    <div class="settings-section-lbl">Reminders</div>
+    <div class="settings-row">
+      <div>
+        <div class="settings-row-lbl">Inactivity Nudge</div>
+        <div class="settings-row-sub">Show a reminder after this many days</div>
+      </div>
+      <div class="settings-row-ctrl">
+        <input type="number" id="reminder-threshold-input" min="1" max="30" value="3" style="width:44px;padding:4px 6px;border-radius:6px;border:1px solid var(--border);background:var(--surface2);color:var(--text);font-size:12px;text-align:center" onchange="setReminderThreshold(this.value)"/>
+        <button class="settings-action-btn" id="reminder-toggle-btn" onclick="toggleReminders()">Enable</button>
+      </div>
+    </div>
+    <div class="settings-section-lbl">Cloud Sync (GitHub)</div>
+    <div class="settings-row" style="flex-direction:column;align-items:stretch;gap:8px">
+      <div style="font-size:10px;color:var(--dim);line-height:1.5">Sync your data to a JSON file in your own GitHub repo. Use a fine-grained personal access token scoped ONLY to that one repo with Contents read/write — never a broad classic token.</div>
+      <input class="finput" type="password" id="gh-token-input" placeholder="GitHub token" style="font-size:12px;padding:8px 10px" autocomplete="off"/>
+      <input class="finput" type="text" id="gh-repo-input" placeholder="owner/repo" style="font-size:12px;padding:8px 10px"/>
+      <input class="finput" type="text" id="gh-path-input" placeholder="c-workout-data.json" style="font-size:12px;padding:8px 10px"/>
+      <button class="settings-action-btn" onclick="saveGhSettings()" style="align-self:flex-start">Save Settings</button>
+      <div style="display:flex;gap:8px;margin-top:4px">
+        <button class="settings-action-btn" onclick="ghPush()">↑ Push to GitHub</button>
+        <button class="settings-action-btn" onclick="ghPull()">↓ Pull from GitHub</button>
+      </div>
+      <div id="gh-sync-status" style="font-size:10px;color:var(--dim)">Never synced</div>
+    </div>
   </div>
 
   <!-- Main tabs -->
@@ -1372,10 +1396,24 @@ code{font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:4px
     <!-- Dashboard header — rendered by JS -->
     <div id="plan-header-section"></div>
 
+    <!-- Motivation nudge -->
+    <div class="card" id="home-nudge-card" style="display:none;margin-top:16px;padding:14px 16px;background:rgba(212,135,60,.08);border:1px solid rgba(212,135,60,.25);align-items:center;justify-content:space-between;gap:12px">
+      <div style="display:flex;align-items:center;gap:12px;flex:1;min-width:0">
+        <div style="font-size:13px;font-weight:600;color:var(--text)" id="home-nudge-text"></div>
+      </div>
+      <button class="btn-icon" style="width:28px;height:28px;font-size:13px;flex-shrink:0" onclick="dismissNudge()">✕</button>
+    </div>
+
     <!-- Up Next -->
     <div class="card" id="home-upnext-card" style="margin-top:16px;padding:4px 0">
       <div style="font-size:10px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:var(--dim);padding:14px 16px 4px">Up Next</div>
       <div id="home-upnext-list" style="padding:0 16px 14px"></div>
+    </div>
+
+    <!-- Energy check-in -->
+    <div class="card" id="home-energy-card" style="margin-top:16px;padding:16px">
+      <div style="font-size:10px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:var(--dim);margin-bottom:12px">How do you feel today?</div>
+      <div id="home-energy-btns" style="display:flex;gap:8px"></div>
     </div>
 
     <!-- Ad-hoc section -->
@@ -1891,7 +1929,7 @@ const KB_SUPPLEMENTAL=[
 
 let kbSuppExpanded=null; // index of expanded KB supplemental card
 
-const K={hist:'cw-history',ach:'cw-ach',timers:'cw-timers',week:'cw-week',strlog:'cw-str-log',strhist:'cw-str-hist',bodylog:'cw-body-log',bxhist:'cw-bx-hist',actlog:'cw-act-log',prs:'cw-prs',goals:'cw-goals',strswaps:'cw-str-swaps',plandays:'cw-plan-days',stsweek:'cw-sts-week',stsdone:'cw-sts-done',stscycle:'cw-sts-cycle',strprogram:'cw-str-program'};
+const K={hist:'cw-history',ach:'cw-ach',timers:'cw-timers',week:'cw-week',strlog:'cw-str-log',strhist:'cw-str-hist',bodylog:'cw-body-log',bxhist:'cw-bx-hist',actlog:'cw-act-log',prs:'cw-prs',goals:'cw-goals',strswaps:'cw-str-swaps',plandays:'cw-plan-days',stsweek:'cw-sts-week',stsdone:'cw-sts-done',stscycle:'cw-sts-cycle',strprogram:'cw-str-program',reminders:'cw-reminders',energylog:'cw-energy-log'};
 const WORKOUT_DATA={
   phases:[
     {range:[1,13],name:"Foundation",focus:"Building aerobic base and pedal stroke efficiency."},
@@ -1945,12 +1983,86 @@ let S={
   strLogWeight:135,strLogReps:5,strLogExIdx:0,
   strAnalyticsOpen:false,
   strProgram:'spinesafe',
+  reminders:{enabled:false,thresholdDays:3,lastNotified:null},
+  energyLog:{},
   stsWeek:1,stsDone:{},stsCycle:1,
   bodyLog:[],
   bxHistory:[],
   activityLog:[],
   goals:{mode:'overall',period:'weekly',overall:5,cycling:3,boxing:2,strength:2},
 };
+
+// ── GitHub Cloud Sync (token kept separate from S so it never leaks into Export/Import backups) ──
+let GH={token:'',repo:'',path:'c-workout-data.json',lastSync:null};
+function loadGhConfig(){
+  try{const g=JSON.parse(localStorage.getItem('cw-gh-config')||'{}');GH={...GH,...g};}catch{}
+}
+function saveGhConfig(){
+  try{localStorage.setItem('cw-gh-config',JSON.stringify(GH));}catch{}
+}
+async function ghPush(){
+  if(!GH.token||!GH.repo){showToast('','Setup needed','Enter your GitHub token and repo in Settings first');return;}
+  const parts=GH.repo.split('/');
+  const owner=parts[0],repoName=parts[1];
+  if(!owner||!repoName){showToast('','Invalid repo','Use the format owner/repo-name');return;}
+  const apiUrl=`https://api.github.com/repos/${owner}/${repoName}/contents/${GH.path}`;
+  try{
+    let sha=null;
+    const getRes=await fetch(apiUrl,{headers:{Authorization:`Bearer ${GH.token}`,Accept:'application/vnd.github+json'}});
+    if(getRes.ok){const j=await getRes.json();sha=j.sha;}
+    const content=btoa(unescape(encodeURIComponent(JSON.stringify(S,null,2))));
+    const body={message:`C-Workout data sync — ${new Date().toISOString()}`,content};
+    if(sha)body.sha=sha;
+    const putRes=await fetch(apiUrl,{method:'PUT',headers:{Authorization:`Bearer ${GH.token}`,Accept:'application/vnd.github+json','Content-Type':'application/json'},body:JSON.stringify(body)});
+    if(!putRes.ok){const err=await putRes.json().catch(()=>({}));throw new Error(err.message||`HTTP ${putRes.status}`);}
+    GH.lastSync=new Date().toISOString();saveGhConfig();updateSyncStatusUI();
+    showToast('','Synced to GitHub','Your data has been pushed');
+  }catch(e){
+    showToast('','Sync failed',e.message||'Check your token and repo settings');
+  }
+}
+async function ghPull(){
+  if(!GH.token||!GH.repo){showToast('','Setup needed','Enter your GitHub token and repo in Settings first');return;}
+  const parts=GH.repo.split('/');
+  const owner=parts[0],repoName=parts[1];
+  if(!owner||!repoName){showToast('','Invalid repo','Use the format owner/repo-name');return;}
+  const apiUrl=`https://api.github.com/repos/${owner}/${repoName}/contents/${GH.path}`;
+  try{
+    const res=await fetch(apiUrl,{headers:{Authorization:`Bearer ${GH.token}`,Accept:'application/vnd.github+json'}});
+    if(!res.ok){
+      if(res.status===404){showToast('','No data found','Nothing has been pushed to this repo/path yet');return;}
+      const err=await res.json().catch(()=>({}));throw new Error(err.message||`HTTP ${res.status}`);
+    }
+    const j=await res.json();
+    const decoded=decodeURIComponent(escape(atob(j.content.replace(/\n/g,''))));
+    const data=JSON.parse(decoded);
+    if(typeof data.week!=='number')throw new Error('Invalid data file');
+    Object.assign(S,data);
+    saveState();render();renderStrength();
+    GH.lastSync=new Date().toISOString();saveGhConfig();updateSyncStatusUI();
+    showToast('','Synced from GitHub','Your data has been restored');
+  }catch(e){
+    showToast('','Sync failed',e.message||'Check your token, repo, and file path');
+  }
+}
+function saveGhSettings(){
+  const tok=document.getElementById('gh-token-input')?.value.trim();
+  const repo=document.getElementById('gh-repo-input')?.value.trim();
+  const path=document.getElementById('gh-path-input')?.value.trim()||'c-workout-data.json';
+  GH.token=tok||'';GH.repo=repo||'';GH.path=path;
+  saveGhConfig();
+  showToast('','Settings saved','GitHub sync is configured');
+}
+function updateSyncStatusUI(){
+  const statusEl=document.getElementById('gh-sync-status');
+  if(statusEl) statusEl.textContent=GH.lastSync?`Last synced ${new Date(GH.lastSync).toLocaleString()}`:'Never synced';
+  const tokInp=document.getElementById('gh-token-input');
+  if(tokInp&&!tokInp.value) tokInp.value=GH.token;
+  const repoInp=document.getElementById('gh-repo-input');
+  if(repoInp&&!repoInp.value) repoInp.value=GH.repo;
+  const pathInp=document.getElementById('gh-path-input');
+  if(pathInp&&!pathInp.value) pathInp.value=GH.path;
+}
 
 // Boxing timer
 let BT={
@@ -1982,6 +2094,8 @@ function loadState(){
   try{S.stsWeek=Math.max(1,Math.min(12,parseInt(localStorage.getItem(K.stsweek)||'1')||1));}catch{}
   try{S.stsDone=JSON.parse(localStorage.getItem(K.stsdone)||'{}');}catch{}
   try{S.stsCycle=Math.max(1,parseInt(localStorage.getItem(K.stscycle)||'1')||1);}catch{}
+  try{const r=JSON.parse(localStorage.getItem(K.reminders)||'null');if(r)S.reminders={...S.reminders,...r};}catch{}
+  try{S.energyLog=JSON.parse(localStorage.getItem(K.energylog)||'{}');}catch{}
   try{S.strProgram=localStorage.getItem(K.strprogram)||'spinesafe';}catch{S.strProgram='spinesafe';}
 }
 function saveState(){
@@ -2003,6 +2117,8 @@ function saveState(){
     localStorage.setItem(K.stsdone,JSON.stringify(S.stsDone));
     localStorage.setItem(K.stscycle,String(S.stsCycle));
     localStorage.setItem(K.strprogram,S.strProgram);
+    localStorage.setItem(K.reminders,JSON.stringify(S.reminders));
+    localStorage.setItem(K.energylog,JSON.stringify(S.energyLog));
   }catch{}
 }
 
@@ -2841,13 +2957,21 @@ function updateDrawerUI(){
   if(hint){
     const prev=strPrevWeight(S.activeStrengthWorkout,S.strLogExIdx);
     if(prev){
-      const block=getStrengthBlock(S.week);
-      const wInPhase=getStsWeekInPhase(S.week);
-      // Target top of rep range for this week
-      const targetReps=wInPhase===1?15:wInPhase===2?11:wInPhase===3?8:5;
+      const exObj=STRENGTH[S.activeStrengthWorkout]?.exercises?.[S.strLogExIdx];
+      let targetReps;
+      if(S.strProgram==='sts'&&S.activeStrengthWorkout<3){
+        const wInPhase=getStsWeekInPhase(S.week);
+        targetReps=wInPhase===1?15:wInPhase===2?11:wInPhase===3?8:5;
+      } else {
+        const nums=(exObj?.reps||'').match(/\d+/g)||[];
+        targetReps=nums.length?parseInt(nums[nums.length-1]):5;
+      }
       const hitReps=prev.reps>=targetReps;
-      const suggested=hitReps?+(prev.weight+2.5).toFixed(1):prev.weight;
-      const nudge=hitReps?`<strong>Try ${suggested}lbs today</strong>`:`<strong>Stick at ${suggested}lbs</strong>`;
+      const mult=getEnergyMultiplierToday();
+      const base=hitReps?prev.weight+2.5:prev.weight;
+      const suggested=+(base*mult).toFixed(1);
+      const energyNote=mult!==1?` <span style="color:var(--dim);font-weight:400">(adjusted for today's energy)</span>`:'';
+      const nudge=hitReps?`<strong>Try ${suggested}lbs today</strong>${energyNote}`:`<strong>Stick at ${suggested}lbs</strong>${energyNote}`;
       hint.innerHTML=`Last session: <strong>${prev.weight}lbs × ${prev.reps}</strong> — ${nudge}`;
       hint.style.display='block';
     } else {
@@ -3530,6 +3654,109 @@ function openHomeGoalEdit(){
     if(!goalsSettingsOpen) toggleGoalSettings();
   },150);
 }
+function getDaysSinceLastActivity(){
+  const dates=getAllActivityDates();
+  if(!dates.size)return null;
+  const todayMs=new Date().setHours(0,0,0,0);
+  let mostRecentMs=null;
+  dates.forEach(ds=>{
+    const t=new Date(ds).setHours(0,0,0,0);
+    if(mostRecentMs===null||t>mostRecentMs)mostRecentMs=t;
+  });
+  if(mostRecentMs===null)return null;
+  return Math.round((todayMs-mostRecentMs)/864e5);
+}
+function checkMotivationNudge(){
+  const el=document.getElementById('home-nudge-card');
+  if(!el)return;
+  const gap=getDaysSinceLastActivity();
+  const threshold=(S.reminders&&S.reminders.thresholdDays)||3;
+  if(gap===null||gap<threshold){el.style.display='none';return;}
+  el.style.display='flex';
+  const textEl=document.getElementById('home-nudge-text');
+  if(textEl) textEl.textContent=`It's been ${gap} day${gap===1?'':'s'} since your last workout.`;
+  if(S.reminders&&S.reminders.enabled&&'Notification' in window&&Notification.permission==='granted'){
+    const todayStr=new Date().toDateString();
+    if(S.reminders.lastNotified!==todayStr){
+      try{new Notification('C-Workout',{body:`It's been ${gap} day${gap===1?'':'s'} — jump back in?`});}catch(e){}
+      S.reminders.lastNotified=todayStr;saveState();
+    }
+  }
+}
+function dismissNudge(){
+  const el=document.getElementById('home-nudge-card');
+  if(el) el.style.display='none';
+}
+function toggleReminders(){
+  if(!('Notification' in window)){showToast('','Not supported','Notifications aren\'t supported in this browser');return;}
+  if(Notification.permission==='granted'){
+    S.reminders.enabled=!S.reminders.enabled;saveState();
+    showToast('','Reminders',S.reminders.enabled?'Enabled':'Disabled');
+    updateReminderSettingsUI();
+  } else if(Notification.permission==='denied'){
+    showToast('','Permission blocked','Enable notifications for this site in your browser settings');
+  } else {
+    Notification.requestPermission().then(perm=>{
+      if(perm==='granted'){S.reminders.enabled=true;saveState();showToast('','Reminders enabled','');}
+      else{showToast('','Permission denied','');}
+      updateReminderSettingsUI();
+    });
+  }
+}
+function setReminderThreshold(val){
+  if(!S.reminders)S.reminders={enabled:false,thresholdDays:3,lastNotified:null};
+  S.reminders.thresholdDays=Math.max(1,parseInt(val)||3);
+  saveState();
+  checkMotivationNudge();
+}
+function updateReminderSettingsUI(){
+  const btn=document.getElementById('reminder-toggle-btn');
+  if(btn) btn.textContent=(S.reminders&&S.reminders.enabled&&typeof Notification!=='undefined'&&Notification.permission==='granted')?'Disable':'Enable';
+  const inp=document.getElementById('reminder-threshold-input');
+  if(inp) inp.value=(S.reminders&&S.reminders.thresholdDays)||3;
+}
+function makeGaugeSvg(level){
+  const angles={low:150,normal:90,high:30};
+  const colors={low:'var(--blue)',normal:'var(--lime)',high:'var(--red)'};
+  const theta=(angles[level]||90)*Math.PI/180;
+  const cx=30,cy=32,r=22,needleR=16;
+  const nx=+(cx+needleR*Math.cos(theta)).toFixed(1);
+  const ny=+(cy-needleR*Math.sin(theta)).toFixed(1);
+  const col=colors[level]||'var(--lime)';
+  return `<svg width="44" height="30" viewBox="0 0 60 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M${cx-r} ${cy} A${r} ${r} 0 0 1 ${cx+r} ${cy}" stroke="var(--border)" stroke-width="4" stroke-linecap="round"/>
+    <line x1="${cx}" y1="${cy}" x2="${nx}" y2="${ny}" stroke="${col}" stroke-width="3" stroke-linecap="round"/>
+    <circle cx="${cx}" cy="${cy}" r="3" fill="${col}"/>
+  </svg>`;
+}
+const ENERGY_LEVELS=[
+  {key:'low',label:'Low',mult:0.95},
+  {key:'normal',label:'Normal',mult:1},
+  {key:'high',label:'High',mult:1.05},
+];
+function renderHomeEnergy(){
+  const el=document.getElementById('home-energy-btns');
+  if(!el)return;
+  const today=strTodayKey();
+  const selected=(S.energyLog||{})[today];
+  el.innerHTML=ENERGY_LEVELS.map(lv=>`
+    <button class="goal-tog-btn${selected===lv.key?' on':''}" style="flex:1;padding:12px 4px;display:flex;flex-direction:column;align-items:center;gap:4px" onclick="setEnergyToday('${lv.key}')">
+      ${makeGaugeSvg(lv.key)}
+      <span>${lv.label}</span>
+    </button>`).join('');
+}
+function setEnergyToday(key){
+  if(!S.energyLog)S.energyLog={};
+  S.energyLog[strTodayKey()]=key;
+  saveState();
+  renderHomeEnergy();
+  showToast('','Logged','We\'ll factor this into today\'s weight suggestions');
+}
+function getEnergyMultiplierToday(){
+  const key=(S.energyLog||{})[strTodayKey()];
+  const lv=ENERGY_LEVELS.find(l=>l.key===key);
+  return lv?lv.mult:1;
+}
 function renderHomeStats(){
   const el=document.getElementById('home-stats-row');
   if(!el)return;
@@ -3586,6 +3813,8 @@ function renderPlan(){
   renderHomeUpNext();
   renderHomeGoal();
   renderHomeStats();
+  renderHomeEnergy();
+  checkMotivationNudge();
 }
 
 
@@ -4393,6 +4622,9 @@ function renderBlockCard(){
 
 // ── Boot ──────────────────────────────────────────────────────────────────────
 loadState();
+loadGhConfig();
+updateSyncStatusUI();
+updateReminderSettingsUI();
 syncStsExercises(); // load exercises for current STS phase
 const incompleteDays=DAYS.filter(d=>!isDayDone(S.week,d));
 if(incompleteDays.length)S.activeDay=incompleteDays[0];
@@ -4807,5 +5039,12 @@ function renderGuidedChecklist(){
 
   <button class="gw-complete-btn" id="gw-complete-btn" onclick="guidedCompleteWorkout()">✓ COMPLETE WORKOUT</button>
 </div>
+<script>
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('sw.js').catch(()=>{});
+  });
+}
+</script>
 </body>
 </html>
