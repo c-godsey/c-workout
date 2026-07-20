@@ -1177,6 +1177,14 @@ code{font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:4px
       <div class="str-focus-name" id="str-focus-name">CHEST &amp; TRICEPS</div>
     </div>
 
+    <!-- Program switcher -->
+    <div class="card" style="margin-top:14px;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:12px">
+      <div style="min-width:0">
+        <div style="font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--dim);margin-bottom:3px">Program</div>
+        <div id="str-program-name" style="font-size:14px;font-weight:800;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Spine-Safe Hypertrophy</div>
+      </div>
+      <button class="str-swap-btn" style="flex-shrink:0" onclick="openProgramModal()">⇄ Switch</button>
+    </div>
     <!-- Workout selector: STS + Kettlebell tab -->
     <div class="str-selector" id="str-selector"></div>
 
@@ -1364,23 +1372,10 @@ code{font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:4px
     <!-- Dashboard header — rendered by JS -->
     <div id="plan-header-section"></div>
 
-    <!-- Today card — rendered by JS -->
-    <div id="plan-today-section"></div>
-
-    <!-- This week stats + dots -->
-    <div class="plan-compliance-card" style="margin-top:16px">
-      <div class="plan-compliance-top">
-        <div>
-          <div class="plan-compliance-pct" id="plan-pct">—</div>
-          <div class="plan-compliance-lbl">This Week</div>
-        </div>
-        <div class="plan-compliance-right">
-          <div class="plan-compliance-streak" id="plan-streak-weeks">0</div>
-          <div class="plan-compliance-streak-lbl">Perfect Weeks</div>
-        </div>
-      </div>
-      <div class="plan-bar-track"><div class="plan-bar-fill" id="plan-bar" style="width:0%"></div></div>
-      <div class="plan-week-dots" id="plan-week-dots"></div>
+    <!-- Up Next -->
+    <div class="card" id="home-upnext-card" style="margin-top:16px;padding:4px 0">
+      <div style="font-size:10px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:var(--dim);padding:14px 16px 4px">Up Next</div>
+      <div id="home-upnext-list" style="padding:0 16px 14px"></div>
     </div>
 
     <!-- Ad-hoc section -->
@@ -1400,12 +1395,21 @@ code{font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:4px
       </button>
     </div>
 
-    <!-- Rest of week (collapsible) -->
-    <button class="plan-collapse-btn" onclick="togglePlanSection('schedule')">
-      <span>This Week's Schedule</span><span class="plan-collapse-arrow" id="plan-schedule-arrow">›</span>
-    </button>
-    <div class="plan-collapse-body" id="plan-schedule-body">
-      <div id="plan-schedule-list"></div>
+    <!-- Session goal (read-only snapshot) -->
+    <div class="goal-card" id="home-goal-card" style="margin-top:16px">
+      <div class="goal-card-hdr">
+        <div class="goal-card-title">Session Goal</div>
+        <div class="goal-card-hdr-right">
+          <span class="goal-period-chip" id="home-goal-period">This Week</span>
+          <button class="goal-edit-btn" onclick="openHomeGoalEdit()">Edit</button>
+        </div>
+      </div>
+      <div id="home-goal-rings"></div>
+    </div>
+    <!-- Lifetime stats -->
+    <div class="card" id="home-stats-card" style="margin-top:16px;padding:16px">
+      <div style="font-size:10px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:var(--dim);margin-bottom:12px">Lifetime Stats</div>
+      <div class="prog-stats-row" id="home-stats-row" style="margin-bottom:0;grid-template-columns:repeat(4,1fr)"></div>
     </div>
 
     <!-- Strength rotation (collapsible) -->
@@ -1415,18 +1419,6 @@ code{font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:4px
     <div class="plan-collapse-body" id="plan-rotation-body">
       <div class="plan-rotation-card" style="margin-top:0;border:none;padding:0">
         <div id="plan-rotation"></div>
-      </div>
-    </div>
-
-    <!-- Customize (collapsible) -->
-    <button class="plan-collapse-btn" onclick="togglePlanSection('edit')">
-      <span>Customize Schedule</span><span class="plan-collapse-arrow" id="plan-edit-arrow">›</span>
-    </button>
-    <div class="plan-collapse-body" id="plan-edit-body">
-      <div class="plan-edit-panel open" id="plan-edit-panel" style="margin-top:0">
-        <div class="plan-edit-hdr">Set your workout for each day</div>
-        <div id="plan-edit-rows"></div>
-        <button class="plan-save-btn" onclick="savePlanEdit()">Save Plan</button>
       </div>
     </div>
 
@@ -1618,6 +1610,36 @@ const ACH_DEFS=[
   {id:"adaptation",title:"Chameleon",icon:"★",requirement:"Complete all of Week 14"},
 ];
 
+const SPINESAFE_WORKOUTS=[
+  {title:"Workout A: Push/Pull Foundation",time:"~50 min",muscles:"Full Body · Push/Pull",exercises:[
+    {name:"Belt Squat",sets:"3",reps:"10–12",rest:"60–90s",notes:"3-second eccentric. No axial spinal loading — belt squat machine transfers load to the hips, not the spine.",warmup:true},
+    {name:"Lat Pulldown (Neutral Grip)",sets:"3",reps:"8–12",rest:"60–90s",notes:"Full back support on the seat pad. Pull to upper chest, control the eccentric for 3 seconds."},
+    {name:"Seated Dumbbell Overhead Press",sets:"3",reps:"8–10",rest:"60–90s",notes:"High-backed adjustable bench for full spinal support — no standing overhead pressing."},
+    {name:"Incline Dumbbell Bench Press",sets:"3",reps:"10–12",rest:"60–90s",notes:"Bench at 30–45°. 3-second lowering phase, controlled press."},
+    {name:"Cable Tricep Pushdown",sets:"3",reps:"12–15",rest:"60–90s",notes:"Elbows pinned at sides. Slow 3-second release on the way up."},
+    {name:"Dumbbell Hammer Curls",sets:"3",reps:"10–12",rest:"60–90s",notes:"Neutral grip throughout. Control the eccentric — no swinging."},
+  ]},
+  {title:"Workout B: Accessory & Volume Focus",time:"~50 min",muscles:"Full Body · Accessory",exercises:[
+    {name:"Leg Press",sets:"3",reps:"10–12",rest:"60–90s",notes:"Full back support against the pad — no spinal loading. 3-second eccentric.",warmup:true},
+    {name:"Seated Cable Row",sets:"3",reps:"10–12",rest:"60–90s",notes:"Sit tall, chest supported. Squeeze shoulder blades, control the release."},
+    {name:"Dumbbell Lateral Raises",sets:"4",reps:"15–20",rest:"60–90s",notes:"Slight elbow bend, raise to shoulder height. 3-second lowering phase."},
+    {name:"Face Pulls",sets:"3",reps:"15–20",rest:"60–90s",notes:"Rope at face height, pull toward forehead, elbows high. Controlled tempo."},
+    {name:"EZ Bar Preacher Curls",sets:"3",reps:"10–12",rest:"60–90s",notes:"Preacher pad supports the spine and isolates the biceps. Slow eccentric."},
+    {name:"Overhead Cable Tricep Extension",sets:"3",reps:"12–15",rest:"60–90s",notes:"Seated if available for back support. Full stretch, 3-second lowering."},
+  ]},
+  {title:"Workout C: Strength & Hypertrophy Pump",time:"~50 min",muscles:"Full Body · Strength & Pump",exercises:[
+    {name:"Bulgarian Split Squats",sets:"3",reps:"8–10",rest:"60–90s",notes:"Rear foot elevated. 3-second eccentric on the way down each rep.",warmup:true},
+    {name:"Chest-Supported Row",sets:"3",reps:"10–12",rest:"60–90s",notes:"Chest pad removes spinal loading. Squeeze at the top, slow release."},
+    {name:"Arnold Press",sets:"3",reps:"10–12",rest:"60–90s",notes:"Seated with back support. Rotate through the press, control the descent."},
+    {name:"Cable Flys (High to Low)",sets:"3",reps:"12–15",rest:"60–90s",notes:"Cables set high, pull down and in. 3-second stretch on the eccentric."},
+    {name:"Dumbbell Skullcrushers",sets:"3",reps:"10–12",rest:"60–90s",notes:"Lying on a bench for full support. Control the lowering phase."},
+    {name:"Incline Dumbbell Curls",sets:"3",reps:"10–12",rest:"60–90s",notes:"Incline bench for full back support and a deep stretch. Slow eccentric."},
+  ]},
+];
+const PROGRAM_LIBRARY={
+  spinesafe:{name:"Spine-Safe Hypertrophy",desc:"3-day rotating full-body split. Mechanical tension + metabolic stress with strict spinal-safety protocols — belt squats, seated/supported pressing, no axial spinal loading. 3s eccentric tempo, 60–90s rest, RPE 8–9."},
+  sts:{name:"Shortcut to Size (STS)",desc:"12-week periodized 3-day split (Chest & Triceps / Back & Biceps / Shoulders & Traps) with rest-pause and drop-set techniques across 3 phases."}
+};
 const DAYS=['day1','day2','day3'];
 const DAY_LABELS={day1:'Day 1',day2:'Day 2',day3:'Day 3'};
 const RPE_LABELS=['','Very Easy','Easy','Moderate','Somewhat Hard','Hard','Hard','Very Hard','Very Hard','Extremely Hard','Max Effort!'];
@@ -1762,10 +1784,53 @@ function advanceStsWeekIfComplete(){
 
 // Sync STRENGTH[0-2].exercises from STS_PHASES based on current STS week
 function syncStsExercises(){
+  if(S.strProgram==='spinesafe'){
+    STRENGTH[0].title=SPINESAFE_WORKOUTS[0].title;STRENGTH[0].muscles=SPINESAFE_WORKOUTS[0].muscles;STRENGTH[0].time=SPINESAFE_WORKOUTS[0].time;STRENGTH[0].exercises=SPINESAFE_WORKOUTS[0].exercises;
+    STRENGTH[1].title=SPINESAFE_WORKOUTS[1].title;STRENGTH[1].muscles=SPINESAFE_WORKOUTS[1].muscles;STRENGTH[1].time=SPINESAFE_WORKOUTS[1].time;STRENGTH[1].exercises=SPINESAFE_WORKOUTS[1].exercises;
+    STRENGTH[2].title=SPINESAFE_WORKOUTS[2].title;STRENGTH[2].muscles=SPINESAFE_WORKOUTS[2].muscles;STRENGTH[2].time=SPINESAFE_WORKOUTS[2].time;STRENGTH[2].exercises=SPINESAFE_WORKOUTS[2].exercises;
+    return;
+  }
+  STRENGTH[0].title='Chest & Triceps';STRENGTH[0].muscles='Chest · Triceps · Calves';STRENGTH[0].time='~45 min';
+  STRENGTH[1].title='Back & Biceps';STRENGTH[1].muscles='Back · Biceps · Abs';STRENGTH[1].time='~48 min';
+  STRENGTH[2].title='Shoulders & Traps';STRENGTH[2].muscles='Shoulders · Traps · Calves';STRENGTH[2].time='~45 min';
   const pi=getStsPhaseIdx(S.stsWeek||1);
   STRENGTH[0].exercises=STS_PHASES[0][pi];
   STRENGTH[1].exercises=STS_PHASES[1][pi];
   STRENGTH[2].exercises=STS_PHASES[2][pi];
+}
+function openProgramModal(){
+  const opts=document.getElementById('program-modal-opts');
+  if(!opts)return;
+  opts.innerHTML=Object.entries(PROGRAM_LIBRARY).map(([key,p])=>{
+    const active=S.strProgram===key;
+    return `<div class="swap-opt" onclick="switchProgram('${key}')">
+      <div style="flex:1;min-width:0">
+        <div class="swap-opt-name${active?' current-swap':''}">${p.name}</div>
+        <div style="font-size:11px;color:var(--dim);margin-top:3px;line-height:1.45">${p.desc}</div>
+      </div>
+      <span class="swap-opt-tag ${active?'selected':'original'}" style="flex-shrink:0">${active?'✓ Active':'Switch'}</span>
+    </div>`;
+  }).join('');
+  document.getElementById('program-modal-bg').classList.add('open');
+}
+function closeProgramModal(){
+  document.getElementById('program-modal-bg').classList.remove('open');
+}
+function switchProgram(key){
+  if(!PROGRAM_LIBRARY[key])return;
+  closeProgramModal();
+  if(S.strProgram===key)return;
+  S.strProgram=key;
+  S.activeStrengthWorkout=0;
+  S.strSwaps={};
+  // Clear in-progress (unlogged) sets for today on slots 0-2 so exercise names don't get mismatched
+  // against a different program's exercises. Completed history is untouched.
+  const today=strTodayKey();
+  if(S.strLog[today]){delete S.strLog[today][0];delete S.strLog[today][1];delete S.strLog[today][2];}
+  syncStsExercises();
+  saveState();
+  renderStrength();
+  showToast('','Program switched',PROGRAM_LIBRARY[key].name);
 }
 
 const STRENGTH=[
@@ -1826,7 +1891,7 @@ const KB_SUPPLEMENTAL=[
 
 let kbSuppExpanded=null; // index of expanded KB supplemental card
 
-const K={hist:'cw-history',ach:'cw-ach',timers:'cw-timers',week:'cw-week',strlog:'cw-str-log',strhist:'cw-str-hist',bodylog:'cw-body-log',bxhist:'cw-bx-hist',actlog:'cw-act-log',prs:'cw-prs',goals:'cw-goals',strswaps:'cw-str-swaps',plandays:'cw-plan-days',stsweek:'cw-sts-week',stsdone:'cw-sts-done',stscycle:'cw-sts-cycle'};
+const K={hist:'cw-history',ach:'cw-ach',timers:'cw-timers',week:'cw-week',strlog:'cw-str-log',strhist:'cw-str-hist',bodylog:'cw-body-log',bxhist:'cw-bx-hist',actlog:'cw-act-log',prs:'cw-prs',goals:'cw-goals',strswaps:'cw-str-swaps',plandays:'cw-plan-days',stsweek:'cw-sts-week',stsdone:'cw-sts-done',stscycle:'cw-sts-cycle',strprogram:'cw-str-program'};
 const WORKOUT_DATA={
   phases:[
     {range:[1,13],name:"Foundation",focus:"Building aerobic base and pedal stroke efficiency."},
@@ -1879,6 +1944,7 @@ let S={
   strLog:{},strHistory:[],strSwaps:{},
   strLogWeight:135,strLogReps:5,strLogExIdx:0,
   strAnalyticsOpen:false,
+  strProgram:'spinesafe',
   stsWeek:1,stsDone:{},stsCycle:1,
   bodyLog:[],
   bxHistory:[],
@@ -1916,6 +1982,7 @@ function loadState(){
   try{S.stsWeek=Math.max(1,Math.min(12,parseInt(localStorage.getItem(K.stsweek)||'1')||1));}catch{}
   try{S.stsDone=JSON.parse(localStorage.getItem(K.stsdone)||'{}');}catch{}
   try{S.stsCycle=Math.max(1,parseInt(localStorage.getItem(K.stscycle)||'1')||1);}catch{}
+  try{S.strProgram=localStorage.getItem(K.strprogram)||'spinesafe';}catch{S.strProgram='spinesafe';}
 }
 function saveState(){
   try{
@@ -1935,6 +2002,7 @@ function saveState(){
     localStorage.setItem(K.stsweek,String(S.stsWeek));
     localStorage.setItem(K.stsdone,JSON.stringify(S.stsDone));
     localStorage.setItem(K.stscycle,String(S.stsCycle));
+    localStorage.setItem(K.strprogram,S.strProgram);
   }catch{}
 }
 
@@ -2652,6 +2720,8 @@ function strTodaySetCount(wIdx){
 // ── renderStrength ────────────────────────────────────────────────────────────
 function renderStrength(){
   syncStsExercises();
+  const pnEl=document.getElementById('str-program-name');
+  if(pnEl) pnEl.textContent=PROGRAM_LIBRARY[S.strProgram]?.name||'';
   const wo=STRENGTH[S.activeStrengthWorkout];
   // Show/hide STS vs KB view
   const stsView=document.getElementById('str-sts-view');
@@ -2663,6 +2733,8 @@ function renderStrength(){
   // STS phase card only renders when collapsible is open
   const stsPhaseWrap=document.getElementById('sts-phase-wrap');
   if(stsPhaseWrap&&stsPhaseWrap.classList.contains('expanded')) renderStsPhaseCard();
+  const stsCollapsible=document.getElementById('sts-phase-collapsible');
+  if(stsCollapsible) stsCollapsible.style.display=(S.strProgram==='sts')?'':'none';
 
   // Selector pills: STS workouts (0-2) + Kettlebell tab
   const sel=document.getElementById('str-selector');
@@ -2696,9 +2768,10 @@ function renderStrength(){
   if(ll) ll.innerHTML=wo.exercises.map((e,i)=>{
     const sets=strGetSets(wIdx,i);
     // Use STS rep range for workouts 0-2 (STS workouts); kettlebell keeps its own reps
-    const displayReps=(wIdx<3&&e.reps==='per block')?block.repRange:e.reps;
-    const blockMeta=`<span class="ex-block-tag ${block.type}">${displayReps}</span>`;
-    const techNote=wIdx<3?`<span style="font-size:10px;color:var(--dim);font-weight:600;margin-left:6px">· ${block.technique}</span>`:'';
+    const isSts=S.strProgram==='sts';
+    const displayReps=(isSts&&wIdx<3&&e.reps==='per block')?block.repRange:e.reps;
+    const blockMeta=(isSts&&wIdx<3)?`<span class="ex-block-tag ${block.type}">${displayReps}</span>`:`<span class="ex-block-tag" style="background:rgba(174,212,63,.1);color:var(--lime);border:1px solid rgba(174,212,63,.25)">${displayReps}</span>`;
+    const techNote=(isSts&&wIdx<3)?`<span style="font-size:10px;color:var(--dim);font-weight:600;margin-left:6px">· ${block.technique}</span>`:'';
     const loggedSets=sets.length;
     const progressNote=loggedSets>0?`<span class="str-sets-done">${loggedSets} set${loggedSets!==1?'s':''} logged</span>`:'';
     const displayName=getExName(wIdx,i);
@@ -2746,14 +2819,22 @@ function updateDrawerUI(){
   // STS periodization hint in drawer
   const blockHint=document.getElementById('block-drawer-hint');
   if(blockHint){
-    const block=getStrengthBlock(S.week);
     const wIdx=S.activeStrengthWorkout;
-    const hintText=wIdx<3
-      ?`${block.name} — target ${block.repRange} reps at ${block.intensity} · ${block.technique}`
-      :`Aim for ${block.repRange} reps — Kettlebell session`;
-    blockHint.className=`block-drawer-hint ${block.type}`;
-    blockHint.textContent=hintText;
-    blockHint.style.display='block';
+    if(S.strProgram==='sts'&&wIdx<3){
+      const block=getStrengthBlock(S.week);
+      blockHint.className=`block-drawer-hint ${block.type}`;
+      blockHint.textContent=`${block.name} — target ${block.repRange} reps at ${block.intensity} · ${block.technique}`;
+      blockHint.style.display='block';
+    } else if(wIdx<3){
+      blockHint.className='block-drawer-hint';
+      blockHint.style.cssText='background:rgba(174,212,63,.08);color:var(--lime);border:1px solid rgba(174,212,63,.2);font-size:11px;font-weight:700;padding:8px 12px;border-radius:10px;margin-bottom:10px;text-align:center;letter-spacing:.3px;display:block';
+      blockHint.textContent=`Target: ${e.reps} reps · 3s eccentric tempo · Rest ${e.rest}`;
+    } else {
+      const block=getStrengthBlock(S.week);
+      blockHint.className=`block-drawer-hint ${block.type}`;
+      blockHint.textContent=`Aim for ${block.repRange} reps — Kettlebell session`;
+      blockHint.style.display='block';
+    }
   }
   // Progressive overload hint
   const hint=document.getElementById('overload-hint');
@@ -2826,7 +2907,7 @@ function completeStrengthWorkout(){
   S.strHistory.push({date:today,wIdx,title:STRENGTH[wIdx].title,totalSets,ts:Date.now(),stsWeek:S.stsWeek,stsCycle:S.stsCycle});
   // Mark this workout done in STS progress (only workouts 0-2 count for STS progression)
   let weekAdvanced=false;
-  if(wIdx<=2){
+  if(wIdx<=2&&S.strProgram==='sts'){
     if(!S.stsDone[S.stsWeek]) S.stsDone[S.stsWeek]={};
     S.stsDone[S.stsWeek][wIdx]=true;
     weekAdvanced=advanceStsWeekIfComplete();
@@ -3282,48 +3363,6 @@ function togglePlanSection(name){
   const arrow=document.getElementById(`plan-${name}-arrow`);
   if(body) body.classList.toggle('open',planSections[name]);
   if(arrow) arrow.classList.toggle('open',planSections[name]);
-  if(name==='edit'&&planSections[name]) renderPlanEditRows();
-}
-
-function togglePlanEdit(){ togglePlanSection('edit'); }
-
-function renderPlanEditRows(){
-  const el=document.getElementById('plan-edit-rows');
-  if(!el)return;
-  const types=['strength','boxing','cycling','rest'];
-  const typeIcons={strength:'💪',boxing:'🥊',cycling:'🚴',rest:'😴'};
-  el.innerHTML=S.planDays.map((day,i)=>{
-    const pills=types.map(t=>`<button class="plan-type-pill${day.type===t?' active-'+t:''}" onclick="setPlanDayType(${i},'${t}')">${typeIcons[t]}</button>`).join('');
-    const reqClass=day.required&&day.type!=='rest'?'on':'';
-    const reqLabel=day.required&&day.type!=='rest'?'★ Req':'○ Opt';
-    return`<div class="plan-edit-row" id="plan-edit-row-${i}">
-      <div class="plan-edit-day">${PLAN_DAY_SHORT[i]}</div>
-      <div class="plan-type-pills">${pills}</div>
-      ${day.type!=='rest'?`<button class="plan-req-toggle ${reqClass}" onclick="togglePlanDayReq(${i})">${reqLabel}</button>`:''}
-    </div>`;
-  }).join('');
-}
-
-function setPlanDayType(dayIdx,type){
-  S.planDays[dayIdx].type=type;
-  if(type==='rest') S.planDays[dayIdx].required=false;
-  renderPlanEditRows();
-}
-
-function togglePlanDayReq(dayIdx){
-  S.planDays[dayIdx].required=!S.planDays[dayIdx].required;
-  renderPlanEditRows();
-}
-
-function savePlanEdit(){
-  saveState();
-  planSections.edit=false;
-  const body=document.getElementById('plan-edit-body');
-  const arrow=document.getElementById('plan-edit-arrow');
-  if(body) body.classList.remove('open');
-  if(arrow) arrow.classList.remove('open');
-  renderPlan();
-  showToast('✓','Plan saved','Your weekly schedule has been updated');
 }
 
 function planGetWeekDates(){
@@ -3408,165 +3447,127 @@ function planLaunchWorkout(type){
   }
 }
 
-function renderPlan(){
-  const weekDates=planGetWeekDates(); // index 0=Sun...6=Sat
-  const todayKey=new Date().toDateString();
-  const now=new Date();now.setHours(0,0,0,0);
-  const todayDow=new Date().getDay(); // 0=Sun
+function renderHomeUpNext(){
+  const el=document.getElementById('home-upnext-list');
+  if(!el)return;
+  const BOXING_LABELS_HOME={day1:'Workout 1',day2:'Workout 2',day3:'Workout 3'};
+  const rows=[];
+  const next=getNextCyclingSession();
+  const vid=getVideo(next.week,next.day);
+  rows.push({type:'cycling',icon:'CYC',title:vid.title,sub:`Week ${next.week} · ${DAY_LABELS[next.day]} · ${vid.duration}`,onclick:"planLaunchWorkout('cycling')"});
+  const bx=getBoxing(S.week,S.activeBoxingDay);
+  rows.push({type:'boxing',icon:'BOX',title:bx.title,sub:`#${bx.id} · ${BOXING_LABELS_HOME[S.activeBoxingDay]}, Week ${S.week}`,onclick:"switchWorkoutTab('boxing')"});
+  syncStsExercises();
+  const swo=STRENGTH[S.activeStrengthWorkout];
+  rows.push({type:'strength',icon:'STR',title:swo.title,sub:swo.muscles,onclick:"switchWorkoutTab('strength')"});
+  el.innerHTML=rows.map(r=>`
+    <div class="plan-day-card" style="cursor:pointer" onclick="${r.onclick}">
+      <div class="plan-day-icon ${r.type}">${r.icon}</div>
+      <div class="plan-day-body">
+        <div class="plan-day-title">${r.title}</div>
+        <div class="plan-day-desc">${r.sub}</div>
+      </div>
+      <div class="plan-day-status" style="color:var(--dim);font-size:16px">›</div>
+    </div>`).join('');
+}
+function getCurrentGoalProgress(){
+  const now=new Date();
+  let start,end;
+  if(S.goals.period==='weekly'){
+    const dow=now.getDay();const diff=dow===0?6:dow-1;
+    start=new Date(now);start.setDate(now.getDate()-diff);start.setHours(0,0,0,0);
+    end=new Date(start);end.setDate(start.getDate()+7);
+  } else {
+    start=new Date(now.getFullYear(),now.getMonth(),1);
+    end=new Date(now.getFullYear(),now.getMonth()+1,1);
+  }
+  const s=start.getTime(),e=end.getTime();
+  const inRange=d=>{const t=new Date(d).getTime();return t>=s&&t<e;};
+  const cycling=
+    Object.values(S.history).flatMap(wh=>Object.values(wh.days||{}))
+      .filter(d=>d?.completedAt&&inRange(d.completedAt)).length+
+    (S.activityLog||[]).filter(en=>en.type==='cycling'&&inRange(en.date)).length;
+  const strength=(S.strHistory||[]).filter(h=>inRange(h.date)).length;
+  const boxing=(S.bxHistory||[]).filter(h=>inRange(h.date)).length;
+  return{cycling,strength,boxing,total:cycling+strength+boxing};
+}
+function renderHomeGoal(){
+  const el=document.getElementById('home-goal-rings');
+  if(!el)return;
+  const g=S.goals;
+  const prog=getCurrentGoalProgress();
+  const periodLbl=g.period==='weekly'?'This Week':'This Month';
+  const lblEl=document.getElementById('home-goal-period');
+  if(lblEl) lblEl.textContent=periodLbl;
+  if(g.mode==='overall'){
+    el.innerHTML=`<div class="goal-rings" style="padding-top:10px">
+      <div class="goal-ring-wrap">
+        ${makeSvgRing(prog.total,g.overall,'var(--lime)',100,10)}
+        <div class="goal-ring-lbl">${periodLbl}</div>
+        ${prog.total>=g.overall?'<div class="goal-ring-done">Goal Complete</div>':''}
+      </div>
+    </div>`;
+  } else {
+    const types=[
+      {key:'cycling',label:'Cycling',col:'var(--blue)',val:prog.cycling,goal:g.cycling},
+      {key:'boxing', label:'Boxing', col:'var(--orange)',val:prog.boxing,goal:g.boxing},
+      {key:'strength',label:'Strength',col:'var(--lime)',val:prog.strength,goal:g.strength},
+    ];
+    el.innerHTML=`<div class="goal-rings" style="gap:4px;padding-top:10px">
+      ${types.map(t=>`<div class="goal-ring-wrap">
+        ${makeSvgRing(t.val,t.goal,t.col,78,8)}
+        <div class="goal-ring-lbl" style="color:${t.col}">${t.label}</div>
+        ${t.val>=t.goal&&t.goal>0?'<div class="goal-ring-done">Done</div>':''}
+      </div>`).join('')}
+    </div>`;
+  }
+}
+function openHomeGoalEdit(){
+  switchWorkoutTab('progress');
+  setTimeout(()=>{
+    const gc=document.getElementById('goal-card');
+    if(gc) gc.scrollIntoView({behavior:'smooth',block:'center'});
+    if(!goalsSettingsOpen) toggleGoalSettings();
+  },150);
+}
+function renderHomeStats(){
+  const el=document.getElementById('home-stats-row');
+  if(!el)return;
+  const total=getTotalWorkouts();
+  const cycleWeeks=Object.keys(S.history).map(Number).filter(w=>isWeekDone(w)).length;
+  const streak=getConsecutiveDayStreak();
+  let totalSets=0;
+  Object.values(S.strLog||{}).forEach(dayLog=>{
+    Object.values(dayLog||{}).forEach(exMap=>{
+      Object.values(exMap||{}).forEach(sets=>{totalSets+=(sets||[]).length;});
+    });
+  });
+  el.innerHTML=`
+    <div class="prog-stat-card"><div class="prog-stat-val">${total}</div><div class="prog-stat-lbl">Total Workouts</div></div>
+    <div class="prog-stat-card"><div class="prog-stat-val">${cycleWeeks}</div><div class="prog-stat-lbl">Cycling Weeks</div></div>
+    <div class="prog-stat-card"><div class="prog-stat-val">${streak}</div><div class="prog-stat-lbl">Day Streak</div></div>
+    <div class="prog-stat-card"><div class="prog-stat-val">${totalSets}</div><div class="prog-stat-lbl">Sets Lifted</div></div>`;
+}
 
+function renderPlan(){
+  const now=new Date();now.setHours(0,0,0,0);
   // ── Dashboard header ──
   const headerSection=document.getElementById('plan-header-section');
   if(headerSection){
     const h=now.getHours();
-    const greeting=h<12?'Good morning':h<17?'Good afternoon':'Good evening';
+    const greeting=h<12?'Good Morning':h<17?'Good Afternoon':'Good Evening';
     // Update topbar greeting too
     const tbg=document.getElementById('topbar-greeting');
     if(tbg) tbg.textContent=greeting;
     const streak=S.streak||0;
     const week=S.week||1;
     const total=((S.strHistory||[]).length+(S.bxHistory||[]).length+Object.values(S.history||{}).reduce((a,wh)=>a+Object.values(wh.days||{}).filter(d=>d.completedAt).length,0));
-    // Today's workout type for headline
-    const todayType=S.planDays[todayDow]?.type||'rest';
-    const typeHeadlines={strength:'Strength Day',boxing:'Boxing Day',cycling:'Cycling Day',rest:'Rest Day'};
-    const typeColors={strength:'var(--lime)',boxing:'var(--orange)',cycling:'var(--blue)',rest:'var(--dim)'};
-    const headline=(typeHeadlines[todayType]||'Rest Day').toUpperCase();
-    const subColor=typeColors[todayType]||'var(--dim)';
     headerSection.innerHTML=`<div class="plan-editorial-header">
-  <div class="plan-editorial-week">${headline}</div>
-  <div class="plan-editorial-subweek" style="color:${subColor}">Week ${String(week).padStart(2,'0')}</div>
+  <div class="plan-editorial-week">${greeting.toUpperCase()}</div>
+  <div class="plan-editorial-subweek" style="color:var(--lime)">Week ${String(week).padStart(2,'0')}</div>
   <div class="plan-editorial-meta">${streak > 0 ? streak+' day streak' : 'Start your streak'} &nbsp;·&nbsp; ${total} sessions total</div>
 </div>`;
   }
-
-  // ── Today card ──
-  const todaySection=document.getElementById('plan-today-section');
-  if(todaySection){
-    const todayPlan=S.planDays[todayDow];
-    const meta=PLAN_TYPE_META[todayPlan.type]||PLAN_TYPE_META.rest;
-    const done=planGetDoneTypes(todayKey);
-    const isDone=done.has(todayPlan.type);
-    const isRest=todayPlan.type==='rest';
-    const dayName=PLAN_DAY_LABELS[todayDow];
-    const dateStr=new Date().toLocaleDateString('en-US',{month:'short',day:'numeric'});
-    // Specific workout name for each type
-    let subTitle=meta.title;
-    let extraDesc='';
-    if(todayPlan.type==='strength'){
-      const strDays=S.planDays.map((p,i)=>p.type==='strength'?i:-1).filter(i=>i>=0);
-      const slotPos=strDays.indexOf(todayDow);
-      const rot=planGetCurrentRotation();
-      const rotSlot=rot[slotPos%rot.length];
-      if(rotSlot) subTitle=STRENGTH[rotSlot.wIdx].title;
-    }
-    if(todayPlan.type==='cycling'){
-      const next=getNextCyclingSession();
-      const vid=getVideo(next.week,next.day);
-      subTitle=vid.title;
-      extraDesc=`Week ${next.week} · ${DAY_LABELS[next.day]} · ${vid.duration}`;
-    }
-    let actionHtml='';
-    if(isDone){
-      actionHtml=`<div class="plan-today-done"><div class="plan-today-done-check">✓</div><div><div>Done for today</div><div class="plan-today-extra">Great work — rest up and come back tomorrow</div></div></div>`;
-    } else if(isRest){
-      actionHtml=`<button class="plan-today-start" onclick="void(0)" style="opacity:.5;cursor:default">Rest Day — Recovery</button>`;
-    } else {
-      actionHtml=`<button class="plan-today-start" onclick="planLaunchWorkout('${todayPlan.type}')">Start Workout →</button>`;
-    }
-    todaySection.innerHTML=`<div class="plan-today-card ${todayPlan.type}">
-      <div class="plan-today-eyebrow"><span class="plan-today-eyebrow-dot"></span>TODAY · ${dayName}, ${dateStr}</div>
-      <div class="plan-today-title">${subTitle}</div>
-      <div class="plan-today-desc">${extraDesc||meta.desc}</div>
-      ${actionHtml}
-    </div>`;
-  }
-
-  // ── Compliance ──
-  const requiredDays=S.planDays.map((p,i)=>({...p,i})).filter(p=>p.required&&p.type!=='rest');
-  let doneReq=0,totalReqSoFar=0;
-  requiredDays.forEach(p=>{
-    const d=weekDates[p.i];
-    const isPastOrToday=d<=now;
-    if(isPastOrToday){
-      totalReqSoFar++;
-      if(planGetDoneTypes(d.toDateString()).has(p.type)) doneReq++;
-    }
-  });
-  const pct=totalReqSoFar>0?Math.round(doneReq/totalReqSoFar*100):0;
-  const pctEl=document.getElementById('plan-pct');
-  if(pctEl) pctEl.textContent=totalReqSoFar>0?pct+'%':'—';
-  const barEl=document.getElementById('plan-bar');
-  if(barEl) barEl.style.width=(totalReqSoFar>0?pct:0)+'%';
-  const swEl=document.getElementById('plan-streak-weeks');
-  if(swEl) swEl.textContent=planCountPerfectWeeks();
-
-  // ── Week dots (Sun=0...Sat=6) ──
-  const dotsEl=document.getElementById('plan-week-dots');
-  if(dotsEl){
-    dotsEl.innerHTML=weekDates.map((d,i)=>{
-      const dk=d.toDateString();
-      const isToday=dk===todayKey;
-      const isPast=d<now&&!isToday;
-      const plan=S.planDays[i];
-      const done=planGetDoneTypes(dk);
-      let cls='',icon=PLAN_DAY_SHORT[i].charAt(0);
-      if(plan.type==='rest'){cls='rest';icon='·';}
-      else{
-        const typeDone=done.has(plan.type);
-        if(typeDone){cls=isToday?'today-done':'done';icon='✓';}
-        else if(isPast&&plan.required){cls='missed';icon='✗';}
-        else if(isToday&&plan.required){cls='today-planned';}
-        else if(!plan.required){cls='optional';}
-      }
-      return`<div class="plan-week-dot">
-        <div class="plan-week-dot-circle ${cls}">${icon}</div>
-        <div class="plan-week-dot-lbl">${PLAN_DAY_SHORT[i]}</div>
-      </div>`;
-    }).join('');
-  }
-
-  // ── Schedule list ──
-  const listEl=document.getElementById('plan-schedule-list');
-  if(listEl){
-    const rot=planGetCurrentRotation();
-    // Which day indices are strength days (for rotation assignment)?
-    const strDays=S.planDays.map((p,i)=>p.type==='strength'?i:-1).filter(i=>i>=0);
-    listEl.innerHTML=S.planDays.map((p,i)=>{
-      const meta=PLAN_TYPE_META[p.type]||PLAN_TYPE_META.rest;
-      const d=weekDates[i];
-      const dk=d.toDateString();
-      const isToday=dk===todayKey;
-      const isPast=d<now&&!isToday;
-      const done=planGetDoneTypes(dk);
-      const isDone=done.has(p.type);
-      // Specific workout labels per type
-      let displayTitle=meta.title;
-      let displayDesc=meta.desc;
-      if(p.type==='strength'){
-        const slotPos=strDays.indexOf(i);
-        const rotSlot=rot[slotPos%rot.length];
-        if(rotSlot) displayTitle=STRENGTH[rotSlot.wIdx].title;
-      }
-      if(p.type==='cycling'){
-        const next=getNextCyclingSession();
-        const vid=getVideo(next.week,next.day);
-        displayTitle=vid.title;
-        displayDesc=`Week ${next.week} · ${DAY_LABELS[next.day]} · ${vid.duration}`;
-      }
-      const statusIcon=isDone?'✓':isToday&&p.required?'▶':isPast&&p.required&&!isDone?'✗':'';
-      const statusColor=isDone?'var(--lime)':isToday&&p.required?'var(--lime)':isPast&&p.required&&!isDone?'var(--red)':'var(--dim)';
-      return`<div class="plan-day-card${isToday?' today':''}${isDone?' done':''}" data-type="${p.type}">
-        <div class="plan-day-icon ${p.type}">${meta.icon}</div>
-        <div class="plan-day-body">
-          <div class="plan-day-name">${PLAN_DAY_LABELS[i]}</div>
-          <div class="plan-day-title">${displayTitle}</div>
-          <div class="plan-day-desc">${displayDesc}</div>
-          <span class="plan-day-badge ${p.required&&p.type!=='rest'?'required':'optional'}">${p.required&&p.type!=='rest'?'Required':'Optional'}</span>
-        </div>
-        <div class="plan-day-status" style="color:${statusColor}">${statusIcon}</div>
-      </div>`;
-    }).join('');
-  }
-
   // ── Strength rotation ──
   const rotEl=document.getElementById('plan-rotation');
   if(rotEl){
@@ -3582,6 +3583,9 @@ function renderPlan(){
     }).join('')}</div>
     <div style="font-size:11px;color:var(--dim);margin-top:10px;line-height:1.5">Alternates every week so each muscle group has full recovery before being hit again.</div>`;
   }
+  renderHomeUpNext();
+  renderHomeGoal();
+  renderHomeStats();
 }
 
 
@@ -4475,7 +4479,7 @@ function renderGuidedWorkout(){
     gwSwapBtn.style.display=e.swaps?.length?'':'none';
   }
   document.getElementById('gw-set-label').textContent=`Set ${setNum} of ${target}`;
-  document.getElementById('gw-target-hint').textContent=`Target: ${block.repRange} reps · ${block.intensity}`;
+  document.getElementById('gw-target-hint').textContent=(S.strProgram==='sts'&&wIdx<3)?`Target: ${block.repRange} reps · ${block.intensity}`:`Target: ${e.reps} reps`;
 
   // Previous best
   const prev=strPrevWeight(wIdx,GW.exIdx);
@@ -4725,6 +4729,16 @@ function renderGuidedChecklist(){
     <div class="swap-modal-current" id="swap-modal-current">Barbell Bench Press</div>
     <div id="swap-modal-opts"></div>
     <button class="swap-cancel-btn" onclick="closeSwapModal()">Cancel</button>
+  </div>
+</div>
+
+<!-- ── Program Library Modal ──────────────────────────────── -->
+<div class="swap-modal-bg" id="program-modal-bg" onclick="closeProgramModal()">
+  <div class="swap-modal" onclick="event.stopPropagation()">
+    <div class="swap-modal-handle"></div>
+    <div class="swap-modal-title">Strength Program Library</div>
+    <div id="program-modal-opts"></div>
+    <button class="swap-cancel-btn" onclick="closeProgramModal()">Close</button>
   </div>
 </div>
 
