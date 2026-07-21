@@ -929,6 +929,8 @@ code{font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:4px
 .plan-rotation-slot{font-size:11px;color:var(--text2);line-height:1.6}
 .plan-rotation-day{font-size:10px;font-weight:700;color:var(--dim)}
 .nut-cal-summary{display:flex;align-items:center;justify-content:space-between;text-align:center;margin-bottom:10px}
+.nut-ai-toggle{background:var(--surface2);border:1px solid var(--border);color:var(--dim);font-size:10px;font-weight:700;padding:4px 10px;border-radius:20px;cursor:pointer;flex-shrink:0}
+.nut-ai-toggle.on{border-color:var(--lime);color:var(--lime);background:rgba(174,212,63,.08)}
 .nut-cal-col{flex:1}
 .nut-cal-num{font-size:26px;font-weight:900;color:var(--text);line-height:1}
 .nut-cal-num.accent{color:var(--lime)}
@@ -1502,10 +1504,13 @@ code{font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:4px
     </div>
     <div class="card" style="padding:16px 18px">
       <div id="nut-recent-foods" style="margin-bottom:4px"></div>
-      <div style="font-size:11px;color:var(--dim);margin-bottom:8px">Describe what you ate — plain words work.</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+        <div style="font-size:11px;color:var(--dim)">Describe what you ate — plain words work.</div>
+        <button class="nut-ai-toggle on" id="nut-ai-toggle" onclick="nutToggleAI()">AI Estimate: On</button>
+      </div>
       <div style="display:flex;gap:8px">
-        <input class="finput" type="text" id="nut-food-desc" placeholder="e.g. 2 cups rice, 1 lb chicken, 3 eggs" autocomplete="off" style="flex:1" oninput="nutUpdateParsePreview()" onkeydown="if(event.key==='Enter'){event.preventDefault();nutAddFromDesc();}"/>
-        <button class="btn btn-primary" style="flex-shrink:0" onclick="nutAddFromDesc()">Add</button>
+        <input class="finput" type="text" id="nut-food-desc" placeholder="e.g. 2 cups rice, 1 lb chicken, 3 eggs" autocomplete="off" style="flex:1" oninput="nutUpdateParsePreview()" onkeydown="if(event.key==='Enter'){event.preventDefault();nutAddFromDescAI();}"/>
+        <button class="btn btn-primary" id="nut-add-btn" style="flex-shrink:0" onclick="nutAddFromDescAI()">Add</button>
       </div>
       <div id="nut-parse-preview" style="font-size:12px;min-height:18px;margin-top:8px"></div>
     </div>
@@ -1707,28 +1712,28 @@ const ACH_DEFS=[
 
 const SPINESAFE_WORKOUTS=[
   {title:"Workout A: Push/Pull Foundation",time:"~50 min",muscles:"Full Body · Push/Pull",exercises:[
-    {name:"Belt Squat",sets:"3",reps:"10–12",rest:"60–90s",notes:"3-second eccentric. No axial spinal loading — belt squat machine transfers load to the hips, not the spine.",warmup:true},
-    {name:"Lat Pulldown (Neutral Grip)",sets:"3",reps:"8–12",rest:"60–90s",notes:"Full back support on the seat pad. Pull to upper chest, control the eccentric for 3 seconds."},
-    {name:"Seated Dumbbell Overhead Press",sets:"3",reps:"8–10",rest:"60–90s",notes:"High-backed adjustable bench for full spinal support — no standing overhead pressing."},
-    {name:"Incline Dumbbell Bench Press",sets:"3",reps:"10–12",rest:"60–90s",notes:"Bench at 30–45°. 3-second lowering phase, controlled press."},
-    {name:"Cable Tricep Pushdown",sets:"3",reps:"12–15",rest:"60–90s",notes:"Elbows pinned at sides. Slow 3-second release on the way up."},
-    {name:"Dumbbell Hammer Curls",sets:"3",reps:"10–12",rest:"60–90s",notes:"Neutral grip throughout. Control the eccentric — no swinging."},
+    {name:"Belt Squat",sets:"3",reps:"10–12",rest:"60–90s",notes:"3-second eccentric. No axial spinal loading — belt squat machine transfers load to the hips, not the spine.",warmup:true,swaps:["Leg Press","Hack Squat Machine","Goblet Squat"]},
+    {name:"Lat Pulldown (Neutral Grip)",sets:"3",reps:"8–12",rest:"60–90s",notes:"Full back support on the seat pad. Pull to upper chest, control the eccentric for 3 seconds.",swaps:["Wide-Grip Pulldown","Seated Cable Row","Assisted Pull-Up"]},
+    {name:"Seated Dumbbell Overhead Press",sets:"3",reps:"8–10",rest:"60–90s",notes:"High-backed adjustable bench for full spinal support — no standing overhead pressing.",swaps:["Machine Shoulder Press","Smith Machine Press","Landmine Press"]},
+    {name:"Incline Dumbbell Bench Press",sets:"3",reps:"10–12",rest:"60–90s",notes:"Bench at 30–45°. 3-second lowering phase, controlled press.",swaps:["Incline Barbell Press","Smith Machine Incline","Machine Chest Press"]},
+    {name:"Cable Tricep Pushdown",sets:"3",reps:"12–15",rest:"60–90s",notes:"Elbows pinned at sides. Slow 3-second release on the way up.",swaps:["Overhead Cable Tricep Extension","DB Skullcrusher","Machine Triceps Extension"]},
+    {name:"Dumbbell Hammer Curls",sets:"3",reps:"10–12",rest:"60–90s",notes:"Neutral grip throughout. Control the eccentric — no swinging.",swaps:["Cable Hammer Curl","EZ-Bar Curl","Rope Curl"]},
   ]},
   {title:"Workout B: Accessory & Volume Focus",time:"~50 min",muscles:"Full Body · Accessory",exercises:[
-    {name:"Leg Press",sets:"3",reps:"10–12",rest:"60–90s",notes:"Full back support against the pad — no spinal loading. 3-second eccentric.",warmup:true},
-    {name:"Seated Cable Row",sets:"3",reps:"10–12",rest:"60–90s",notes:"Sit tall, chest supported. Squeeze shoulder blades, control the release."},
-    {name:"Dumbbell Lateral Raises",sets:"4",reps:"15–20",rest:"60–90s",notes:"Slight elbow bend, raise to shoulder height. 3-second lowering phase."},
-    {name:"Face Pulls",sets:"3",reps:"15–20",rest:"60–90s",notes:"Rope at face height, pull toward forehead, elbows high. Controlled tempo."},
-    {name:"EZ Bar Preacher Curls",sets:"3",reps:"10–12",rest:"60–90s",notes:"Preacher pad supports the spine and isolates the biceps. Slow eccentric."},
-    {name:"Overhead Cable Tricep Extension",sets:"3",reps:"12–15",rest:"60–90s",notes:"Seated if available for back support. Full stretch, 3-second lowering."},
+    {name:"Leg Press",sets:"3",reps:"10–12",rest:"60–90s",notes:"Full back support against the pad — no spinal loading. 3-second eccentric.",warmup:true,swaps:["Belt Squat","Hack Squat Machine","Goblet Squat"]},
+    {name:"Seated Cable Row",sets:"3",reps:"10–12",rest:"60–90s",notes:"Sit tall, chest supported. Squeeze shoulder blades, control the release.",swaps:["Chest-Supported Row","Lat Pulldown (Neutral Grip)","Machine Row"]},
+    {name:"Dumbbell Lateral Raises",sets:"4",reps:"15–20",rest:"60–90s",notes:"Slight elbow bend, raise to shoulder height. 3-second lowering phase.",swaps:["Cable Lateral Raise","Machine Lateral Raise","Band Lateral Raise"]},
+    {name:"Face Pulls",sets:"3",reps:"15–20",rest:"60–90s",notes:"Rope at face height, pull toward forehead, elbows high. Controlled tempo.",swaps:["Reverse Pec Dec","DB Rear Delt Fly","Band Pull-Apart"]},
+    {name:"EZ Bar Preacher Curls",sets:"3",reps:"10–12",rest:"60–90s",notes:"Preacher pad supports the spine and isolates the biceps. Slow eccentric.",swaps:["Machine Preacher Curl","DB Concentration Curl","Cable Curl"]},
+    {name:"Overhead Cable Tricep Extension",sets:"3",reps:"12–15",rest:"60–90s",notes:"Seated if available for back support. Full stretch, 3-second lowering.",swaps:["Cable Tricep Pushdown","DB Skullcrusher","Machine Triceps Extension"]},
   ]},
   {title:"Workout C: Strength & Hypertrophy Pump",time:"~50 min",muscles:"Full Body · Strength & Pump",exercises:[
-    {name:"Bulgarian Split Squats",sets:"3",reps:"8–10",rest:"60–90s",notes:"Rear foot elevated. 3-second eccentric on the way down each rep.",warmup:true},
-    {name:"Chest-Supported Row",sets:"3",reps:"10–12",rest:"60–90s",notes:"Chest pad removes spinal loading. Squeeze at the top, slow release."},
-    {name:"Arnold Press",sets:"3",reps:"10–12",rest:"60–90s",notes:"Seated with back support. Rotate through the press, control the descent."},
-    {name:"Cable Flys (High to Low)",sets:"3",reps:"12–15",rest:"60–90s",notes:"Cables set high, pull down and in. 3-second stretch on the eccentric."},
-    {name:"Dumbbell Skullcrushers",sets:"3",reps:"10–12",rest:"60–90s",notes:"Lying on a bench for full support. Control the lowering phase."},
-    {name:"Incline Dumbbell Curls",sets:"3",reps:"10–12",rest:"60–90s",notes:"Incline bench for full back support and a deep stretch. Slow eccentric."},
+    {name:"Bulgarian Split Squats",sets:"3",reps:"8–10",rest:"60–90s",notes:"Rear foot elevated. 3-second eccentric on the way down each rep.",warmup:true,swaps:["Leg Press","Walking Lunge","Step-Up"]},
+    {name:"Chest-Supported Row",sets:"3",reps:"10–12",rest:"60–90s",notes:"Chest pad removes spinal loading. Squeeze at the top, slow release.",swaps:["Seated Cable Row","Lat Pulldown (Neutral Grip)","Machine Row"]},
+    {name:"Arnold Press",sets:"3",reps:"10–12",rest:"60–90s",notes:"Seated with back support. Rotate through the press, control the descent.",swaps:["Seated Dumbbell Overhead Press","Machine Shoulder Press","Smith Machine Press"]},
+    {name:"Cable Flys (High to Low)",sets:"3",reps:"12–15",rest:"60–90s",notes:"Cables set high, pull down and in. 3-second stretch on the eccentric.",swaps:["DB Fly","Pec Dec","Incline Dumbbell Bench Press"]},
+    {name:"Dumbbell Skullcrushers",sets:"3",reps:"10–12",rest:"60–90s",notes:"Lying on a bench for full support. Control the lowering phase.",swaps:["Cable Tricep Pushdown","Overhead Cable Tricep Extension","Machine Triceps Extension"]},
+    {name:"Incline Dumbbell Curls",sets:"3",reps:"10–12",rest:"60–90s",notes:"Incline bench for full back support and a deep stretch. Slow eccentric.",swaps:["Cable Curl","EZ-Bar Preacher Curls","DB Hammer Curls"]},
   ]},
 ];
 const PROGRAM_LIBRARY={
@@ -2206,6 +2211,85 @@ function nutEstimate(desc){
   return { ok:true, kcal, grams:Math.round(grams), name: nutTitleCase(s) };
 }
 function nutSplitFoods(s){ return s.split(/\s*(?:,|;|\n|\+|&|\band\b)\s*/i).map(x=>x.trim()).filter(Boolean); }
+
+// ── Nutrition: Groq AI-powered calorie estimate (reuses the same Cloudflare
+// Worker proxy already deployed for the user's other apps — Recipe Ripper,
+// Bread Baker — which keeps the real Groq API key server-side). Falls back
+// to the offline nutEstimate() engine automatically on any failure. ──
+const GROQ_PROXY='https://lingering-sun-b693.christiangodsey.workers.dev';
+const GROQ_TEXT_MODELS=['openai/gpt-oss-120b','llama-3.3-70b-versatile'];
+async function callGroq(prompt){
+  const endpoint=GROQ_PROXY.trim()||'https://api.groq.com/openai/v1/chat/completions';
+  let lastErr='';
+  for(const model of GROQ_TEXT_MODELS){
+    try{
+      const res=await fetch(endpoint,{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({model,messages:[{role:'user',content:prompt}],temperature:0.2})
+      });
+      if(!res.ok){lastErr=`HTTP ${res.status}`;continue;}
+      const data=await res.json();
+      const content=data.choices&&data.choices[0]&&data.choices[0].message&&data.choices[0].message.content;
+      if(!content){lastErr='Empty response';continue;}
+      return content;
+    }catch(e){lastErr=(e&&e.message)||'Network error';}
+  }
+  throw new Error(lastErr||'Groq request failed');
+}
+function parseGroqJSON(raw){
+  // Strip reasoning-model <think> blocks and markdown code fences before parsing.
+  let s=raw.replace(/<think>[\s\S]*?<\/think>/gi,'').replace(/```json\s*/gi,'').replace(/```\s*/g,'').trim();
+  return JSON.parse(s);
+}
+async function nutAddFromDescAI(){
+  const inp=document.getElementById('nut-food-desc');
+  if(!inp)return;
+  const raw=inp.value.trim();
+  if(!raw)return;
+  if(S.nutrition.useAI===false){ nutAddFromDesc(); return; }
+  const btn=document.getElementById('nut-add-btn');
+  if(btn){btn.disabled=true;const orig=btn.textContent;btn.dataset.orig=orig;btn.textContent='…';}
+  try{
+    const prompt=`Estimate calories for these foods eaten: "${raw}". Return ONLY a JSON array (no prose, no markdown fences), one object per distinct food item, each shaped exactly like {"name":string,"kcal":integer,"grams":integer or null}. Split multiple foods/items into separate array entries. Use realistic standard nutrition data for the stated portion, or a typical single serving if no quantity is given.`;
+    const raw2=await callGroq(prompt);
+    const items=parseGroqJSON(raw2);
+    if(!Array.isArray(items)||!items.length)throw new Error('No items returned');
+    let total=0,count=0;
+    items.forEach(it=>{
+      if(!it||!it.name||typeof it.kcal!=='number')return;
+      const kcal=Math.round(it.kcal);
+      const grams=(it.grams!=null&&!isNaN(it.grams))?Math.round(it.grams):null;
+      nutAddFood(strTodayKey(),{name:nutTitleCase(String(it.name)),kcal,grams,per100:(grams?Math.round(kcal/grams*100):null)});
+      total+=kcal;count++;
+    });
+    if(!count)throw new Error('No valid items in response');
+    renderNutritionTab();
+    inp.value='';
+    const previewEl=document.getElementById('nut-parse-preview');
+    if(previewEl)previewEl.innerHTML='';
+    showToast('','Added (AI estimate)',`${count} item${count===1?'':'s'} · ${total.toLocaleString()} cal`);
+  }catch(e){
+    nutAddFromDesc();
+    const offline=(e&&e.message==='Failed to fetch');
+    showToast('','Used offline estimate',offline?'No connection — used local database':'AI estimate unavailable — used local database');
+  }finally{
+    if(btn){btn.disabled=false;btn.textContent=btn.dataset.orig||'Add';}
+  }
+}
+function nutToggleAI(){
+  S.nutrition.useAI=S.nutrition.useAI===false?true:false;
+  saveState();
+  updateNutAIToggleUI();
+}
+function updateNutAIToggleUI(){
+  const btn=document.getElementById('nut-ai-toggle');
+  if(!btn)return;
+  const on=S.nutrition.useAI!==false;
+  btn.textContent='AI Estimate: '+(on?'On':'Off');
+  btn.classList.toggle('on',on);
+}
+
 function nutEsc(s){ return (s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
 // ── Nutrition: storage + UI (uses S.nutrition, saveState(), strTodayKey()) ──
@@ -2370,6 +2454,7 @@ function renderNutritionTab(){
   renderNutritionSummary();
   renderNutritionRecents();
   renderNutritionLog();
+  updateNutAIToggleUI();
 }
 
 const K={hist:'cw-history',ach:'cw-ach',timers:'cw-timers',week:'cw-week',strlog:'cw-str-log',strhist:'cw-str-hist',bodylog:'cw-body-log',bxhist:'cw-bx-hist',actlog:'cw-act-log',prs:'cw-prs',goals:'cw-goals',strswaps:'cw-str-swaps',plandays:'cw-plan-days',stsweek:'cw-sts-week',stsdone:'cw-sts-done',stscycle:'cw-sts-cycle',strprogram:'cw-str-program',reminders:'cw-reminders',energylog:'cw-energy-log',nutrition:'cw-nutrition'};
@@ -2428,7 +2513,7 @@ let S={
   strProgram:'spinesafe',
   reminders:{enabled:false,thresholdDays:3,lastNotified:null},
   energyLog:{},
-  nutrition:{goal:2200,log:{},recents:{}},
+  nutrition:{goal:2200,log:{},recents:{},useAI:true},
   stsWeek:1,stsDone:{},stsCycle:1,
   bodyLog:[],
   bxHistory:[],
@@ -2540,7 +2625,7 @@ function loadState(){
   try{S.stsCycle=Math.max(1,parseInt(localStorage.getItem(K.stscycle)||'1')||1);}catch{}
   try{const r=JSON.parse(localStorage.getItem(K.reminders)||'null');if(r)S.reminders={...S.reminders,...r};}catch{}
   try{S.energyLog=JSON.parse(localStorage.getItem(K.energylog)||'{}');}catch{}
-  try{const n=JSON.parse(localStorage.getItem(K.nutrition)||'null');if(n)S.nutrition={goal:2200,log:{},recents:{},...n};}catch{}
+  try{const n=JSON.parse(localStorage.getItem(K.nutrition)||'null');if(n)S.nutrition={goal:2200,log:{},recents:{},useAI:true,...n};}catch{}
   try{S.strProgram=localStorage.getItem(K.strprogram)||'spinesafe';}catch{S.strProgram='spinesafe';}
 }
 function saveState(){
@@ -5074,6 +5159,7 @@ updateSyncStatusUI();
 updateReminderSettingsUI();
 syncStsExercises(); // load exercises for current STS phase
 renderNutritionSummary();
+updateNutAIToggleUI();
 const incompleteDays=DAYS.filter(d=>!isDayDone(S.week,d));
 if(incompleteDays.length)S.activeDay=incompleteDays[0];
 render();resetBoxingTimer();initSwipe();
