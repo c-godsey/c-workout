@@ -949,6 +949,29 @@ code{font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:4px
 .nut-log-btn:hover{color:var(--lime)}
 .nut-log-remove:hover{color:var(--red)}
 .nut-log-edit{display:none;gap:8px;align-items:flex-end;padding:8px 0 12px;border-bottom:1px solid var(--border)}
+.scan-overlay{display:none;position:fixed;inset:0;z-index:960;background:#000;flex-direction:column}
+.scan-overlay.open{display:flex}
+.scan-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;flex-shrink:0}
+.scan-title{font-size:11px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:#fff}
+.scan-close-btn{background:rgba(255,255,255,.12);border:none;color:#fff;width:32px;height:32px;border-radius:50%;font-size:16px;cursor:pointer;flex-shrink:0}
+.scan-video-wrap{position:relative;flex:1;min-height:0;overflow:hidden;background:#000}
+.scan-video{width:100%;height:100%;object-fit:cover;display:block}
+.scan-frame{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:78%;max-width:340px;aspect-ratio:16/9;border:2px solid var(--lime);border-radius:14px;box-shadow:0 0 0 2000px rgba(0,0,0,.45);pointer-events:none}
+.scan-line{position:absolute;left:6%;right:6%;top:6%;height:2px;background:var(--lime);box-shadow:0 0 8px var(--lime);animation:scanline 1.8s ease-in-out infinite}
+@keyframes scanline{0%{top:6%}50%{top:94%}100%{top:6%}}
+.scan-status{position:absolute;bottom:18px;left:0;right:0;text-align:center;color:#fff;font-size:12px;font-weight:600;text-shadow:0 1px 4px rgba(0,0,0,.6);padding:0 20px}
+.scan-result-sheet{background:var(--surface);border-radius:24px 24px 0 0;padding:20px 20px 28px;flex-shrink:0;display:none}
+.scan-result-sheet.open{display:block}
+.scan-result-name{font-size:16px;font-weight:800;color:var(--text);margin-bottom:2px}
+.scan-result-brand{font-size:11px;color:var(--dim);margin-bottom:14px}
+.scan-result-cal-row{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+.scan-result-cal{font-size:28px;font-weight:800;color:var(--lime);line-height:1}
+.scan-result-cal-lbl{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--dim);margin-top:2px}
+.scan-qty-row{display:flex;align-items:center;gap:10px;margin-bottom:18px}
+.scan-qty-btn{width:36px;height:36px;border-radius:10px;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-size:18px;font-weight:700;cursor:pointer;flex-shrink:0}
+.scan-qty-val{flex:1;text-align:center;font-size:14px;font-weight:700;color:var(--text)}
+.scan-result-actions{display:flex;gap:10px}
+.scan-result-actions .btn{flex:1}
 </style>
 </head>
 <body>
@@ -1510,6 +1533,9 @@ code{font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:4px
       </div>
       <div style="display:flex;gap:8px">
         <input class="finput" type="text" id="nut-food-desc" placeholder="e.g. 2 cups rice, 1 lb chicken, 3 eggs" autocomplete="off" style="flex:1" oninput="nutUpdateParsePreview()" onkeydown="if(event.key==='Enter'){event.preventDefault();nutAddFromDescAI();}"/>
+        <button class="btn btn-secondary" id="nut-scan-btn" style="flex-shrink:0;padding:0 14px" onclick="openBarcodeScanner()" aria-label="Scan barcode">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3 7V4a1 1 0 011-1h3M17 3h3a1 1 0 011 1v3M21 17v3a1 1 0 01-1 1h-3M7 21H4a1 1 0 01-1-1v-3"/><path d="M6 8v8M9 8v8M12 8v8M15 8v8M18 8v8"/></svg>
+        </button>
         <button class="btn btn-primary" id="nut-add-btn" style="flex-shrink:0" onclick="nutAddFromDescAI()">Add</button>
       </div>
       <div id="nut-parse-preview" style="font-size:12px;min-height:18px;margin-top:8px"></div>
@@ -1736,9 +1762,69 @@ const SPINESAFE_WORKOUTS=[
     {name:"Incline Dumbbell Curls",sets:"3",reps:"10–12",rest:"60–90s",notes:"Incline bench for full back support and a deep stretch. Slow eccentric.",swaps:["Cable Curl","EZ-Bar Preacher Curls","DB Hammer Curls"]},
   ]},
 ];
+const JNFULL_A_WORKOUTS=[
+  {title:"Full Body #1",time:"~55 min",muscles:"Full Body · Quads, Chest, Back, Hamstrings",exercises:[
+    {name:"Back Squat",sets:"3",reps:"6",rest:"1.5m",notes:"RPE 7. Sit back and down, 15° toe flare, drive your knees out laterally.",warmup:true,swaps:["Leg Press","Hack Squat Machine","Goblet Squat"]},
+    {name:"Barbell Bench Press",sets:"3",reps:"8",rest:"1.5m",notes:"RPE 7. Tuck elbows at a 45° angle, squeeze your shoulder blades and stay firm on the bench.",swaps:["Dumbbell Bench Press","Hammer Strength Chest Press","Smith Machine Bench Press"]},
+    {name:"Lat Pulldown",sets:"3",reps:"10",rest:"1.5m",notes:"RPE 8. Pull your elbows straight out to your sides, use a 1.5x shoulder-width grip.",swaps:["Neutral-Grip Pulldown","Assisted Pull-Up","Seated Cable Row"]},
+    {name:"Romanian Deadlift",sets:"3",reps:"10",rest:"1.5m",notes:"RPE 7. Maintain a neutral lower back, set your hips back, don't allow your spine to round.",swaps:["Glute Ham Raise","Leg Curl Machine","Good Morning"]},
+    {name:"Assisted Dip",sets:"3",reps:"8",rest:"1.5m",notes:"RPE 7. Tuck elbows at a 45° angle, lean your torso forward 15°.",swaps:["Decline Dumbbell Press","Decline Barbell Press","Hammer Strength Decline Press"]},
+    {name:"Standing Calf Raise",sets:"3",reps:"10",rest:"1.5m",notes:"RPE 8. Press all the way up to your toes, stretch your calves at the bottom, don't bounce.",swaps:["Dumbbell Standing Calf Raise","Leg Press Calf Raise","Smith Machine Calf Raise"]},
+    {name:"Dumbbell Supinated Curl",sets:"3",reps:"10",rest:"1.5m",notes:"RPE 8. Drive your pinky into the handle harder than your pointer finger.",swaps:["EZ-Bar Curl","Cable Curl","Hammer Curl"]},
+  ]},
+  {title:"Full Body #2",time:"~55 min",muscles:"Full Body · Hamstrings, Shoulders, Back, Quads",exercises:[
+    {name:"Deadlift",sets:"3",reps:"5",rest:"1.5m",notes:"RPE 7. Brace your lats, chest tall, hips high, pull the slack out of the bar before moving it off the ground.",warmup:true,swaps:["Barbell Hip Thrust","Trap Bar Deadlift","Rack Pull"]},
+    {name:"Military Press",sets:"3",reps:"8",rest:"1.5m",notes:"RPE 8. Squeeze your glutes to keep your torso upright, clear your head out of the way, press up and slightly back.",swaps:["Standing Dumbbell Shoulder Press","Seated Barbell Press","Smith Machine Press"]},
+    {name:"Chest-Supported T-Bar Row",sets:"3",reps:"12",rest:"1.5m",notes:"RPE 8. Retract your shoulder blades during the lift, let them protract on the way back.",swaps:["Chest-Supported Dumbbell Row","Seated Cable Row","Barbell Bent-Over Row"]},
+    {name:"Leg Extension",sets:"3",reps:"12",rest:"1.5m",notes:"RPE 8. Focus on squeezing your quads to make the weight move.",swaps:["Leg Press","Sissy Squat","Goblet Squat"]},
+    {name:"Cable Flye",sets:"3",reps:"12",rest:"1.5m",notes:"RPE 8. Keep your shoulder blades retracted, pull your inner elbows together — not your hands.",swaps:["Dumbbell Fly","Pec Deck","Incline Dumbbell Press"]},
+    {name:"Crunch",sets:"3",reps:"12",rest:"1.5m",notes:"RPE 7. Focus on flexing your spine, don't yank your head with your arms.",swaps:["Cable Crunch","Machine Crunch","Reverse Crunch"]},
+    {name:"Dumbbell Skull Crusher",sets:"3",reps:"12",rest:"1.5m",notes:"RPE 8. Keep your elbows in line with the top of your head, don't let your upper arm move.",swaps:["EZ-Bar Skull Crusher","Cable Tricep Pushdown","Overhead Tricep Extension"]},
+  ]},
+  {title:"Full Body #3",time:"~55 min",muscles:"Full Body · Glutes, Chest, Back, Shoulders",exercises:[
+    {name:"Dumbbell Walking Lunge",sets:"3",reps:"10",rest:"1.5m",notes:"RPE 8. 10 steps each leg. Take medium strides, let your torso lean forward.",warmup:true,swaps:["Single-Leg Dumbbell Hip Thrust","Bulgarian Split Squat","Leg Press"]},
+    {name:"Dumbbell Incline Press",sets:"3",reps:"8",rest:"1.5m",notes:"RPE 7. Keep your shoulder blades retracted and depressed.",swaps:["Hammer Strength Incline Press","Incline Barbell Press","Smith Machine Incline Press"]},
+    {name:"Reverse-Grip Lat Pulldown",sets:"3",reps:"10",rest:"1.5m",notes:"RPE 8. Pull your elbows down against your sides, use a shoulder-width grip.",swaps:["Neutral-Grip Pulldown","Underhand Bent-Over Row","Assisted Pull-Up"]},
+    {name:"Barbell Hip Thrust",sets:"3",reps:"12",rest:"1.5m",notes:"RPE 8. Tuck your chin and rib cage down, only move your hips. Use a pad.",swaps:["Leg Extension Machine Hip Thrust","Glute Bridge","Cable Pull-Through"]},
+    {name:"Seated Face Pull",sets:"3",reps:"12",rest:"1.5m",notes:"RPE 8. Pull your arms back and out.",swaps:["Band Face Pull","Reverse Pec Deck","Bent-Over Rear Delt Fly"]},
+    {name:"Dumbbell Lateral Raise",sets:"3",reps:"10",rest:"1.5m",notes:"RPE 8. Tilt the dumbbell so your pinky comes up first.",swaps:["Cable Lateral Raise","Machine Lateral Raise","Band Lateral Raise"]},
+    {name:"Lying Leg Curl",sets:"3",reps:"10",rest:"1.5m",notes:"RPE 8. Focus on squeezing your hamstrings to make the weight move.",swaps:["Dumbbell Leg Curl","Seated Leg Curl","Glute Ham Raise"]},
+  ]},
+];
+const JNFULL_B_WORKOUTS=[
+  {title:"Full Body #1",time:"~55 min",muscles:"Full Body · Quads, Shoulders, Back, Glutes",exercises:[
+    {name:"Back Squat",sets:"3",reps:"8",rest:"1.5m",notes:"RPE 8. Sit back and down, 15° toe flare, drive your knees out laterally.",warmup:true,swaps:["Leg Press","Hack Squat Machine","Goblet Squat"]},
+    {name:"Dumbbell Seated Shoulder Press",sets:"3",reps:"10",rest:"1.5m",notes:"RPE 8. Bring the dumbbells all the way down to your shoulders, keep your torso upright.",swaps:["Machine Shoulder Press","Standing Military Press","Arnold Press"]},
+    {name:"Single-Arm Pulldown",sets:"3",reps:"12",rest:"1.5m",notes:"RPE 9. Start with your non-dominant arm, match reps with your dominant arm.",swaps:["Lat Pulldown","Assisted Pull-Up","Seated Cable Row"]},
+    {name:"Barbell Hip Thrust",sets:"3",reps:"8",rest:"1.5m",notes:"RPE 9. Tuck your chin and rib cage down, only move your hips. Use a pad.",swaps:["Leg Extension Machine Hip Thrust","Glute Bridge","Cable Pull-Through"]},
+    {name:"Pec Deck",sets:"3",reps:"15",rest:"1.5m",notes:"RPE 9. Keep your shoulder blades retracted, pull your inner elbows together — not your hands.",swaps:["Dumbbell Fly","Cable Fly","Incline Dumbbell Press"]},
+    {name:"Reverse Pec Deck",sets:"3",reps:"15",rest:"1.5m",notes:"RPE 9. Protract your shoulder blades, sweep the weight out and back.",swaps:["Band Face Pull","Bent-Over Rear Delt Fly","Cable Rear Delt Fly"]},
+    {name:"Cable Lateral Raise",sets:"3",reps:"12",rest:"1.5m",notes:"RPE 9. Lean away from the machine, arm straight out to your side.",swaps:["Dumbbell Lateral Raise","Machine Lateral Raise","Band Lateral Raise"]},
+  ]},
+  {title:"Full Body #2",time:"~55 min",muscles:"Full Body · Back, Chest, Glutes, Abs",exercises:[
+    {name:"Deadlift",sets:"3",reps:"3",rest:"1.5m",notes:"RPE 8. Brace your lats, chest tall, hips high, pull the slack out of the bar before moving it off the ground.",warmup:true,swaps:["Barbell Hip Thrust","Trap Bar Deadlift","Rack Pull"]},
+    {name:"Close-Grip Bench Press",sets:"3",reps:"5",rest:"1.5m",notes:"RPE 7. Shoulder-width grip, tuck your elbows against your sides.",swaps:["Dips","Tricep Pushdown","Board Press"]},
+    {name:"Dumbbell Row",sets:"3",reps:"12",rest:"1.5m",notes:"RPE 8. Brace onto a bench for support, pull your elbow against your side.",swaps:["Chest-Supported Dumbbell Row","Seated Cable Row","Barbell Bent-Over Row"]},
+    {name:"Dumbbell Walking Lunge",sets:"3",reps:"12",rest:"1.5m",notes:"RPE 8. 12 steps each leg. Take medium strides, let your torso lean forward.",swaps:["Single-Leg Dumbbell Hip Thrust","Bulgarian Split Squat","Leg Press"]},
+    {name:"Assisted Dip",sets:"3",reps:"12",rest:"1.5m",notes:"RPE 8. Tuck elbows at a 45° angle, lean your torso forward 15°.",swaps:["Decline Dumbbell Press","Decline Barbell Press","Hammer Strength Decline Press"]},
+    {name:"Bicycle Crunch",sets:"3",reps:"10",rest:"1.5m",notes:"RPE 7. Focus on flexing and rotating your spine — left elbow to right knee, right elbow to left knee.",swaps:["Reverse Crunch","Hanging Knee Raise","Cable Crunch"]},
+    {name:"Single-Arm Cable Curl",sets:"3",reps:"12",rest:"1.5m",notes:"RPE 8. Face away from the cable, keep your arm behind your torso.",swaps:["Dumbbell Hammer Curl","EZ-Bar Curl","Cable Curl"]},
+  ]},
+  {title:"Full Body #3",time:"~55 min",muscles:"Full Body · Quads, Chest, Back, Hamstrings",exercises:[
+    {name:"Back Squat",sets:"3",reps:"5",rest:"1.5m",notes:"RPE 8. Sit back and down, 15° toe flare, drive your knees out laterally.",warmup:true,swaps:["Leg Press","Hack Squat Machine","Goblet Squat"]},
+    {name:"Barbell Bench Press",sets:"3",reps:"10",rest:"1.5m",notes:"RPE 8. Tuck elbows at a 45° angle, squeeze your shoulder blades and stay firm on the bench.",swaps:["Dumbbell Bench Press","Hammer Strength Chest Press","Smith Machine Bench Press"]},
+    {name:"Neutral-Grip Pulldown",sets:"3",reps:"15",rest:"1.5m",notes:"RPE 8. Palms facing each other. Pull your elbows against your sides.",swaps:["Lat Pulldown","Assisted Pull-Up","Seated Cable Row"]},
+    {name:"Lying Leg Curl",sets:"3",reps:"12",rest:"1.5m",notes:"RPE 8. Focus on squeezing your hamstrings to make the weight move.",swaps:["Dumbbell Leg Curl","Seated Leg Curl","Glute Ham Raise"]},
+    {name:"Seated Face Pull",sets:"3",reps:"15",rest:"1.5m",notes:"RPE 8. Pull your arms back and out.",swaps:["Band Face Pull","Reverse Pec Deck","Bent-Over Rear Delt Fly"]},
+    {name:"Single-Arm Rope Tricep Extension",sets:"3",reps:"12",rest:"1.5m",notes:"RPE 8. Pull your arm behind your torso, don't move your upper arm.",swaps:["Cable Tricep Pushdown","Overhead Tricep Extension","Dumbbell Skull Crusher"]},
+    {name:"Standing Calf Raise",sets:"3",reps:"10",rest:"1.5m",notes:"RPE 8. Press all the way up to your toes, stretch your calves at the bottom, don't bounce.",swaps:["Dumbbell Standing Calf Raise","Leg Press Calf Raise","Smith Machine Calf Raise"]},
+  ]},
+];
 const PROGRAM_LIBRARY={
   spinesafe:{name:"Spine-Safe Hypertrophy",desc:"3-day rotating full-body split. Mechanical tension + metabolic stress with strict spinal-safety protocols — belt squats, seated/supported pressing, no axial spinal loading. 3s eccentric tempo, 60–90s rest, RPE 8–9."},
-  sts:{name:"Shortcut to Size (STS)",desc:"12-week periodized 3-day split (Chest & Triceps / Back & Biceps / Shoulders & Traps) with rest-pause and drop-set techniques across 3 phases."}
+  sts:{name:"Shortcut to Size (STS)",desc:"12-week periodized 3-day split (Chest & Triceps / Back & Biceps / Shoulders & Traps) with rest-pause and drop-set techniques across 3 phases."},
+  jnfullA:{name:"JN Fundamentals — Full Body (Block A)",desc:"3-day full-body split from Jeff Nippard's Fundamentals Hypertrophy Program — Weeks 1-4 Strength Base block. Squat, deadlift and bench-focused compounds, RPE 7-8, 3-4 min rest on primary lifts. Run for 4 weeks, then switch to Block B."},
+  jnfullB:{name:"JN Fundamentals — Full Body (Block B)",desc:"3-day full-body split from Jeff Nippard's Fundamentals Hypertrophy Program — Weeks 5-8 Modified Strength Base block. New exercise selection, higher RPE (8-9) with added isolation volume. Run after completing Block A."}
 };
 const DAYS=['day1','day2','day3'];
 const DAY_LABELS={day1:'Day 1',day2:'Day 2',day3:'Day 3'};
@@ -1888,6 +1974,18 @@ function syncStsExercises(){
     STRENGTH[0].title=SPINESAFE_WORKOUTS[0].title;STRENGTH[0].muscles=SPINESAFE_WORKOUTS[0].muscles;STRENGTH[0].time=SPINESAFE_WORKOUTS[0].time;STRENGTH[0].exercises=SPINESAFE_WORKOUTS[0].exercises;
     STRENGTH[1].title=SPINESAFE_WORKOUTS[1].title;STRENGTH[1].muscles=SPINESAFE_WORKOUTS[1].muscles;STRENGTH[1].time=SPINESAFE_WORKOUTS[1].time;STRENGTH[1].exercises=SPINESAFE_WORKOUTS[1].exercises;
     STRENGTH[2].title=SPINESAFE_WORKOUTS[2].title;STRENGTH[2].muscles=SPINESAFE_WORKOUTS[2].muscles;STRENGTH[2].time=SPINESAFE_WORKOUTS[2].time;STRENGTH[2].exercises=SPINESAFE_WORKOUTS[2].exercises;
+    return;
+  }
+  if(S.strProgram==='jnfullA'){
+    STRENGTH[0].title=JNFULL_A_WORKOUTS[0].title;STRENGTH[0].muscles=JNFULL_A_WORKOUTS[0].muscles;STRENGTH[0].time=JNFULL_A_WORKOUTS[0].time;STRENGTH[0].exercises=JNFULL_A_WORKOUTS[0].exercises;
+    STRENGTH[1].title=JNFULL_A_WORKOUTS[1].title;STRENGTH[1].muscles=JNFULL_A_WORKOUTS[1].muscles;STRENGTH[1].time=JNFULL_A_WORKOUTS[1].time;STRENGTH[1].exercises=JNFULL_A_WORKOUTS[1].exercises;
+    STRENGTH[2].title=JNFULL_A_WORKOUTS[2].title;STRENGTH[2].muscles=JNFULL_A_WORKOUTS[2].muscles;STRENGTH[2].time=JNFULL_A_WORKOUTS[2].time;STRENGTH[2].exercises=JNFULL_A_WORKOUTS[2].exercises;
+    return;
+  }
+  if(S.strProgram==='jnfullB'){
+    STRENGTH[0].title=JNFULL_B_WORKOUTS[0].title;STRENGTH[0].muscles=JNFULL_B_WORKOUTS[0].muscles;STRENGTH[0].time=JNFULL_B_WORKOUTS[0].time;STRENGTH[0].exercises=JNFULL_B_WORKOUTS[0].exercises;
+    STRENGTH[1].title=JNFULL_B_WORKOUTS[1].title;STRENGTH[1].muscles=JNFULL_B_WORKOUTS[1].muscles;STRENGTH[1].time=JNFULL_B_WORKOUTS[1].time;STRENGTH[1].exercises=JNFULL_B_WORKOUTS[1].exercises;
+    STRENGTH[2].title=JNFULL_B_WORKOUTS[2].title;STRENGTH[2].muscles=JNFULL_B_WORKOUTS[2].muscles;STRENGTH[2].time=JNFULL_B_WORKOUTS[2].time;STRENGTH[2].exercises=JNFULL_B_WORKOUTS[2].exercises;
     return;
   }
   STRENGTH[0].title='Chest & Triceps';STRENGTH[0].muscles='Chest · Triceps · Calves';STRENGTH[0].time='~45 min';
@@ -2288,6 +2386,134 @@ function updateNutAIToggleUI(){
   const on=S.nutrition.useAI!==false;
   btn.textContent='AI Estimate: '+(on?'On':'Off');
   btn.classList.toggle('on',on);
+}
+
+// ── Nutrition: Barcode Scanner ──────────────────────────────────────────────
+// Uses @zxing/library (loaded lazily from CDN, only when the scanner is opened)
+// for camera-based barcode decoding, then looks the product up via the free,
+// no-key-required Open Food Facts API. Falls back gracefully offline / not-found.
+let SCAN={reader:null,active:false,lastCode:null,product:null,qty:1};
+function loadZXing(){
+  if(window.ZXing) return Promise.resolve();
+  if(loadZXing._p) return loadZXing._p;
+  loadZXing._p=new Promise((resolve,reject)=>{
+    const s=document.createElement('script');
+    s.src='https://cdn.jsdelivr.net/npm/@zxing/library@0.21.3/umd/index.min.js';
+    s.onload=()=>resolve();
+    s.onerror=()=>reject(new Error('Could not load scanner library'));
+    document.head.appendChild(s);
+  });
+  return loadZXing._p;
+}
+async function openBarcodeScanner(){
+  const overlay=document.getElementById('scan-overlay');
+  if(!overlay)return;
+  overlay.classList.add('open');
+  const statusEl=document.getElementById('scan-status');
+  const resultSheet=document.getElementById('scan-result-sheet');
+  if(resultSheet)resultSheet.classList.remove('open');
+  SCAN.product=null;SCAN.qty=1;SCAN.lastCode=null;
+  if(statusEl)statusEl.textContent='Loading scanner…';
+  try{
+    await loadZXing();
+    SCAN.reader=new ZXing.BrowserMultiFormatReader();
+    SCAN.active=true;
+    const video=document.getElementById('scan-video');
+    const constraints={video:{facingMode:{ideal:'environment'}}};
+    await SCAN.reader.decodeFromConstraints(constraints,video,(result)=>{
+      if(result&&SCAN.active&&result.getText()!==SCAN.lastCode){
+        SCAN.lastCode=result.getText();
+        handleBarcodeDetected(result.getText());
+      }
+    });
+    if(statusEl)statusEl.textContent='Point your camera at a barcode';
+  }catch(e){
+    if(statusEl)statusEl.textContent=(e&&e.name==='NotAllowedError')?'Camera permission denied':'Could not start scanner — check camera permissions or connection';
+  }
+}
+function closeBarcodeScanner(){
+  const overlay=document.getElementById('scan-overlay');
+  if(overlay)overlay.classList.remove('open');
+  SCAN.active=false;
+  SCAN.lastCode=null;
+  if(SCAN.reader){try{SCAN.reader.reset();}catch{}SCAN.reader=null;}
+  const resultSheet=document.getElementById('scan-result-sheet');
+  if(resultSheet)resultSheet.classList.remove('open');
+}
+function scanOverlayOpen(){const o=document.getElementById('scan-overlay');return!!(o&&o.classList.contains('open'));}
+function resumeScan(){
+  SCAN.lastCode=null;
+  SCAN.active=true;
+  const statusEl=document.getElementById('scan-status');
+  if(statusEl)statusEl.textContent='Point your camera at a barcode';
+}
+async function handleBarcodeDetected(code){
+  SCAN.active=false; // pause decoding while we look this one up
+  const statusEl=document.getElementById('scan-status');
+  if(statusEl)statusEl.textContent=`Looking up ${code}…`;
+  try{
+    const res=await fetch(`https://world.openfoodfacts.org/api/v2/product/${encodeURIComponent(code)}.json?fields=product_name,brands,nutriments,serving_size,serving_quantity`);
+    if(!res.ok)throw new Error('Lookup failed');
+    const data=await res.json();
+    if(!data.product)throw new Error('Not found');
+    const p=data.product;
+    const nutr=p.nutriments||{};
+    const per100=nutr['energy-kcal_100g']!=null?Math.round(nutr['energy-kcal_100g']):(nutr['energy-kcal']!=null?Math.round(nutr['energy-kcal']):null);
+    const perServing=nutr['energy-kcal_serving']!=null?Math.round(nutr['energy-kcal_serving']):null;
+    if(per100==null&&perServing==null)throw new Error('No calorie data');
+    const servingG=p.serving_quantity?Math.round(p.serving_quantity):null;
+    SCAN.product={
+      name:nutTitleCase(p.product_name||'Unknown product'),
+      brand:p.brands||'',
+      per100,perServing,
+      servingLabel:p.serving_size||(servingG?`${servingG}g`:null),
+      servingG
+    };
+    SCAN.qty=1;
+    renderScanResult();
+  }catch(e){
+    const offline=(e&&e.message==='Failed to fetch');
+    if(statusEl)statusEl.textContent=offline?'No connection — barcode lookup needs internet':(e&&e.message==='No calorie data'?'No nutrition data for this product — try describing it instead':'Product not found — try describing it instead');
+    setTimeout(()=>{ if(scanOverlayOpen())resumeScan(); },2000);
+  }
+}
+function scanKcalForQty(){
+  const p=SCAN.product;if(!p)return 0;
+  if(p.perServing!=null)return Math.round(p.perServing*SCAN.qty);
+  return Math.round(p.per100*SCAN.qty); // qty = number of 100g units when no serving size is known
+}
+function renderScanResult(){
+  const p=SCAN.product;if(!p)return;
+  const sheet=document.getElementById('scan-result-sheet');
+  document.getElementById('scan-result-name').textContent=p.name;
+  document.getElementById('scan-result-brand').textContent=p.brand||'';
+  const unitLabel=p.perServing!=null?(p.servingLabel?`serving (${p.servingLabel})`:'serving'):'100g';
+  document.getElementById('scan-qty-unit').textContent=unitLabel+(SCAN.qty!==1?'s':'');
+  document.getElementById('scan-qty-val').textContent=SCAN.qty;
+  document.getElementById('scan-result-cal').textContent=scanKcalForQty();
+  sheet.classList.add('open');
+  const statusEl=document.getElementById('scan-status');
+  if(statusEl)statusEl.textContent='';
+}
+function scanQtyStep(delta){
+  SCAN.qty=Math.max(1,Math.min(20,SCAN.qty+delta));
+  renderScanResult();
+}
+function scanRescan(){
+  SCAN.product=null;
+  const sheet=document.getElementById('scan-result-sheet');
+  if(sheet)sheet.classList.remove('open');
+  resumeScan();
+}
+function confirmScanAdd(){
+  const p=SCAN.product;if(!p)return;
+  const kcal=scanKcalForQty();
+  const grams=p.perServing!=null?(p.servingG?p.servingG*SCAN.qty:null):(100*SCAN.qty);
+  const name=SCAN.qty!==1?`${p.name} (×${SCAN.qty})`:p.name;
+  nutAddFood(strTodayKey(),{name,kcal,grams,per100:p.per100!=null?p.per100:(grams?Math.round(kcal/grams*100):null)});
+  closeBarcodeScanner();
+  renderNutritionTab();
+  showToast('','Added from barcode',`${p.name} · ${kcal} cal`);
 }
 
 function nutEsc(s){ return (s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
@@ -3113,6 +3339,7 @@ function selectBoxingDay(day){stopTimer();S.activeBoxingDay=day;resetBoxingTimer
 const NAV_TITLES={cycling:'Cycling',boxing:'Boxing',strength:'Strength',progress:'Progress',plan:''};
 
 function switchWorkoutTab(tab){
+  closeBarcodeScanner();
   S.activeWorkoutTab=tab;
   ['cycling','boxing','strength','progress','plan','nutrition'].forEach(t=>{
     const tc=document.getElementById('tab-'+t);
@@ -3358,7 +3585,11 @@ function renderStsPhaseCard(){
 
 // ── Strength helpers ─────────────────────────────────────────────────────────
 function strTodayKey(){return new Date().toDateString();}
-function strGetSets(wIdx,eIdx){return(S.strLog[strTodayKey()]?.[wIdx]?.[eIdx])||[];}
+function strGetSets(wIdx,eIdx){
+  const sets=(S.strLog[strTodayKey()]?.[wIdx]?.[eIdx])||[];
+  const curName=getExName(wIdx,eIdx);
+  return sets.filter(s=>!s.exName||s.exName===curName);
+}
 function strTargetSets(e){return Math.max(1,parseInt(e.sets)||3);}
 function strTodaySetCount(wIdx){
   const today=S.strLog[strTodayKey()]?.[wIdx]||{};
@@ -3446,12 +3677,20 @@ function openLogDrawer(exIdx){
   const wo=STRENGTH[S.activeStrengthWorkout];
   if(exIdx<0) exIdx=0;
   S.strLogExIdx=exIdx;
-  // Pre-fill with last used weight if available
-  const prevSets=strGetSets(S.activeStrengthWorkout,exIdx);
-  if(prevSets.length) S.strLogWeight=prevSets[prevSets.length-1].weight;
+  setDrawerWeightForExercise(S.activeStrengthWorkout,exIdx);
   document.getElementById('str-backdrop').classList.add('open');
   document.getElementById('str-drawer').classList.add('open');
   updateDrawerUI();
+}
+// Sets S.strLogWeight for exactly the given exercise — never leaves a previous
+// exercise's weight showing. Priority: today's own logged sets for this exercise
+// -> last session's weight for THIS exact exercise (name-matched) -> neutral default.
+function setDrawerWeightForExercise(wIdx,eIdx){
+  const todaySets=strGetSets(wIdx,eIdx);
+  if(todaySets.length){S.strLogWeight=todaySets[todaySets.length-1].weight;return;}
+  const prev=strPrevWeight(wIdx,eIdx);
+  if(prev){S.strLogWeight=prev.weight;return;}
+  S.strLogWeight=45;
 }
 function closeLogDrawer(){
   document.getElementById('str-backdrop').classList.remove('open');
@@ -3518,8 +3757,7 @@ function updateDrawerUI(){
 }
 function switchDrawerEx(idx){
   S.strLogExIdx=idx;
-  const prev=strGetSets(S.activeStrengthWorkout,idx);
-  if(prev.length) S.strLogWeight=prev[prev.length-1].weight;
+  setDrawerWeightForExercise(S.activeStrengthWorkout,idx);
   updateDrawerUI();
 }
 function syncWeightInput(){
@@ -3544,7 +3782,7 @@ function confirmLogSet(){
   if(!S.strLog[today]) S.strLog[today]={};
   if(!S.strLog[today][wIdx]) S.strLog[today][wIdx]={};
   if(!S.strLog[today][wIdx][eIdx]) S.strLog[today][wIdx][eIdx]=[];
-  S.strLog[today][wIdx][eIdx].push({weight:S.strLogWeight,reps:S.strLogReps,ts:Date.now()});
+  S.strLog[today][wIdx][eIdx].push({weight:S.strLogWeight,reps:S.strLogReps,ts:Date.now(),exName:getExName(wIdx,eIdx)});
   const isPR=checkForPR(wIdx,eIdx,S.strLogWeight,S.strLogReps);
   saveState();closeLogDrawer();renderStrength();
   // Parse rest time from exercise definition (e.g. "90s", "75s", "60s", "45s")
@@ -3591,9 +3829,12 @@ function closeStrengthAnalytics(){S.strAnalyticsOpen=false;renderStrength();}
 
 // Returns sorted sessions with avg weight for a given workout+exercise
 function strExHistory(wIdx,eIdx){
+  const curName=getExName(wIdx,eIdx);
   return Object.keys(S.strLog).sort().flatMap(date=>{
-    const sets=S.strLog[date]?.[wIdx]?.[eIdx];
-    if(!sets||!sets.length) return[];
+    const allSets=S.strLog[date]?.[wIdx]?.[eIdx];
+    if(!allSets||!allSets.length) return[];
+    const sets=allSets.filter(s=>!s.exName||s.exName===curName);
+    if(!sets.length) return[];
     const avg=sets.reduce((s,x)=>s+x.weight,0)/sets.length;
     const maxW=Math.max(...sets.map(x=>x.weight));
     return[{label:date.split(' ').slice(1,3).join(' '),avg:+avg.toFixed(1),max:maxW,sets:sets.length}];
@@ -3960,25 +4201,37 @@ function renderWeeklySummary(){
 // ── Personal Records ──────────────────────────────────────────────────────────
 function checkForPR(wIdx,eIdx,weight,reps){
   if(!S.prs)S.prs={};
-  const key=`${wIdx}-${eIdx}`;
+  const key=getExName(wIdx,eIdx);
   const cur=S.prs[key];
   const isNew=!cur||weight>cur.weight||(weight===cur.weight&&reps>cur.reps);
-  if(isNew){S.prs[key]={weight,reps,date:strTodayKey()};return true;}
+  if(isNew){S.prs[key]={weight,reps,date:strTodayKey(),wTitle:STRENGTH[wIdx]?.title||''};return true;}
   return false;
 }
 function renderPRBoard(){
   const el=document.getElementById('pr-list');if(!el)return;
   const entries=Object.entries(S.prs||{});
   if(!entries.length){el.innerHTML='<div class="dim-txt" style="padding:8px 0">Log sets to start tracking PRs automatically</div>';return;}
-  // Group by workout
+  // Group by workout title. New-style entries are keyed by exercise name and carry
+  // their own wTitle. Legacy entries (pre exercise-name-keyed PRs) are keyed
+  // "wIdx-eIdx" — resolve their name/title via the current STRENGTH array as a
+  // best-effort fallback so old PR data isn't lost, just re-labeled.
   const byWo={};
   entries.forEach(([key,pr])=>{
-    const[wi,ei]=key.split('-').map(Number);
-    if(!byWo[wi])byWo[wi]=[];
-    byWo[wi].push({ei,pr,name:STRENGTH[wi]?.exercises[ei]?.name||'Exercise'});
+    let name,title;
+    if(pr.wTitle!==undefined){
+      name=key;title=pr.wTitle||'Other';
+    } else if(/^\d+-\d+$/.test(key)){
+      const[wi,ei]=key.split('-').map(Number);
+      name=STRENGTH[wi]?.exercises[ei]?.name||'Exercise';
+      title=STRENGTH[wi]?.title||'Other';
+    } else {
+      name=key;title='Other';
+    }
+    if(!byWo[title])byWo[title]=[];
+    byWo[title].push({name,pr});
   });
-  el.innerHTML=Object.entries(byWo).map(([wi,exs])=>`
-    <div style="font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--dim);padding:6px 0 6px">${STRENGTH[wi]?.title||''}</div>
+  el.innerHTML=Object.entries(byWo).map(([title,exs])=>`
+    <div style="font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--dim);padding:6px 0 6px">${title}</div>
     ${exs.map(({name,pr})=>`<div class="pr-item">
       <div class="pr-ex-name">${name}</div>
       <div class="pr-val">${pr.weight}lbs × ${pr.reps}</div>
@@ -4538,10 +4791,13 @@ function updateWarmupCalc(){
 // ── Progressive Overload Helper ───────────────────────────────────────────────
 function strPrevWeight(wIdx,eIdx){
   const today=strTodayKey();
+  const curName=getExName(wIdx,eIdx);
   const dates=Object.keys(S.strLog).filter(d=>d!==today).sort().reverse();
   for(const date of dates){
-    const sets=S.strLog[date]?.[wIdx]?.[eIdx];
-    if(sets&&sets.length){
+    const allSets=S.strLog[date]?.[wIdx]?.[eIdx];
+    if(!allSets||!allSets.length) continue;
+    const sets=allSets.filter(s=>s.exName===curName);
+    if(sets.length){
       const avgW=sets.reduce((s,x)=>s+x.weight,0)/sets.length;
       const avgR=sets.reduce((s,x)=>s+x.reps,0)/sets.length;
       return{weight:+avgW.toFixed(1),reps:Math.round(avgR),sets:sets.length,date};
@@ -5301,7 +5557,7 @@ function guidedLogSet(){
   if(!S.strLog[today])S.strLog[today]={};
   if(!S.strLog[today][wIdx])S.strLog[today][wIdx]={};
   if(!S.strLog[today][wIdx][eIdx])S.strLog[today][wIdx][eIdx]=[];
-  S.strLog[today][wIdx][eIdx].push({weight,reps,ts:Date.now()});
+  S.strLog[today][wIdx][eIdx].push({weight,reps,ts:Date.now(),exName:getExName(wIdx,eIdx)});
   const isPR=checkForPR(wIdx,eIdx,weight,reps);
   saveState();
   if(isPR)showToast('','New PR!',`${STRENGTH[wIdx].exercises[eIdx]?.name} — ${weight}lbs × ${reps}`);
@@ -5505,6 +5761,38 @@ function renderGuidedChecklist(){
     <div class="swap-modal-title">Strength Program Library</div>
     <div id="program-modal-opts"></div>
     <button class="swap-cancel-btn" onclick="closeProgramModal()">Close</button>
+  </div>
+</div>
+
+<!-- ── Barcode Scanner Overlay ──────────────────────────────── -->
+<div class="scan-overlay" id="scan-overlay">
+  <div class="scan-header">
+    <div class="scan-title">Scan Barcode</div>
+    <button class="scan-close-btn" onclick="closeBarcodeScanner()" aria-label="Close scanner">✕</button>
+  </div>
+  <div class="scan-video-wrap">
+    <video class="scan-video" id="scan-video" playsinline muted></video>
+    <div class="scan-frame"><div class="scan-line"></div></div>
+    <div class="scan-status" id="scan-status"></div>
+  </div>
+  <div class="scan-result-sheet" id="scan-result-sheet">
+    <div class="scan-result-name" id="scan-result-name"></div>
+    <div class="scan-result-brand" id="scan-result-brand"></div>
+    <div class="scan-result-cal-row">
+      <div>
+        <div class="scan-result-cal" id="scan-result-cal">0</div>
+        <div class="scan-result-cal-lbl">Calories</div>
+      </div>
+    </div>
+    <div class="scan-qty-row">
+      <button class="scan-qty-btn" onclick="scanQtyStep(-1)">−</button>
+      <div class="scan-qty-val"><span id="scan-qty-val">1</span> <span id="scan-qty-unit" style="color:var(--dim);font-weight:600;font-size:12px"></span></div>
+      <button class="scan-qty-btn" onclick="scanQtyStep(1)">+</button>
+    </div>
+    <div class="scan-result-actions">
+      <button class="btn btn-secondary" onclick="scanRescan()">Rescan</button>
+      <button class="btn btn-primary" onclick="confirmScanAdd()">Add to Log</button>
+    </div>
   </div>
 </div>
 
