@@ -2036,8 +2036,42 @@ function openProgramModal(){
   }).join('');
   document.getElementById('program-modal-bg').classList.add('open');
 }
+function openSupplementalModal(){
+  const opts=document.getElementById('supp-modal-opts');
+  if(!opts)return;
+  const items=[
+    {key:4,name:STRENGTH[4].title,desc:`${STRENGTH[4].muscles} · ${STRENGTH[4].time}`},
+    {key:5,name:STRENGTH[5].title,desc:`${STRENGTH[5].muscles} · ${STRENGTH[5].time}`},
+    {key:6,name:STRENGTH[6].title,desc:`${STRENGTH[6].muscles} · ${STRENGTH[6].time}`},
+    {key:'kb',name:'Kettlebell',desc:'20 supplemental kettlebell workouts'},
+  ];
+  opts.innerHTML=items.map(it=>{
+    const active=it.key==='kb'?kbViewActive:(!kbViewActive&&S.activeStrengthWorkout===it.key);
+    const arg=typeof it.key==='number'?it.key:`'${it.key}'`;
+    return`<div class="swap-opt" onclick="selectSupplemental(${arg})">
+      <div style="flex:1;min-width:0">
+        <div class="swap-opt-name${active?' current-swap':''}">${it.name}</div>
+        <div style="font-size:11px;color:var(--dim);margin-top:3px;line-height:1.45">${it.desc}</div>
+      </div>
+      <span class="swap-opt-tag ${active?'selected':'original'}" style="flex-shrink:0">${active?'✓ Active':'Select'}</span>
+    </div>`;
+  }).join('');
+  document.getElementById('supp-modal-bg').classList.add('open');
+}
+function selectSupplemental(choice){
+  closeSupplementalModal();
+  if(choice==='kb'){
+    activateKbView();
+  } else {
+    if(kbViewActive) deactivateKbView();
+    selectStrengthWorkout(choice);
+  }
+}
 function closeProgramModal(){
   document.getElementById('program-modal-bg').classList.remove('open');
+}
+function closeSupplementalModal(){
+  document.getElementById('supp-modal-bg').classList.remove('open');
 }
 function switchProgram(key){
   if(!PROGRAM_LIBRARY[key])return;
@@ -2067,6 +2101,30 @@ const STRENGTH=[
     {name:"Dual-Grip KB Bicep Curl",sets:"3–4",reps:"10–15",rest:"60s",notes:"Grip the horns or cup the bottom of the bell. Elbows pinned to ribs, curl to chest. Squeeze hard for 1 second at the top before lowering slowly.",swaps:["DB Hammer Curl","EZ-Bar Bicep Curl","Band Bicep Curl"]},
     {name:"Overhead KB Tricep Extension",sets:"3",reps:"12–15",rest:"60s",notes:"Hold by the horns, press overhead. Elbows pointing forward — lower the bell behind your head then press back up. Brace your core throughout to protect your lower back.",swaps:["DB Overhead Tricep Extension","Band Overhead Extension","Floor Skullcrushers"]},
     {name:"KB Lateral Raise",sets:"3",reps:"12–15",rest:"60s",notes:"Per side. Stand tall, slight elbow bend, raise arm out to shoulder height. Lower slowly over 2–3 seconds — resist gravity the whole way down.",swaps:["DB Lateral Raise","Cable Lateral Raise","Band Lateral Raise"]},
+  ]},
+  {id:5,title:"Arm Day",time:"~55 min",muscles:"Biceps · Triceps · Forearms",exercises:[
+    {name:"Close Grip Bench Press",sets:"3",reps:"6-8",rest:"3m",notes:"RPE 8. Tempo 2:1:1:1. Shoulder-width grip, touch the bar to your chest with a slight pause.",warmup:true,swaps:["Regular Grip Bench Press","Smith Machine Close-Grip Press","Dumbbell Close-Grip Press"]},
+    {name:"Machine Preacher Curl",sets:"2",reps:"12-15",rest:"1m",notes:"RPE 7. Tempo 2:0:2:0. Preactivation set — smooth, controlled reps, get a slight pump with light weight.",swaps:["Barbell Preacher Curl","DB Preacher Curl","Cable Preacher Curl"]},
+    {name:"Standing EZ Bar Curl",sets:"4",reps:"6-8",rest:"3m",notes:"RPE 9. Tempo 2:0:1:0. 2 sets wider grip, 2 sets shoulder-width, last set taken to failure with 1-2 effective cheat reps at the end.",swaps:["Straight Bar Curl","Dumbbell Curl","Cable Bar Curl"]},
+    {name:"Bayesian Cable Curl",sets:"3",reps:"12-15",rest:"1m",notes:"RPE 9. Tempo 2:0:1:0. Face away from the cable machine, feel the stretch at the bottom end of the ROM.",swaps:["Cable Curl (facing machine)","Incline DB Curl","EZ Bar Curl"]},
+    {name:"Tricep Pressdown",sets:"4",reps:"10-12",rest:"2m",notes:"RPE 9. Tempo 2:0:1:0. Bar attachment — 2 sets wide, 2 sets narrow. Keep elbows locked in place, minimize swinging.",swaps:["Rope Pressdown","DB Kickback","Overhead Cable Extension"]},
+    {name:"Overhead Rope Tricep Extension",sets:"2",reps:"12-15",rest:"1m",notes:"RPE 9. Tempo 2:0:1:0. Perform both arms at once, press the rope apart at the top end of the ROM.",swaps:["DB Overhead Extension","Single-Arm Cable Overhead Extension","Skull Crusher"]},
+    {name:"Forearm Wrist Curl",sets:"3",reps:"15-20",rest:"1m",notes:"RPE 9. Tempo 2:0:1:0. Optional — perform with forearm braced on a horizontal bench.",swaps:["Reverse Wrist Curl","Behind-the-Back Wrist Curl","Plate Pinch Hold"]},
+  ]},
+  {id:6,title:"Supplemental A",time:"~40 min",muscles:"Biceps · Triceps · Forearms",exercises:[
+    {name:"Dumbbell Concentration Curl",sets:"3",reps:"8-10",rest:"2m",notes:"RPE 9. Tempo 2:0:1:0. Elbow pinned against thigh, rotating grip — supinate throughout the concentric.",warmup:true,swaps:["DB Preacher Curl","Cable Concentration Curl","EZ Bar Curl"]},
+    {name:"Incline Dumbbell Curl Reverse 21's",sets:"2",reps:"7+7+7",rest:"1.5m",notes:"RPE 9. Perform both arms at once — 7 reps full ROM, 7 reps top half ROM, 7 reps bottom half ROM.",swaps:["Standard Incline DB Curl","Cable Curl 21's","EZ Bar 21's"]},
+    {name:"Weighted Dip (Close Grip)",sets:"3",reps:"12-15",rest:"2m",notes:"RPE 8. Tempo 2:0:1:0. Maintain an upright posture and mind-muscle connection with the triceps.",swaps:["Assisted Dip","Bench Dip","Close-Grip Push-Up"]},
+    {name:"1-Arm Overhead Cable Extension",sets:"2",reps:"15-20",rest:"1m",notes:"RPE 9. Tempo 2:0:1:0. Keep the elbow locked into place and tucked in.",swaps:["2-Arm Overhead Extension","DB Overhead Extension","Rope Pressdown"]},
+    {name:"Reverse Grip Forearm Wrist Curl",sets:"3",reps:"15-20",rest:"1m",notes:"RPE 9. Tempo 2:0:1:0. Optional — perform with forearm braced on a horizontal bench.",swaps:["Standard Wrist Curl","Farmer's Carry Hold","Plate Pinch Hold"]},
+  ]},
+  {id:7,title:"Supplemental B",time:"~45 min",muscles:"Chest · Biceps · Triceps · Forearms",exercises:[
+    {name:"Close Grip Bench Press",sets:"3",reps:"8-10",rest:"3m",notes:"RPE 8. Tempo 2:1:1:1. Regular grip is fine if it fits your chest goals or training split better.",warmup:true,swaps:["Regular Grip Bench Press","Smith Machine Close-Grip Press","Dumbbell Close-Grip Press"]},
+    {name:"Medicine Ball Push-Ups",sets:"2",reps:"8-10",rest:"1m",notes:"RPE 9. Tempo 1:0:1:0. Diamond hand shape, controlled push-ups — take the last set to failure.",swaps:["Diamond Push-Up","Close-Grip Push-Up","Close-Grip Bench Press"]},
+    {name:"Scott Curl",sets:"3",reps:"12-15",rest:"1.5m",notes:"RPE 9. Tempo 2:0:1:0. Barbell or EZ bar — at the bottom end of the ROM your arms should be vertically aligned.",swaps:["EZ Bar Preacher Curl","Machine Preacher Curl","DB Preacher Curl"]},
+    {name:"Preacher Death Curls",sets:"2",reps:"12-15",rest:"1.5m",notes:"RPE 10. 1-second pause at 90° elbow flexion on both the positive and negative of every rep. Reach failure, rest 3 seconds, then hold at 90° for 15 seconds.",swaps:["Standard Preacher Curl","Machine Preacher Curl","EZ Bar Preacher Curl"]},
+    {name:"Heavy Negative Concentration Curls",sets:"1",reps:"to failure",rest:"1.5m",notes:"RPE 10. Technique finisher — use your free hand to assist the positive, control the negative unassisted. Load heavy but keep control.",swaps:["Standard Concentration Curl","DB Preacher Curl","Cable Concentration Curl"]},
+    {name:"Farmer's Walks",sets:"3",reps:"40 strides",rest:"1m",notes:"Optional forearm work — lift heavy dumbbells for 40 total strides.",swaps:["Farmer's Carry (single arm)","Suitcase Carry","Plate Pinch Carry"]},
   ]},
 ];
 
@@ -3531,8 +3589,8 @@ function renderKbView(){
     <button class="str-wbtn" onclick="deactivateKbView();selectStrengthWorkout(${i})">
       <div class="str-wbtn-title">${s.title}</div>
       <div class="str-wbtn-meta">${s.muscles}</div>
-    </button>`).join('')+`
-    <button class="str-wbtn active" onclick="backToKbList()">
+    </button>`).join('')+
+    `<button class="str-wbtn active" onclick="openSupplementalModal()">
       <div class="str-wbtn-title">Kettlebell</div>
       <div class="str-wbtn-meta">20 workouts</div>
     </button>`;
@@ -3681,10 +3739,10 @@ function renderStrength(){
     <button class="str-wbtn${i===S.activeStrengthWorkout?' active':''}" onclick="selectStrengthWorkout(${i})">
       <div class="str-wbtn-title">${s.title}</div>
       <div class="str-wbtn-meta">${s.muscles}</div>
-    </button>`).join('')+`
-    <button class="str-wbtn" onclick="activateKbView()">
-      <div class="str-wbtn-title">Kettlebell</div>
-      <div class="str-wbtn-meta">20 workouts</div>
+    </button>`).join('')+
+    `<button class="str-wbtn${[4,5,6].includes(S.activeStrengthWorkout)?' active':''}" onclick="openSupplementalModal()">
+      <div class="str-wbtn-title">${[4,5,6].includes(S.activeStrengthWorkout)?STRENGTH[S.activeStrengthWorkout].title:'Supplemental'}</div>
+      <div class="str-wbtn-meta">${[4,5,6].includes(S.activeStrengthWorkout)?STRENGTH[S.activeStrengthWorkout].muscles:'Arm Day · Kettlebell'}</div>
     </button>`;
 
   // Toggle dashboard / analytics
@@ -5931,6 +5989,16 @@ function renderGuidedChecklist(){
     <div class="swap-modal-title">Strength Program Library</div>
     <div id="program-modal-opts"></div>
     <button class="swap-cancel-btn" onclick="closeProgramModal()">Close</button>
+  </div>
+</div>
+
+<!-- ── Supplemental Workouts Modal ──────────────────────────────── -->
+<div class="swap-modal-bg" id="supp-modal-bg" onclick="closeSupplementalModal()">
+  <div class="swap-modal" onclick="event.stopPropagation()">
+    <div class="swap-modal-handle"></div>
+    <div class="swap-modal-title">Supplemental Workouts</div>
+    <div id="supp-modal-opts"></div>
+    <button class="swap-cancel-btn" onclick="closeSupplementalModal()">Close</button>
   </div>
 </div>
 
