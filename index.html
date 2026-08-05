@@ -423,8 +423,10 @@ body.pip-mode .pip-mask{display:block}
 .str-lift-name{font-size:14px;font-weight:700;color:var(--text2);letter-spacing:.2px;flex:1}
 .str-lift-meta{font-size:10px;color:var(--dim);white-space:nowrap}
 .str-lift-notes{font-size:11px;color:var(--dim);padding:0 16px 10px;line-height:1.5}
-.str-lift-progress{padding:0 16px 12px}
+.str-lift-progress{padding:0 16px 12px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .str-sets-done{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;color:var(--lime);background:rgba(174,212,63,.08);border:1px solid rgba(174,212,63,.2);border-radius:14px;padding:3px 9px}
+.str-edit-set-btn{background:none;border:none;color:var(--dim);font-size:10px;font-weight:700;cursor:pointer;padding:3px 2px;transition:color .15s}
+.str-edit-set-btn:hover{color:var(--lime)}
 
 /* Warm-up card (reused) */
 .warmup-step{display:flex;align-items:flex-start;gap:12px;font-size:13px;color:var(--text)}
@@ -491,8 +493,15 @@ body.pip-mode .pip-mask{display:block}
 .gw-rest-bar-fill{height:100%;background:var(--blue);border-radius:3px;transition:width .95s linear}
 .gw-rest-next{font-size:13px;color:var(--dim);font-weight:600;text-align:center}
 .gw-rest-skip{padding:12px 28px;border-radius:12px;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-size:14px;font-weight:700;cursor:pointer;margin-top:6px}
+.gw-last-set-row{display:flex;align-items:center;gap:10px;background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:10px 14px;margin:14px 0 10px;font-size:13px;font-weight:700;color:var(--text)}
+.gw-edit-set-btn{margin-left:auto;background:none;border:1px solid var(--border);border-radius:12px;padding:5px 12px;color:var(--dim);font-size:12px;font-weight:700;cursor:pointer;transition:all .15s}
+.gw-edit-set-btn:hover{border-color:var(--lime);color:var(--lime)}
 .gw-checklist{padding:16px 20px 20px;border-top:1px solid var(--border);flex-shrink:0}
 .gw-checklist-lbl{font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--dim);margin-bottom:10px}
+.gw-complete-stats{display:flex;gap:10px;justify-content:center;margin-bottom:20px;flex-wrap:wrap}
+.gw-complete-stat{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:16px 18px;min-width:90px}
+.gw-complete-stat-val{font-size:22px;font-weight:900;color:var(--lime);line-height:1.1;font-variant-numeric:tabular-nums}
+.gw-complete-stat-lbl{font-size:9px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--dim);margin-top:4px}
 .gw-check-item{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:14px;margin-bottom:4px;background:var(--glass);border:1px solid transparent;transition:all .15s}
 .gw-check-item.current{background:rgba(174,212,63,.06);border-color:rgba(174,212,63,.2)}
 .gw-check-item.done{opacity:.5}
@@ -518,6 +527,8 @@ body.pip-mode .pip-mask{display:block}
 .str-drawer-ex-lbl{font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--dim);margin-bottom:3px}
 .str-drawer-ex-name{font-size:17px;font-weight:900;text-transform:uppercase;letter-spacing:.4px;margin-bottom:22px;line-height:1.2}
 .str-drawer-inputs{display:grid;grid-template-columns:1fr 1px 1fr;gap:0;align-items:center;background:var(--surface);border-radius:16px;overflow:hidden;margin-bottom:22px;border:1px solid var(--border)}
+.edit-set-inputs{display:flex;gap:1px;background:var(--border);border-radius:16px;overflow:hidden;border:1px solid var(--border);margin:14px 0 4px}
+.edit-set-grp{flex:1;display:flex;flex-direction:column;align-items:center;gap:10px;padding:20px 12px;background:var(--surface)}
 .str-drawer-sep{background:var(--border);align-self:stretch}
 .str-input-grp{display:flex;flex-direction:column;align-items:center;gap:10px;padding:20px 12px}
 .str-input-lbl{font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--dim)}
@@ -3956,6 +3967,10 @@ function strTodaySetCount(wIdx){
   const today=S.strLog[strTodayKey()]?.[wIdx]||{};
   return Object.values(today).reduce((t,sets)=>t+sets.length,0);
 }
+function strTodayTotalWeight(wIdx){
+  const today=S.strLog[strTodayKey()]?.[wIdx]||{};
+  return Object.values(today).reduce((t,sets)=>t+sets.reduce((s,set)=>s+(set.weight||0)*(set.reps||0),0),0);
+}
 
 // ── renderStrength ────────────────────────────────────────────────────────────
 function renderStrength(){
@@ -4013,7 +4028,7 @@ function renderStrength(){
     const blockMeta=(isSts&&wIdx<3)?`<span class="ex-block-tag ${block.type}">${displayReps}</span>`:`<span class="ex-block-tag" style="background:rgba(174,212,63,.1);color:var(--lime);border:1px solid rgba(174,212,63,.25)">${displayReps}</span>`;
     const techNote=(isSts&&wIdx<3)?`<span style="font-size:10px;color:var(--dim);font-weight:600;margin-left:6px">· ${block.technique}</span>`:'';
     const loggedSets=sets.length;
-    const progressNote=loggedSets>0?`<span class="str-sets-done">${loggedSets} set${loggedSets!==1?'s':''} logged</span>`:'';
+    const progressNote=loggedSets>0?`<span class="str-sets-done">${loggedSets} set${loggedSets!==1?'s':''} logged</span><button class="str-edit-set-btn" onclick="openEditSetModal(${wIdx},${i},-1)">✎ Edit last</button>`:'';
     const displayName=getExName(wIdx,i);
     const isSwapped=S.strSwaps&&S.strSwaps[`${wIdx}-${i}`]!==undefined;
     const swapBtn=e.swaps?.length?`<button class="str-swap-btn${isSwapped?' swapped':''}" onclick="openSwapModal(${wIdx},${i})">⇄ Swap</button>`:'';
@@ -4067,9 +4082,16 @@ function updateDrawerUI(){
     drawerSwapBtn.className=`str-swap-btn${hasSwap?' swapped':''}`;
     drawerSwapBtn.style.display=e.swaps?.length?'':'none';
   }
+  const bw=isBodyweightExercise(getExName(S.activeStrengthWorkout,S.strLogExIdx));
+  const logWeightGrp=document.getElementById('log-weight-grp');
+  const logInputSep=document.getElementById('log-input-sep');
+  const warmupCalc=document.getElementById('warmup-calc');
+  if(logWeightGrp)logWeightGrp.style.display=bw?'none':'';
+  if(logInputSep)logInputSep.style.display=bw?'none':'';
+  if(warmupCalc)warmupCalc.style.display=bw?'none':'';
   document.getElementById('log-weight').value=S.strLogWeight%1?S.strLogWeight.toFixed(1):S.strLogWeight;
   document.getElementById('log-reps').value=S.strLogReps;
-  updateWarmupCalc();
+  if(!bw)updateWarmupCalc();
   // STS periodization hint in drawer
   const blockHint=document.getElementById('block-drawer-hint');
   if(blockHint){
@@ -4138,13 +4160,15 @@ function syncRepsInput(){
   if(!isNaN(val)&&val>=1) S.strLogReps=val;
 }
 function confirmLogSet(){
-  // Sync inputs in case user typed without triggering oninput
-  const wInp=document.getElementById('log-weight');
-  if(wInp){const v=parseFloat(wInp.value);if(!isNaN(v)&&v>=0)S.strLogWeight=v;}
-  const rInp=document.getElementById('log-reps');
-  if(rInp){const v=parseInt(rInp.value);if(!isNaN(v)&&v>=1)S.strLogReps=v;}
   const wIdx=S.activeStrengthWorkout;
   const eIdx=S.strLogExIdx;
+  const bw=isBodyweightExercise(getExName(wIdx,eIdx));
+  // Sync inputs in case user typed without triggering oninput
+  const wInp=document.getElementById('log-weight');
+  if(!bw&&wInp){const v=parseFloat(wInp.value);if(!isNaN(v)&&v>=0)S.strLogWeight=v;}
+  const rInp=document.getElementById('log-reps');
+  if(rInp){const v=parseInt(rInp.value);if(!isNaN(v)&&v>=1)S.strLogReps=v;}
+  if(bw)S.strLogWeight=0;
   const today=strTodayKey();
   if(!S.strLog[today]) S.strLog[today]={};
   if(!S.strLog[today][wIdx]) S.strLog[today][wIdx]={};
@@ -4156,8 +4180,9 @@ function confirmLogSet(){
   const exRest=STRENGTH[wIdx].exercises[eIdx]?.rest||'';
   const parsedSecs=parseRestStr(exRest);
   startRestTimer(parsedSecs||RT.duration);
-  if(isPR){showToast('','New PR!',`${STRENGTH[wIdx].exercises[eIdx]?.name} — ${S.strLogWeight}lbs × ${S.strLogReps}`);pulseEl('str-drawer-ex-name','pop');}
-  else showToast('','Set Logged',`${S.strLogWeight}lbs × ${S.strLogReps} · Rest ${parsedSecs||RT.duration}s`);
+  const setDesc=bw?`${S.strLogReps} reps`:`${S.strLogWeight}lbs × ${S.strLogReps}`;
+  if(isPR){showToast('','New PR!',`${STRENGTH[wIdx].exercises[eIdx]?.name} — ${setDesc}`);pulseEl('str-drawer-ex-name','pop');}
+  else showToast('','Set Logged',`${setDesc} · Rest ${parsedSecs||RT.duration}s`);
 }
 function completeStrengthWorkout(){
   const wIdx=S.activeStrengthWorkout;
@@ -5025,6 +5050,22 @@ function getExName(wIdx,eIdx){
   return STRENGTH[wIdx].exercises[eIdx].swaps?.[swapIdx]||STRENGTH[wIdx].exercises[eIdx].name;
 }
 
+// Pulls the first number out of a reps string like "10–12", "8", "20-30 reps".
+// Returns null if nothing parseable (e.g. "to failure"), so callers can fall back.
+function parseTargetReps(str){
+  if(!str)return null;
+  const m=String(str).match(/\d+/);
+  return m?parseInt(m[0]):null;
+}
+
+// Bodyweight moves (no external load to log) — resolved by name so swaps are
+// respected automatically, since a swap can turn a weighted exercise into a
+// bodyweight one (or vice versa) without changing the underlying data object.
+const BODYWEIGHT_EXERCISES=new Set(['push-up','close-grip push-up','diamond push-up','medicine ball push-ups','bench dip','dip','dips','wide-grip pull-up','crunch','bicycle crunch','reverse crunch','oblique crunch','glute bridge','hanging leg raise','lying leg raise','hanging knee raise']);
+function isBodyweightExercise(name){
+  return !!name && BODYWEIGHT_EXERCISES.has(String(name).trim().toLowerCase());
+}
+
 function openSwapModal(wIdx,eIdx){
   swapState={wIdx,eIdx};
   const e=STRENGTH[wIdx].exercises[eIdx];
@@ -5079,6 +5120,71 @@ function applySwap(idx){
   if(drawerEl&&drawerEl.classList.contains('open')&&S.activeStrengthWorkout===wIdx&&S.strLogExIdx===eIdx){
     updateDrawerUI();
   }
+}
+
+// ── Edit a logged set ────────────────────────────────────────────────────────
+// Lets you fix a mistake (wrong weight/reps) on any set logged today, without it
+// being locked in the moment you tap Log Set. setIdx is the index into
+// strGetSets()'s (filtered) list — pass -1 for "the most recently logged set".
+let editSetState={wIdx:0,eIdx:0,setIdx:0};
+function openEditSetModal(wIdx,eIdx,setIdx){
+  const sets=strGetSets(wIdx,eIdx);
+  if(!sets.length)return;
+  const idx=setIdx<0?sets.length-1:setIdx;
+  const set=sets[idx];
+  if(!set)return;
+  editSetState={wIdx,eIdx,setIdx:idx};
+  const bw=isBodyweightExercise(getExName(wIdx,eIdx));
+  const wGrp=document.getElementById('edit-set-weight-grp');
+  if(wGrp)wGrp.style.display=bw?'none':'';
+  document.getElementById('edit-set-weight').value=set.weight||'';
+  document.getElementById('edit-set-reps').value=set.reps||'';
+  document.getElementById('edit-set-modal-bg').classList.add('open');
+}
+function closeEditSetModal(){
+  document.getElementById('edit-set-modal-bg').classList.remove('open');
+}
+function saveEditedSet(){
+  const {wIdx,eIdx,setIdx}=editSetState;
+  const curName=getExName(wIdx,eIdx);
+  const bw=isBodyweightExercise(curName);
+  const wVal=bw?0:parseFloat(document.getElementById('edit-set-weight').value);
+  const rVal=parseInt(document.getElementById('edit-set-reps').value);
+  if(!bw&&(isNaN(wVal)||wVal<0)){showToast('','Enter weight','');return;}
+  if(isNaN(rVal)||rVal<1){showToast('','Enter reps','');return;}
+  // strGetSets() filters out legacy/mismatched entries, so its index doesn't line up
+  // 1:1 with the raw storage array — map back to the real index before writing.
+  const today=strTodayKey();
+  const arr=S.strLog[today]?.[wIdx]?.[eIdx];
+  if(!arr){closeEditSetModal();return;}
+  const realIdxs=arr.map((s,i)=>({s,i})).filter(o=>!o.s.exName||o.s.exName===curName).map(o=>o.i);
+  const realIdx=realIdxs[setIdx];
+  if(realIdx===undefined){closeEditSetModal();return;}
+  arr[realIdx].weight=wVal;
+  arr[realIdx].reps=rVal;
+  saveState();
+  closeEditSetModal();
+  renderStrength();
+  if(GW.active){
+    // Don't call renderGuidedWorkout() while resting — it always switches the view
+    // back to the logging state. If we're mid-rest, just refresh that row in place.
+    const resting=document.getElementById('gw-rest-state')?.style.display==='flex';
+    if(resting){
+      const row=document.getElementById('gw-last-set-row');
+      if(row)document.getElementById('gw-last-set-text').textContent=`Logged: ${bw?`${rVal} reps`:`${wVal}lbs × ${rVal}`}`;
+    } else {
+      renderGuidedWorkout();
+    }
+    updateGuidedSessionProgress();
+  }
+  const drawerEl=document.getElementById('str-drawer');
+  if(drawerEl&&drawerEl.classList.contains('open')&&S.activeStrengthWorkout===wIdx&&S.strLogExIdx===eIdx){
+    updateDrawerUI();
+  }
+  showToast('','Set updated',bw?`${rVal} reps`:`${wVal}lbs × ${rVal}`);
+}
+function editGuidedLastSet(){
+  openEditSetModal(S.activeStrengthWorkout,GW.exIdx,-1);
 }
 
 // ── Wake Lock ─────────────────────────────────────────────────────────────────
@@ -5865,12 +5971,13 @@ render();resetBoxingTimer();initSwipe();
 switchWorkoutTab('plan');
 
 // ── Guided Workout ────────────────────────────────────────────────────────────
-const GW={active:false,exIdx:0,restIv:null,restSecs:0,restTotal:0,restEndTime:0};
+const GW={active:false,exIdx:0,restIv:null,restSecs:0,restTotal:0,restEndTime:0,startTime:0};
 
 function startGuidedWorkout(){
   const wIdx=S.activeStrengthWorkout;
   const wo=STRENGTH[wIdx];
   GW.active=true;
+  GW.startTime=Date.now();
   PIP_MODE=false;applyPipMode(); // always start full screen — Video Mode is an explicit, per-session choice
   // Find first exercise that still needs sets
   GW.exIdx=0;
@@ -5935,12 +6042,22 @@ function renderGuidedWorkout(){
     gwRestSwapBtn.style.display=e.swaps?.length?'':'none';
   }
   document.getElementById('gw-set-label').textContent=`Set ${setNum} of ${target}`;
+  const targetRepsSrc=(S.strProgram==='sts'&&wIdx<3)?block.repRange:e.reps;
   document.getElementById('gw-target-hint').textContent=(S.strProgram==='sts'&&wIdx<3)?`Target: ${block.repRange} reps · ${block.intensity}`:`Target: ${e.reps} reps`;
+
+  // Bodyweight moves don't need a weight input at all
+  const bw=isBodyweightExercise(getExName(wIdx,GW.exIdx));
+  const weightGrp=document.getElementById('gw-weight-grp');
+  const inputSep=document.getElementById('gw-input-sep');
+  if(weightGrp)weightGrp.style.display=bw?'none':'';
+  if(inputSep)inputSep.style.display=bw?'none':'';
+  const warmupEl=document.getElementById('gw-warmup');
+  if(warmupEl&&bw)warmupEl.innerHTML='';
 
   // Previous best
   const prev=strPrevWeight(wIdx,GW.exIdx);
   const prevEl=document.getElementById('gw-prev-best');
-  if(prev){prevEl.textContent=`Last time: ${prev.weight}lbs × ${prev.reps}`;prevEl.style.display='block';}
+  if(prev){prevEl.textContent=bw?`Last time: ${prev.reps} reps`:`Last time: ${prev.weight}lbs × ${prev.reps}`;prevEl.style.display='block';}
   else{prevEl.style.display='none';}
   const trendEl=document.getElementById('gw-trend');
   if(trendEl){
@@ -5952,12 +6069,14 @@ function renderGuidedWorkout(){
   // Pre-fill inputs
   const wInp=document.getElementById('gw-weight');
   const rInp=document.getElementById('gw-reps');
-  if(sets.length){
-    wInp.value=sets[sets.length-1].weight;
-  } else if(prev){
-    wInp.value=isDeload?+(prev.weight*0.6).toFixed(0):prev.weight;
-  } else { wInp.value=''; }
-  rInp.value=parseInt(block.repRange.split('–')[0])||5;
+  if(!bw){
+    if(sets.length){
+      wInp.value=sets[sets.length-1].weight;
+    } else if(prev){
+      wInp.value=isDeload?+(prev.weight*0.6).toFixed(0):prev.weight;
+    } else { wInp.value=''; }
+  }
+  rInp.value=(sets.length?sets[sets.length-1].reps:null)||parseTargetReps(targetRepsSrc)||8;
 
   updateGuidedWarmup();
   renderGuidedChecklist();
@@ -5987,13 +6106,14 @@ function updateGuidedWarmup(){
 
 function guidedLogSet(){
   resetInactivityTimer();
-  const weight=parseFloat(document.getElementById('gw-weight').value);
-  const reps=parseInt(document.getElementById('gw-reps').value);
-  if(isNaN(weight)||weight<0){showToast('','Enter weight','');return;}
-  if(isNaN(reps)||reps<1){showToast('','Enter reps','');return;}
-  S.strLogWeight=weight;S.strLogReps=reps;
   const wIdx=S.activeStrengthWorkout;
   const eIdx=GW.exIdx;
+  const bw=isBodyweightExercise(getExName(wIdx,eIdx));
+  const weight=bw?0:parseFloat(document.getElementById('gw-weight').value);
+  const reps=parseInt(document.getElementById('gw-reps').value);
+  if(!bw&&(isNaN(weight)||weight<0)){showToast('','Enter weight','');return;}
+  if(isNaN(reps)||reps<1){showToast('','Enter reps','');return;}
+  S.strLogWeight=weight;S.strLogReps=reps;
   const today=strTodayKey();
   if(!S.strLog[today])S.strLog[today]={};
   if(!S.strLog[today][wIdx])S.strLog[today][wIdx]={};
@@ -6001,8 +6121,9 @@ function guidedLogSet(){
   S.strLog[today][wIdx][eIdx].push({weight,reps,ts:Date.now(),exName:getExName(wIdx,eIdx)});
   const isPR=checkForPR(wIdx,eIdx,weight,reps);
   saveState();
-  if(isPR){showToast('','New PR!',`${STRENGTH[wIdx].exercises[eIdx]?.name} — ${weight}lbs × ${reps}`);pulseEl('gw-ex-name','pop');}
-  else showToast('','Set logged',`${weight}lbs × ${reps}`);
+  const setDesc=bw?`${reps} reps`:`${weight}lbs × ${reps}`;
+  if(isPR){showToast('','New PR!',`${STRENGTH[wIdx].exercises[eIdx]?.name} — ${setDesc}`);pulseEl('gw-ex-name','pop');}
+  else showToast('','Set logged',setDesc);
   // Determine rest duration and next label
   const exRest=STRENGTH[wIdx].exercises[eIdx]?.rest||'';
   const restSecs=parseRestStr(exRest)||RT.duration;
@@ -6026,6 +6147,18 @@ function showGuidedRest(secs,nextLabel){
   const rs=document.getElementById('gw-rest-state');
   rs.style.display='flex';
   document.getElementById('gw-rest-next').textContent=nextLabel||'';
+  // Show the set that was just logged, editable in case of a mistake
+  const wIdx=S.activeStrengthWorkout,eIdx=GW.exIdx;
+  const sets=strGetSets(wIdx,eIdx);
+  const lastRow=document.getElementById('gw-last-set-row');
+  if(lastRow&&sets.length){
+    const last=sets[sets.length-1];
+    const bw=isBodyweightExercise(getExName(wIdx,eIdx));
+    document.getElementById('gw-last-set-text').textContent=`Logged: ${bw?`${last.reps} reps`:`${last.weight}lbs × ${last.reps}`}`;
+    lastRow.style.display='flex';
+  } else if(lastRow){
+    lastRow.style.display='none';
+  }
   GW.restTotal=secs;
   GW.restEndTime=Date.now()+secs*1000;
   GW.restSecs=secs;
@@ -6081,16 +6214,30 @@ function guidedNextExercise(){
   if(next>=0){GW.exIdx=next;renderGuidedWorkout();}
   else{showGuidedComplete();}
 }
+function formatGuidedDuration(secs){
+  if(secs<60)return `${secs}s`;
+  const h=Math.floor(secs/3600),m=Math.floor((secs%3600)/60);
+  return h>0?`${h}h ${m}m`:`${m}m`;
+}
 function showGuidedComplete(){
   const wIdx=S.activeStrengthWorkout;
   const wo=STRENGTH[wIdx];
   const totalSets=strTodaySetCount(wIdx);
+  const totalWeight=Math.round(strTodayTotalWeight(wIdx));
+  const durSecs=GW.startTime?Math.max(0,Math.round((Date.now()-GW.startTime)/1000)):0;
   document.getElementById('gw-logging-state').style.display='none';
   document.getElementById('gw-rest-state').style.display='none';
   const cs=document.getElementById('gw-complete-state');
   if(cs){
+    const statsEl=document.getElementById('gw-complete-stats');
+    if(statsEl){
+      statsEl.innerHTML=`
+        <div class="gw-complete-stat"><div class="gw-complete-stat-val">${totalSets}</div><div class="gw-complete-stat-lbl">Sets</div></div>
+        <div class="gw-complete-stat"><div class="gw-complete-stat-val">${totalWeight.toLocaleString()}</div><div class="gw-complete-stat-lbl">Lbs moved</div></div>
+        <div class="gw-complete-stat"><div class="gw-complete-stat-val">${formatGuidedDuration(durSecs)}</div><div class="gw-complete-stat-lbl">Time</div></div>`;
+    }
     const summaryEl=document.getElementById('gw-complete-summary');
-    if(summaryEl)summaryEl.textContent=`${wo.exercises.length} exercises · ${totalSets} sets logged`;
+    if(summaryEl)summaryEl.textContent=`${wo.exercises.length} exercises`;
     cs.style.display='block';
   }
   document.getElementById('gw-complete-btn').style.display='block';
@@ -6193,11 +6340,11 @@ function renderGuidedChecklist(){
   <div class="str-drawer-ex-picker" id="str-drawer-ex-picker"></div>
   <!-- Weight / Reps inputs -->
   <div class="str-drawer-inputs">
-    <div class="str-input-grp">
+    <div class="str-input-grp" id="log-weight-grp">
       <div class="str-input-lbl">WEIGHT (LBS)</div>
       <input type="number" class="str-input-val str-weight-input" id="log-weight" value="135" min="0" step="2.5" inputmode="decimal" oninput="syncWeightInput()" onfocus="setTimeout(()=>{this.setSelectionRange(this.value.length,this.value.length)},0)">
     </div>
-    <div class="str-drawer-sep"></div>
+    <div class="str-drawer-sep" id="log-input-sep"></div>
     <div class="str-input-grp">
       <div class="str-input-lbl">REPS</div>
       <input type="number" class="str-input-val str-weight-input" id="log-reps" value="5" min="1" step="1" inputmode="numeric" oninput="syncRepsInput()" onfocus="setTimeout(()=>{this.setSelectionRange(this.value.length,this.value.length)},0)">
@@ -6223,6 +6370,28 @@ function renderGuidedChecklist(){
     <div class="swap-modal-current" id="swap-modal-current">Barbell Bench Press</div>
     <div id="swap-modal-opts"></div>
     <button class="swap-cancel-btn" onclick="closeSwapModal()">Cancel</button>
+  </div>
+</div>
+
+<!-- ── Edit Logged Set Modal ──────────────────────────────── -->
+<div class="swap-modal-bg" id="edit-set-modal-bg" onclick="closeEditSetModal()">
+  <div class="swap-modal" onclick="event.stopPropagation()">
+    <div class="swap-modal-handle"></div>
+    <div class="swap-modal-title">Edit Set</div>
+    <div class="edit-set-inputs">
+      <div class="edit-set-grp" id="edit-set-weight-grp">
+        <div class="str-input-lbl">WEIGHT (LBS)</div>
+        <input type="number" class="str-input-val str-weight-input" id="edit-set-weight" min="0" step="2.5" inputmode="decimal">
+      </div>
+      <div class="edit-set-grp">
+        <div class="str-input-lbl">REPS</div>
+        <input type="number" class="str-input-val str-weight-input" id="edit-set-reps" min="1" step="1" inputmode="numeric">
+      </div>
+    </div>
+    <button class="str-confirm-btn" onclick="saveEditedSet()" style="margin-top:16px;margin-bottom:10px">
+      <span>SAVE</span>
+    </button>
+    <button class="swap-cancel-btn" onclick="closeEditSetModal()">Cancel</button>
   </div>
 </div>
 
@@ -6347,12 +6516,12 @@ function renderGuidedChecklist(){
       <div class="gw-prev-best" id="gw-prev-best"></div>
       <div id="gw-trend" style="display:none;margin-bottom:10px"></div>
       <div class="gw-inputs">
-        <div class="gw-input-grp">
+        <div class="gw-input-grp" id="gw-weight-grp">
           <div class="gw-input-lbl">WEIGHT (LBS)</div>
           <input type="number" id="gw-weight" class="gw-input" inputmode="decimal" step="2.5" min="0"
             oninput="updateGuidedWarmup();resetInactivityTimer()" onfocus="setTimeout(()=>{this.setSelectionRange(this.value.length,this.value.length)},0)">
         </div>
-        <div class="gw-input-sep"></div>
+        <div class="gw-input-sep" id="gw-input-sep"></div>
         <div class="gw-input-grp">
           <div class="gw-input-lbl">REPS</div>
           <input type="number" id="gw-reps" class="gw-input" inputmode="numeric" step="1" min="1"
@@ -6370,13 +6539,18 @@ function renderGuidedChecklist(){
       <div class="gw-rest-countdown" id="gw-rest-countdown">1:30</div>
       <div class="gw-rest-bar-track"><div class="gw-rest-bar-fill" id="gw-rest-fill" style="width:0%"></div></div>
       <div class="gw-rest-next" id="gw-rest-next"></div>
+      <div class="gw-last-set-row" id="gw-last-set-row" style="display:none">
+        <span id="gw-last-set-text"></span>
+        <button class="gw-edit-set-btn" onclick="editGuidedLastSet()">✎ Edit</button>
+      </div>
       <button class="gw-swap-btn" id="gw-rest-swap-btn" onclick="openGuidedSwapModal()" style="margin-bottom:10px">⇄ Swap exercise</button>
       <button class="gw-rest-skip" onclick="guidedSkipRest()">Skip Rest →</button>
     </div>
 
     <!-- Complete state -->
     <div id="gw-complete-state" style="display:none;text-align:center;padding:50px 10px 30px">
-      <div style="font-size:13px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:var(--lime);margin-bottom:12px">Workout complete</div>
+      <div style="font-size:13px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:var(--lime);margin-bottom:20px">Workout complete</div>
+      <div class="gw-complete-stats" id="gw-complete-stats"></div>
       <div style="font-size:14px;color:var(--dim)" id="gw-complete-summary"></div>
     </div>
   </div>
