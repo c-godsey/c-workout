@@ -68,14 +68,14 @@ html,body{background:var(--bg);color:var(--text);font-family:'Montserrat',-apple
    user scrolls content back up, it disappears behind the mask instead of poking back
    into the reserved band. Scrolling itself is untouched — the mask just covers what
    would otherwise show through. */
-body.pip-mode{--pip-drop:50vh}
+body.pip-mode{--pip-drop:25vh}
 body.pip-mode .app{margin-top:var(--pip-drop)}
 body.pip-mode .gw-overlay,
 body.pip-mode #fs-overlay,
 body.pip-mode .scan-overlay,
 body.pip-mode .photo-scan-overlay{padding-top:var(--pip-drop)}
 body.pip-mode .fs-topbar{top:var(--pip-drop)}
-.pip-mask{display:none;position:fixed;top:0;left:0;right:0;height:var(--pip-drop,50vh);background:var(--bg);z-index:9999;pointer-events:none}
+.pip-mask{display:none;position:fixed;top:0;left:0;right:0;height:var(--pip-drop,25vh);background:var(--bg);z-index:9999;pointer-events:none}
 body.pip-mode .pip-mask{display:block}
 
 /* ── MAIN TABS — hidden, using bottom nav instead ── */
