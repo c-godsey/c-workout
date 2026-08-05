@@ -49,6 +49,34 @@ html,body{background:var(--bg);color:var(--text);font-family:'Montserrat',-apple
 .topbar-sep{width:1px;height:28px;background:var(--border)}
 .topbar-settings-btn{background:var(--surface2);border:1px solid var(--border);color:var(--dim);width:40px;height:40px;border-radius:14px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s}
 .topbar-settings-btn:hover{background:var(--border);color:var(--text);border-color:var(--lime)}
+.topbar-settings-btn.active{background:rgba(174,212,63,.12);border-color:var(--lime);color:var(--lime)}
+/* Video Mode — no shrinking, no scaling, nothing fancy: just push content down so a
+   genuinely blank section sits at the top of the screen for a YouTube video to play
+   in. Same size, same formatting, everything just starts lower.
+   .app is normal in-flow content, so margin-top works fine there — the user can
+   scroll to see the rest. Guided Workout / boxing timer / scan screens are different:
+   they're position:fixed overlays that stay open while the page behind them is
+   scroll-locked (body.style.overflow='hidden'), so shrinking their OWN box down to
+   top:X;bottom:0 doesn't work — the "gap" left above them just shows whatever part of
+   the frozen page happens to be scrolled into that spot, not blank space. Instead we
+   keep each overlay at its full inset:0 size (still fully opaque, still covers the
+   whole real screen) and push its CONTENT down with padding-top, so the reserved
+   band is the overlay's own solid background — genuinely blank no matter what's
+   behind it or where the page was scrolled. On top of all that, .pip-mask is a
+   permanently fixed, opaque strip pinned to the true top of the screen for as long
+   as Video Mode is on — it sits above everything else (highest z-index), so if the
+   user scrolls content back up, it disappears behind the mask instead of poking back
+   into the reserved band. Scrolling itself is untouched — the mask just covers what
+   would otherwise show through. */
+body.pip-mode{--pip-drop:25vh}
+body.pip-mode .app{margin-top:var(--pip-drop)}
+body.pip-mode .gw-overlay,
+body.pip-mode #fs-overlay,
+body.pip-mode .scan-overlay,
+body.pip-mode .photo-scan-overlay{padding-top:var(--pip-drop)}
+body.pip-mode .fs-topbar{top:var(--pip-drop)}
+.pip-mask{display:none;position:fixed;top:0;left:0;right:0;height:var(--pip-drop,25vh);background:var(--bg);z-index:9999;pointer-events:none}
+body.pip-mode .pip-mask{display:block}
 
 /* ── MAIN TABS — hidden, using bottom nav instead ── */
 .main-tabs{display:none}
@@ -436,6 +464,9 @@ html,body{background:var(--bg);color:var(--text);font-family:'Montserrat',-apple
 @keyframes pulsePop{0%{transform:scale(1)}40%{transform:scale(1.12)}100%{transform:scale(1)}}
 .gw-session-progress-lbl{font-size:10px;font-weight:700;color:var(--dim);text-align:center;padding:6px 20px 0;flex-shrink:0}
 .gw-exit-btn{padding:8px 16px;border-radius:14px;font-size:13px;font-weight:700;cursor:pointer;border:1px solid var(--border);background:var(--surface2);color:var(--dim);transition:all .15s}
+.gw-pip-btn{width:36px;height:36px;border-radius:14px;border:1px solid var(--border);background:var(--surface2);color:var(--dim);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;flex-shrink:0}
+.gw-pip-btn:hover{border-color:var(--lime);color:var(--lime)}
+.gw-pip-btn.active{background:rgba(174,212,63,.12);border-color:var(--lime);color:var(--lime)}
 .gw-body{flex:1;padding:20px 20px 8px;display:flex;flex-direction:column;gap:0}
 .gw-block-tag{display:inline-flex;align-items:center;padding:3px 10px;border-radius:100px;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px;width:fit-content}
 .gw-ex-name{font-size:28px;font-weight:900;color:var(--text);line-height:1.15;margin-bottom:6px}
@@ -475,9 +506,6 @@ html,body{background:var(--bg);color:var(--text);font-family:'Montserrat',-apple
 .str-start-btn{width:100%;margin-top:14px;padding:16px;background:linear-gradient(160deg,#3A3A3C,#1C1C1E);color:#fff;border:1px solid var(--border);border-radius:16px;font-size:15px;font-weight:900;letter-spacing:2px;text-transform:uppercase;cursor:pointer;box-shadow:0 2px 12px rgba(0,0,0,.3);transition:all .2s}
 .str-start-btn:hover{background:linear-gradient(160deg,#454547,#252527)}
 /* version banner */
-.update-banner{position:fixed;top:0;left:50%;transform:translateX(-50%) translateY(-100%);width:100%;max-width:900px;z-index:700;background:var(--lime);color:#000;padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:13px;font-weight:800;transition:transform .4s cubic-bezier(.32,.72,0,1)}
-.update-banner.show{transform:translateX(-50%) translateY(0)}
-.update-banner-btn{padding:6px 14px;border-radius:15px;background:#000;color:var(--lime);font-size:12px;font-weight:800;border:none;cursor:pointer;white-space:nowrap}
 .str-complete-btn:hover{background:linear-gradient(160deg,#bce054,#8aaa32);box-shadow:0 4px 24px rgba(174,212,63,.25)}
 .str-complete-btn:disabled{opacity:.3;cursor:not-allowed;box-shadow:none}
 
@@ -995,6 +1023,38 @@ code{font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:10p
 .scan-qty-val{flex:1;text-align:center;font-size:14px;font-weight:700;color:var(--text)}
 .scan-result-actions{display:flex;gap:10px}
 .scan-result-actions .btn{flex:1}
+/* Photo-based meal scan (Groq vision) */
+.photo-scan-overlay{display:none;position:fixed;inset:0;z-index:960;background:#000;flex-direction:column}
+.photo-scan-overlay.open{display:flex}
+.photo-scan-preview-wrap{position:relative;flex:1;min-height:0;overflow:hidden;background:#000;display:flex;align-items:center;justify-content:center}
+.photo-scan-preview-wrap img{width:100%;height:100%;object-fit:contain;display:block}
+.photo-scan-loading{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:rgba(0,0,0,.55)}
+.photo-scan-spinner{width:38px;height:38px;border:3px solid rgba(255,255,255,.25);border-top-color:var(--lime);border-radius:50%;animation:photoscanspin .8s linear infinite}
+@keyframes photoscanspin{to{transform:rotate(360deg)}}
+.photo-scan-loading-txt{color:#fff;font-size:13px;font-weight:600;text-align:center;padding:0 30px}
+.photo-scan-sheet{background:var(--surface);border-radius:24px 24px 0 0;padding:20px 20px 28px;flex-shrink:0;display:none;max-height:62vh;overflow-y:auto}
+.photo-scan-sheet.open{display:block}
+.photo-scan-sheet-title{font-size:11px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:var(--dim);margin-bottom:14px}
+.photo-scan-summary{font-size:13px;color:var(--text);background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:12px 14px;margin-bottom:14px;line-height:1.5}
+.photo-scan-review-banner{font-size:12px;color:#e6b439;background:rgba(230,180,57,.08);border:1px solid rgba(230,180,57,.25);border-radius:12px;padding:10px 12px;margin-bottom:14px;align-items:center;gap:8px;line-height:1.4}
+.photo-scan-item{display:flex;flex-direction:column;gap:7px;padding:12px 0;border-bottom:1px solid var(--border)}
+.photo-scan-item:last-child{border-bottom:none}
+.photo-scan-item-row{display:flex;gap:8px;align-items:center}
+.photo-scan-item-name{flex:1;background:transparent;border:none;outline:none;font-family:inherit;font-size:14px;font-weight:700;color:var(--text)}
+.photo-scan-item-kcal{width:60px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;outline:none;font-family:inherit;font-size:13px;font-weight:700;color:var(--lime);text-align:center;padding:6px 2px;-moz-appearance:textfield}
+.photo-scan-item-kcal::-webkit-outer-spin-button,.photo-scan-item-kcal::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.photo-scan-item-remove{width:26px;height:26px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);color:var(--dim);font-size:14px;cursor:pointer;flex-shrink:0;line-height:1}
+.photo-scan-item-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.photo-scan-item-badge{font-size:9px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;padding:2px 8px;border-radius:20px;flex-shrink:0}
+.photo-scan-item-badge.high{background:rgba(174,212,63,.12);color:var(--lime);border:1px solid rgba(174,212,63,.3)}
+.photo-scan-item-badge.medium{background:rgba(230,180,57,.12);color:#e6b439;border:1px solid rgba(230,180,57,.3)}
+.photo-scan-item-badge.low{background:rgba(230,57,70,.12);color:#e63946;border:1px solid rgba(230,57,70,.3)}
+.photo-scan-item-grams{width:48px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;outline:none;font-family:inherit;font-size:11px;font-weight:700;color:var(--text);text-align:center;padding:3px 2px;-moz-appearance:textfield;flex-shrink:0}
+.photo-scan-item-grams::-webkit-outer-spin-button,.photo-scan-item-grams::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.photo-scan-item-grams-lbl{font-size:10px;color:var(--dim);margin-left:-4px;flex-shrink:0}
+.photo-scan-item-note{font-size:11.5px;color:var(--dim);line-height:1.4;flex:1;min-width:100px}
+.photo-scan-total{font-size:12px;color:var(--dim);margin:12px 0 16px;text-align:right}
+.photo-scan-empty{font-size:13px;color:var(--dim);text-align:center;padding:16px 0}
 </style>
 </head>
 <body>
@@ -1477,12 +1537,6 @@ code{font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:10p
       <div id="home-upnext-list" style="padding:0 16px 14px"></div>
     </div>
 
-    <!-- Energy check-in -->
-    <div class="card" id="home-energy-card" style="margin-top:24px;padding:22px">
-      <div style="font-size:10px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:var(--dim);margin-bottom:12px">How do you feel today?</div>
-      <div id="home-energy-btns" style="display:flex;gap:8px"></div>
-    </div>
-
     <!-- Ad-hoc section -->
     <div class="plan-section-hdr">Quick Start</div>
     <div class="plan-adhoc-row">
@@ -1561,6 +1615,10 @@ code{font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:10p
         <button class="btn btn-secondary" id="nut-scan-btn" style="flex-shrink:0;padding:0 14px" onclick="openBarcodeScanner()" aria-label="Scan barcode">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3 7V4a1 1 0 011-1h3M17 3h3a1 1 0 011 1v3M21 17v3a1 1 0 01-1 1h-3M7 21H4a1 1 0 01-1-1v-3"/><path d="M6 8v8M9 8v8M12 8v8M15 8v8M18 8v8"/></svg>
         </button>
+        <button class="btn btn-secondary" id="nut-photo-btn" style="flex-shrink:0;padding:0 14px" onclick="openPhotoScan()" aria-label="Photo-scan a meal">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8a2 2 0 012-2h1.2l.9-1.5A1 1 0 019 4h6a1 1 0 01.9.5L16.8 6H18a2 2 0 012 2v10a2 2 0 01-2 2H6a2 2 0 01-2-2V8z"/><circle cx="12" cy="13" r="3.5"/></svg>
+        </button>
+        <input type="file" id="photo-scan-input" accept="image/*" capture="environment" style="display:none" onchange="handlePhotoScanFile(event)"/>
         <button class="btn btn-primary" id="nut-add-btn" style="flex-shrink:0" onclick="nutAddFromDescAI()">Add</button>
       </div>
       <div id="nut-parse-preview" style="font-size:12px;min-height:18px;margin-top:8px"></div>
@@ -2471,6 +2529,177 @@ function updateNutAIToggleUI(){
   btn.classList.toggle('on',on);
 }
 
+// ── Nutrition: Photo Meal Scan (Groq vision) ─────────────────────────────────
+// Takes a photo of a plate of food, sends it to a vision-capable Groq model
+// through the same GROQ_PROXY worker used for the text-based AI calorie estimate,
+// and asks it to identify each food item, estimate its portion, and estimate
+// calories. Results land in an editable confirmation list before being logged.
+const GROQ_VISION_MODELS=['qwen/qwen3.6-27b'];
+let PHOTO_SCAN={dataUrl:null,items:null,summary:''};
+async function callGroqVision(prompt,dataUrl){
+  const endpoint=GROQ_PROXY.trim()||'https://api.groq.com/openai/v1/chat/completions';
+  let lastErr='';
+  for(const model of GROQ_VISION_MODELS){
+    try{
+      const res=await fetch(endpoint,{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({model,messages:[{role:'user',content:[
+          {type:'text',text:prompt},
+          {type:'image_url',image_url:{url:dataUrl}}
+        ]}],temperature:0.2})
+      });
+      if(!res.ok){lastErr=`HTTP ${res.status}`;continue;}
+      const data=await res.json();
+      const content=data.choices&&data.choices[0]&&data.choices[0].message&&data.choices[0].message.content;
+      if(!content){lastErr='Empty response';continue;}
+      return content;
+    }catch(e){lastErr=(e&&e.message)||'Network error';}
+  }
+  throw new Error(lastErr||'Groq vision request failed');
+}
+// Downscale + re-encode to keep the upload small and fast (camera photos can be several MB).
+function downscaleImage(file,maxDim=1024,quality=0.82){
+  return new Promise((resolve,reject)=>{
+    const img=new Image();
+    const url=URL.createObjectURL(file);
+    img.onload=()=>{
+      URL.revokeObjectURL(url);
+      let{width:w,height:h}=img;
+      if(w>maxDim||h>maxDim){
+        const scale=maxDim/Math.max(w,h);
+        w=Math.round(w*scale);h=Math.round(h*scale);
+      }
+      const canvas=document.createElement('canvas');
+      canvas.width=w;canvas.height=h;
+      canvas.getContext('2d').drawImage(img,0,0,w,h);
+      resolve(canvas.toDataURL('image/jpeg',quality));
+    };
+    img.onerror=()=>{URL.revokeObjectURL(url);reject(new Error('Could not read photo'));};
+    img.src=url;
+  });
+}
+function openPhotoScan(){
+  document.getElementById('photo-scan-input')?.click();
+}
+function handlePhotoScanFile(e){
+  const file=e.target.files&&e.target.files[0];
+  e.target.value=''; // allow re-selecting the same file next time
+  if(!file)return;
+  downscaleImage(file).then(dataUrl=>{
+    PHOTO_SCAN.dataUrl=dataUrl;
+    PHOTO_SCAN.items=null;
+    PHOTO_SCAN.summary='';
+    const overlay=document.getElementById('photo-scan-overlay');
+    const img=document.getElementById('photo-scan-img');
+    img.src=dataUrl;
+    overlay.classList.add('open');
+    document.getElementById('photo-scan-sheet').classList.remove('open');
+    document.getElementById('photo-scan-loading').style.display='flex';
+    analyzePhotoScan(dataUrl);
+  }).catch(()=>{
+    showToast('','Could not read photo','Try again or use the text field instead');
+  });
+}
+async function analyzePhotoScan(dataUrl){
+  try{
+    const prompt=`This photo shows a plate/meal of food. First, write a one-sentence overall summary describing what the meal appears to be. Then identify every distinct food item you can see, estimate its portion size, and estimate its calories. For each item, briefly note any assumptions you made that affect the estimate — portion size, preparation method (fried vs grilled vs baked), or hidden ingredients like oil, butter, sauce, or dressing — and rate your confidence in that item's estimate as "high", "medium", or "low" (use "medium" or "low" whenever the photo makes portion size, preparation, or ingredients genuinely hard to judge). Return ONLY a JSON object (no prose, no markdown fences) shaped exactly like {"summary":string,"items":[{"name":string,"kcal":integer,"grams":integer or null,"note":string,"confidence":"high"|"medium"|"low"}]}.`;
+    const raw=await callGroqVision(prompt,dataUrl);
+    const parsed=parseGroqJSON(raw);
+    const rawItems=Array.isArray(parsed)?parsed:parsed.items; // tolerate a bare array too
+    if(!Array.isArray(rawItems)||!rawItems.length)throw new Error('No items found');
+    PHOTO_SCAN.summary=(!Array.isArray(parsed)&&parsed.summary)?String(parsed.summary):'';
+    PHOTO_SCAN.items=rawItems.filter(it=>it&&it.name&&typeof it.kcal==='number').map(it=>({
+      name:nutTitleCase(String(it.name)),
+      kcal:Math.round(it.kcal),
+      grams:(it.grams!=null&&!isNaN(it.grams))?Math.round(it.grams):null,
+      note:it.note?String(it.note):'',
+      confidence:['high','medium','low'].includes(it.confidence)?it.confidence:'high'
+    }));
+    if(!PHOTO_SCAN.items.length)throw new Error('No valid items in response');
+    renderPhotoScanItems();
+  }catch(e){
+    const offline=(e&&e.message==='Failed to fetch');
+    showToast('','Could not analyze photo',offline?'No connection — try again once online':'Try a clearer photo, or add items manually below');
+    closePhotoScan();
+  }finally{
+    const loading=document.getElementById('photo-scan-loading');
+    if(loading)loading.style.display='none';
+  }
+}
+function renderPhotoScanItems(){
+  const list=document.getElementById('photo-scan-items');
+  const items=PHOTO_SCAN.items||[];
+  const summaryEl=document.getElementById('photo-scan-summary');
+  if(summaryEl){
+    summaryEl.textContent=PHOTO_SCAN.summary||'';
+    summaryEl.style.display=PHOTO_SCAN.summary?'block':'none';
+  }
+  const reviewEl=document.getElementById('photo-scan-review-banner');
+  if(reviewEl)reviewEl.style.display=items.some(it=>it.confidence!=='high')?'flex':'none';
+  if(!items.length){
+    list.innerHTML='<div class="photo-scan-empty">No items — retake or add manually below</div>';
+  } else {
+    list.innerHTML=items.map((it,i)=>`
+      <div class="photo-scan-item">
+        <div class="photo-scan-item-row">
+          <input class="photo-scan-item-name" value="${nutEsc(it.name)}" oninput="photoScanUpdateName(${i},this.value)">
+          <input type="number" class="photo-scan-item-kcal" value="${it.kcal}" min="0" step="1" inputmode="numeric" oninput="photoScanUpdateKcal(${i},this.value)">
+          <button class="photo-scan-item-remove" onclick="photoScanRemoveItem(${i})" aria-label="Remove item">✕</button>
+        </div>
+        <div class="photo-scan-item-meta">
+          <span class="photo-scan-item-badge ${it.confidence}">${it.confidence==='high'?'Looks right':it.confidence==='medium'?'Check this':'Verify'}</span>
+          ${it.grams!=null?`<input type="number" class="photo-scan-item-grams" value="${it.grams}" min="0" step="1" oninput="photoScanUpdateGrams(${i},this.value)"><span class="photo-scan-item-grams-lbl">g</span>`:''}
+          ${it.note?`<span class="photo-scan-item-note">${nutEsc(it.note)}</span>`:''}
+        </div>
+      </div>`).join('');
+  }
+  const total=items.reduce((s,it)=>s+(it.kcal||0),0);
+  document.getElementById('photo-scan-total').textContent=items.length?`${total.toLocaleString()} cal total`:'';
+  document.getElementById('photo-scan-sheet').classList.add('open');
+}
+function photoScanUpdateName(i,val){ if(PHOTO_SCAN.items&&PHOTO_SCAN.items[i])PHOTO_SCAN.items[i].name=val; }
+function photoScanUpdateKcal(i,val){
+  if(!PHOTO_SCAN.items||!PHOTO_SCAN.items[i])return;
+  PHOTO_SCAN.items[i].kcal=Math.max(0,Math.round(parseFloat(val))||0);
+  const total=PHOTO_SCAN.items.reduce((s,it)=>s+(it.kcal||0),0);
+  document.getElementById('photo-scan-total').textContent=`${total.toLocaleString()} cal total`;
+}
+function photoScanUpdateGrams(i,val){
+  if(!PHOTO_SCAN.items||!PHOTO_SCAN.items[i])return;
+  const g=parseFloat(val);
+  PHOTO_SCAN.items[i].grams=isNaN(g)?null:Math.max(0,Math.round(g));
+}
+function photoScanRemoveItem(i){
+  if(!PHOTO_SCAN.items)return;
+  PHOTO_SCAN.items.splice(i,1);
+  renderPhotoScanItems();
+}
+function photoScanRetake(){
+  closePhotoScan();
+  openPhotoScan();
+}
+function closePhotoScan(){
+  document.getElementById('photo-scan-overlay')?.classList.remove('open');
+  document.getElementById('photo-scan-sheet')?.classList.remove('open');
+  document.getElementById('photo-scan-loading').style.display='none';
+  PHOTO_SCAN={dataUrl:null,items:null,summary:''};
+}
+function confirmPhotoScanAdd(){
+  const items=PHOTO_SCAN.items||[];
+  if(!items.length){ closePhotoScan(); return; }
+  let total=0,count=0;
+  items.forEach(it=>{
+    if(!it.name||!it.kcal)return;
+    const grams=it.grams;
+    nutAddFood(strTodayKey(),{name:it.name,kcal:it.kcal,grams,per100:(grams?Math.round(it.kcal/grams*100):null)});
+    total+=it.kcal;count++;
+  });
+  closePhotoScan();
+  renderNutritionTab();
+  showToast('','Added (photo scan)',`${count} item${count===1?'':'s'} · ${total.toLocaleString()} cal`);
+}
+
 // ── Nutrition: Barcode Scanner ──────────────────────────────────────────────
 // Uses @zxing/library (loaded lazily from CDN, only when the scanner is opened)
 // for camera-based barcode decoding, then looks the product up via the free,
@@ -2995,6 +3224,20 @@ function saveState(){
     localStorage.setItem(K.energylog,JSON.stringify(S.energyLog));
     localStorage.setItem(K.nutrition,JSON.stringify(S.nutrition));
   }catch{}
+}
+
+// ── Video Mode (push the page down for a YouTube video) ────────────────────────
+// Deliberately NOT persisted — it's a per-session, explicit opt-in. Every fresh
+// workout should start full screen; the blank space only shows up once you tap the
+// button, and starting/leaving a guided workout resets it back off.
+let PIP_MODE=false;
+function applyPipMode(){
+  document.body.classList.toggle('pip-mode',PIP_MODE);
+  document.getElementById('pip-mode-btn')?.classList.toggle('active',PIP_MODE);
+}
+function togglePipMode(){
+  PIP_MODE=!PIP_MODE;
+  applyPipMode();
 }
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
@@ -3774,7 +4017,6 @@ function renderStrength(){
     const displayName=getExName(wIdx,i);
     const isSwapped=S.strSwaps&&S.strSwaps[`${wIdx}-${i}`]!==undefined;
     const swapBtn=e.swaps?.length?`<button class="str-swap-btn${isSwapped?' swapped':''}" onclick="openSwapModal(${wIdx},${i})">⇄ Swap</button>`:'';
-    const trendChip=exTrendChipHtml(strExHistory(wIdx,i));
     return`<div class="str-lift-item">
       <div class="str-lift-name-row">
         <div class="str-lift-name">${displayName}${blockMeta}</div>
@@ -3782,7 +4024,6 @@ function renderStrength(){
       </div>
       <div class="str-lift-meta" style="padding:0 16px 8px">${e.sets} sets · ${displayReps} reps · ${e.rest}${techNote}</div>
       ${e.notes&&!isSwapped?`<div class="str-lift-notes">${e.notes}</div>`:''}
-      ${trendChip?`<div style="padding:0 16px 10px">${trendChip}</div>`:''}
       ${progressNote?`<div class="str-lift-progress">${progressNote}</div>`:''}
     </div>`;
   }).join('');
@@ -4770,7 +5011,6 @@ function renderPlan(){
   renderHomeUpNext();
   renderHomeGoal();
   renderHomeStats();
-  renderHomeEnergy();
   checkMotivationNudge();
 }
 
@@ -4828,8 +5068,12 @@ function applySwap(idx){
   saveState();
   closeSwapModal();
   renderStrength();
-  // If guided workout is open, re-render it too
-  if(GW.active) renderGuidedWorkout();
+  // If guided workout is open, re-render it too (renderGuidedWorkout always shows the
+  // logging state, so cancel any in-flight rest timer to avoid a stale completion firing later)
+  if(GW.active){
+    if(GW.restIv){clearInterval(GW.restIv);GW.restIv=null;}
+    renderGuidedWorkout();
+  }
   // If the quick-log drawer is open on this same exercise, refresh it too
   const drawerEl=document.getElementById('str-drawer');
   if(drawerEl&&drawerEl.classList.contains('open')&&S.activeStrengthWorkout===wIdx&&S.strLogExIdx===eIdx){
@@ -4850,9 +5094,16 @@ function releaseWakeLock(){
 function forceReleaseWakeLock(){try{if(wakeLock){wakeLock.release();wakeLock=null;}}catch(e){}}
 // Re-acquire on visibility change (iOS releases it when tab hidden)
 document.addEventListener('visibilitychange',()=>{
-  if(document.visibilityState==='visible'&&(BT.running||GW.active)){
-    requestWakeLock();
-    resetInactivityTimer();
+  if(document.visibilityState==='visible'){
+    if(BT.running||GW.active){
+      requestWakeLock();
+      resetInactivityTimer();
+    }
+    // Mobile browsers suspend/throttle setInterval while backgrounded — force an
+    // immediate recompute from the stored end-timestamp so rest timers snap back
+    // to the correct remaining time (or fire completion) as soon as we're foregrounded.
+    if(RT.active)restTimerTick();
+    if(GW.active&&GW.restIv)guidedRestTick();
   }
 });
 
@@ -4984,7 +5235,10 @@ function strPrevWeight(wIdx,eIdx){
 }
 
 // ── Rest Timer ────────────────────────────────────────────────────────────────
-let RT={active:false,secsLeft:0,duration:90,totalSecs:90,iv:null};
+// Timestamp-based (not tick-decrement) so the countdown stays accurate even if the
+// app is backgrounded — mobile browsers throttle/suspend setInterval in the background,
+// but recomputing from endTime on every tick (and on visibilitychange) self-corrects.
+let RT={active:false,secsLeft:0,duration:90,totalSecs:90,iv:null,endTime:0};
 
 // Parse "90s" / "75s" / "2min" etc. → seconds
 function parseRestStr(str){
@@ -5002,15 +5256,16 @@ function syncRestDurButtons(secs){
 function startRestTimer(secs){
   clearRestTimer();
   RT.active=true;
-  RT.secsLeft=secs||RT.duration;
-  RT.totalSecs=RT.secsLeft;
-  syncRestDurButtons(RT.secsLeft);
+  RT.totalSecs=secs||RT.duration;
+  RT.endTime=Date.now()+RT.totalSecs*1000;
+  RT.secsLeft=RT.totalSecs;
+  syncRestDurButtons(RT.totalSecs);
   updateRestBar();
   document.getElementById('rest-timer-bar').classList.add('show');
   RT.iv=setInterval(restTimerTick,1000);
 }
 function restTimerTick(){
-  RT.secsLeft--;
+  RT.secsLeft=Math.ceil((RT.endTime-Date.now())/1000);
   if(RT.secsLeft<=0){
     clearRestTimer();
     bell(2);
@@ -5597,6 +5852,7 @@ function renderBlockCard(){
 
 // ── Boot ──────────────────────────────────────────────────────────────────────
 loadState();
+applyPipMode();
 loadGhConfig();
 updateSyncStatusUI();
 updateReminderSettingsUI();
@@ -5608,31 +5864,14 @@ if(incompleteDays.length)S.activeDay=incompleteDays[0];
 render();resetBoxingTimer();initSwipe();
 switchWorkoutTab('plan');
 
-// ── App Version + Update Detection ───────────────────────────────────────────
-const APP_VERSION='3.1';
-(function checkVersion(){
-  const prev=localStorage.getItem('cw-app-version');
-  if(prev&&prev!==APP_VERSION){
-    const banner=document.getElementById('update-banner');
-    if(banner){
-      document.getElementById('update-banner-msg').textContent=`Updated to v${APP_VERSION} — your progress is safe`;
-      banner.classList.add('show');
-    }
-  }
-  localStorage.setItem('cw-app-version',APP_VERSION);
-})();
-function dismissUpdateBanner(){
-  const b=document.getElementById('update-banner');
-  if(b) b.classList.remove('show');
-}
-
 // ── Guided Workout ────────────────────────────────────────────────────────────
-const GW={active:false,exIdx:0,restIv:null,restSecs:0,restTotal:0};
+const GW={active:false,exIdx:0,restIv:null,restSecs:0,restTotal:0,restEndTime:0};
 
 function startGuidedWorkout(){
   const wIdx=S.activeStrengthWorkout;
   const wo=STRENGTH[wIdx];
   GW.active=true;
+  PIP_MODE=false;applyPipMode(); // always start full screen — Video Mode is an explicit, per-session choice
   // Find first exercise that still needs sets
   GW.exIdx=0;
   let found=false;
@@ -5648,6 +5887,7 @@ function startGuidedWorkout(){
 
 function exitGuidedWorkout(){
   GW.active=false;
+  PIP_MODE=false;applyPipMode(); // don't leave the page pushed down once the workout ends
   if(GW.restIv){clearInterval(GW.restIv);GW.restIv=null;}
   document.getElementById('gw-overlay').classList.remove('open');
   document.body.style.overflow='';
@@ -5682,11 +5922,17 @@ function renderGuidedWorkout(){
   // Exercise info (use swap name if set)
   document.getElementById('gw-ex-name').textContent=getExName(wIdx,GW.exIdx);
   // Update swap button state
+  const hasSwap=S.strSwaps&&S.strSwaps[`${wIdx}-${GW.exIdx}`]!==undefined;
   const gwSwapBtn=document.getElementById('gw-swap-btn');
   if(gwSwapBtn){
-    const hasSwap=S.strSwaps&&S.strSwaps[`${wIdx}-${GW.exIdx}`]!==undefined;
     gwSwapBtn.className=`gw-swap-btn${hasSwap?' swapped':''}`;
     gwSwapBtn.style.display=e.swaps?.length?'':'none';
+  }
+  // Mirror swap-button state onto the rest-screen swap button (same exercise, same swap options)
+  const gwRestSwapBtn=document.getElementById('gw-rest-swap-btn');
+  if(gwRestSwapBtn){
+    gwRestSwapBtn.className=`gw-swap-btn${hasSwap?' swapped':''}`;
+    gwRestSwapBtn.style.display=e.swaps?.length?'':'none';
   }
   document.getElementById('gw-set-label').textContent=`Set ${setNum} of ${target}`;
   document.getElementById('gw-target-hint').textContent=(S.strProgram==='sts'&&wIdx<3)?`Target: ${block.repRange} reps · ${block.intensity}`:`Target: ${e.reps} reps`;
@@ -5780,14 +6026,18 @@ function showGuidedRest(secs,nextLabel){
   const rs=document.getElementById('gw-rest-state');
   rs.style.display='flex';
   document.getElementById('gw-rest-next').textContent=nextLabel||'';
-  GW.restSecs=secs;GW.restTotal=secs;
+  GW.restTotal=secs;
+  GW.restEndTime=Date.now()+secs*1000;
+  GW.restSecs=secs;
   updateGuidedRestUI();
   if(GW.restIv)clearInterval(GW.restIv);
-  GW.restIv=setInterval(()=>{
-    GW.restSecs--;
-    if(GW.restSecs<=0){clearInterval(GW.restIv);GW.restIv=null;guidedAfterRest();}
-    else updateGuidedRestUI();
-  },1000);
+  GW.restIv=setInterval(guidedRestTick,1000);
+}
+
+function guidedRestTick(){
+  GW.restSecs=Math.ceil((GW.restEndTime-Date.now())/1000);
+  if(GW.restSecs<=0){clearInterval(GW.restIv);GW.restIv=null;GW.restSecs=0;guidedAfterRest();}
+  else updateGuidedRestUI();
 }
 
 function updateGuidedRestUI(){
@@ -5965,12 +6215,6 @@ function renderGuidedChecklist(){
     <span class="str-confirm-arr">›</span>
   </button>
 </div>
-<!-- ── Update Banner ───────────────────────────────────────── -->
-<div class="update-banner" id="update-banner">
-  <span id="update-banner-msg">App updated — your data is safe</span>
-  <button class="update-banner-btn" onclick="dismissUpdateBanner()">Got it</button>
-</div>
-
 <!-- ── Exercise Swap Modal ──────────────────────────────── -->
 <div class="swap-modal-bg" id="swap-modal-bg" onclick="closeSwapModal()">
   <div class="swap-modal" onclick="event.stopPropagation()">
@@ -6034,6 +6278,32 @@ function renderGuidedChecklist(){
   </div>
 </div>
 
+<!-- ── Photo Meal Scan Overlay (Groq vision) ─────────────────── -->
+<div class="photo-scan-overlay" id="photo-scan-overlay">
+  <div class="scan-header">
+    <div class="scan-title">Scan Meal Photo</div>
+    <button class="scan-close-btn" onclick="closePhotoScan()" aria-label="Close photo scan">✕</button>
+  </div>
+  <div class="photo-scan-preview-wrap">
+    <img id="photo-scan-img" alt="">
+    <div class="photo-scan-loading" id="photo-scan-loading" style="display:none">
+      <div class="photo-scan-spinner"></div>
+      <div class="photo-scan-loading-txt">Analyzing your plate…</div>
+    </div>
+  </div>
+  <div class="photo-scan-sheet" id="photo-scan-sheet">
+    <div class="photo-scan-sheet-title">What we found</div>
+    <div class="photo-scan-summary" id="photo-scan-summary" style="display:none"></div>
+    <div class="photo-scan-review-banner" id="photo-scan-review-banner" style="display:none">⚠️ Double-check the flagged items below — portions or ingredients were uncertain from the photo.</div>
+    <div id="photo-scan-items"></div>
+    <div class="photo-scan-total" id="photo-scan-total"></div>
+    <div class="scan-result-actions">
+      <button class="btn btn-secondary" onclick="photoScanRetake()">Retake</button>
+      <button class="btn btn-primary" id="photo-scan-add-btn" onclick="confirmPhotoScanAdd()">Add to Log</button>
+    </div>
+  </div>
+</div>
+
 <!-- ── Inactivity Warning Banner ──────────────────────────────── -->
 <div class="inactivity-banner" id="inactivity-banner" onclick="dismissInactivityBanner()">
   <div>
@@ -6051,6 +6321,11 @@ function renderGuidedChecklist(){
       <div class="gw-workout-name" id="gw-workout-name"></div>
     </div>
     <div style="display:flex;gap:8px;align-items:center">
+      <button class="gw-pip-btn" id="pip-mode-btn" onclick="togglePipMode()" title="Video Mode — pushes the app down and leaves blank space at the top for a YouTube video" aria-label="Toggle Video Mode">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="4" width="20" height="16" rx="2"/><rect x="12" y="12" width="8" height="6" rx="1" fill="currentColor" stroke="none"/>
+        </svg>
+      </button>
       <button class="gw-exit-btn" onclick="exitGuidedWorkout()">✕ Exit</button>
     </div>
   </div>
@@ -6095,6 +6370,7 @@ function renderGuidedChecklist(){
       <div class="gw-rest-countdown" id="gw-rest-countdown">1:30</div>
       <div class="gw-rest-bar-track"><div class="gw-rest-bar-fill" id="gw-rest-fill" style="width:0%"></div></div>
       <div class="gw-rest-next" id="gw-rest-next"></div>
+      <button class="gw-swap-btn" id="gw-rest-swap-btn" onclick="openGuidedSwapModal()" style="margin-bottom:10px">⇄ Swap exercise</button>
       <button class="gw-rest-skip" onclick="guidedSkipRest()">Skip Rest →</button>
     </div>
 
@@ -6112,6 +6388,10 @@ function renderGuidedChecklist(){
 
   <button class="gw-complete-btn" id="gw-complete-btn" onclick="guidedCompleteWorkout()">✓ COMPLETE WORKOUT</button>
 </div>
+
+<!-- ── Video Mode scroll mask — see .pip-mask CSS near the top of <style> ──── -->
+<div class="pip-mask" id="pip-mask"></div>
+
 <script>
 if('serviceWorker' in navigator){
   window.addEventListener('load',()=>{
