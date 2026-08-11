@@ -375,6 +375,17 @@ body.pip-mode .pip-mask{display:block}
 .prog-hero{padding:20px 0 6px}
 .prog-hero-eyebrow{font-size:10px;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:var(--dim);margin-bottom:6px;display:flex;align-items:center;gap:6px}
 .prog-hero-eyebrow::before{content:'';width:20px;height:2px;background:var(--dim);border-radius:1px;display:inline-block}
+.morning-toggle{display:flex;gap:8px;margin-bottom:14px}
+.morning-toggle-btn{flex:1;padding:10px 0;border-radius:12px;border:1px solid var(--border);background:var(--surface2);color:var(--dim);font-size:12px;font-weight:800;cursor:pointer;letter-spacing:.5px;text-transform:uppercase}
+.morning-toggle-btn.active{background:rgba(255,106,26,.12);border-color:var(--lime);color:var(--lime)}
+.morning-video-modal{display:none;position:fixed;inset:0;z-index:970;background:rgba(9,5,2,.94);align-items:center;justify-content:center;padding:20px}
+.morning-video-modal.open{display:flex}
+.morning-video-modal-inner{width:100%;max-width:480px}
+#morning-video-frame{position:relative;aspect-ratio:16/9;background:#000;border-radius:16px;overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,.6)}
+#morning-video-frame iframe{width:100%;height:100%;border:none;display:block}
+.morning-video-title{font-size:14px;font-weight:800;color:var(--text);margin:14px 0 16px;text-align:center}
+.morning-video-actions{display:flex;gap:10px}
+.morning-video-actions .btn{flex:1;text-align:center}
 .bento-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:24px}
 .bento-tile{margin-top:0!important}
 .bento-tile .prog-stat-val{font-size:24px}
@@ -998,12 +1009,15 @@ code{font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:10p
 
 /* ── PLAN ADHOC ──────────────────────────────────── */
 .plan-adhoc-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:4px}
-.plan-adhoc-btn{padding:14px 8px;border-radius:10px;border:1px solid var(--border);background:var(--surface);font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .2s;color:var(--dim);display:flex;flex-direction:column;align-items:center;gap:6px}
-.plan-adhoc-btn:hover{background:var(--surface2);color:var(--text);border-color:var(--text)}
-.plan-adhoc-btn-icon{font-size:18px;line-height:1}
-.plan-adhoc-btn.cycling{border-color:var(--border);color:var(--dim);background:var(--surface)}
-.plan-adhoc-btn.boxing{border-color:var(--border);color:var(--dim);background:var(--surface)}
-.plan-adhoc-btn.strength{border-color:var(--border);color:var(--dim);background:var(--surface)}
+.plan-adhoc-btn{padding:26px 8px;border-radius:14px;border:1px solid var(--border);font-size:12px;font-weight:900;letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .15s;display:flex;flex-direction:column;align-items:center;gap:10px}
+.plan-adhoc-btn:active{transform:scale(.96)}
+.plan-adhoc-btn-icon{font-size:24px;line-height:1}
+.plan-adhoc-btn.cycling{border-color:rgba(142,202,230,.5);color:var(--blue);background:linear-gradient(160deg,rgba(142,202,230,.22),rgba(142,202,230,.06));box-shadow:0 6px 24px rgba(142,202,230,.22)}
+.plan-adhoc-btn.cycling:hover{background:linear-gradient(160deg,rgba(142,202,230,.3),rgba(142,202,230,.08));box-shadow:0 8px 28px rgba(142,202,230,.32);transform:translateY(-2px)}
+.plan-adhoc-btn.boxing{border-color:rgba(212,135,60,.5);color:var(--orange);background:linear-gradient(160deg,rgba(212,135,60,.22),rgba(212,135,60,.06));box-shadow:0 6px 24px rgba(212,135,60,.22)}
+.plan-adhoc-btn.boxing:hover{background:linear-gradient(160deg,rgba(212,135,60,.3),rgba(212,135,60,.08));box-shadow:0 8px 28px rgba(212,135,60,.32);transform:translateY(-2px)}
+.plan-adhoc-btn.strength{border-color:rgba(255,106,26,.55);color:var(--lime);background:linear-gradient(160deg,rgba(255,106,26,.24),rgba(255,106,26,.07));box-shadow:0 6px 24px rgba(255,106,26,.26)}
+.plan-adhoc-btn.strength:hover{background:linear-gradient(160deg,rgba(255,106,26,.32),rgba(255,106,26,.09));box-shadow:0 8px 28px rgba(255,106,26,.36);transform:translateY(-2px)}
 .plan-rotation-wlbl.next{color:var(--dim)}
 .plan-rotation-slot{font-size:11px;color:var(--text2);line-height:1.6}
 .plan-rotation-day{font-size:10px;font-weight:700;color:var(--dim)}
@@ -1472,6 +1486,7 @@ code{font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:10p
         <div class="goal-tog-row" style="margin-bottom:16px">
           <button class="goal-tog-btn" id="gtog-overall" onclick="setGoalMode('overall')">Overall</button>
           <button class="goal-tog-btn" id="gtog-bytype" onclick="setGoalMode('bytype')">By Type</button>
+          <button class="goal-tog-btn" id="gtog-combo" onclick="setGoalMode('combo')">Box + Str</button>
         </div>
         <div style="font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--dim);margin-bottom:8px">Period</div>
         <div class="goal-tog-row" style="margin-bottom:18px">
@@ -1563,6 +1578,16 @@ code{font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:10p
     <!-- Dashboard header — rendered by JS -->
     <div id="plan-header-section"></div>
 
+    <!-- Morning Workout — short daily habit, cycling or kettlebell -->
+    <div class="card" id="home-morning-card" style="margin-top:24px;padding:20px">
+      <div style="font-size:10px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:var(--dim);margin-bottom:12px">Morning Workout · 15–20 min</div>
+      <div class="morning-toggle" id="morning-toggle-row">
+        <button class="morning-toggle-btn" data-type="cycling" onclick="setMorningType('cycling')">Cycling</button>
+        <button class="morning-toggle-btn" data-type="kettlebell" onclick="setMorningType('kettlebell')">Kettlebell</button>
+      </div>
+      <div id="morning-preview"></div>
+    </div>
+
     <!-- Motivation nudge -->
     <div class="card" id="home-nudge-card" style="display:none;margin-top:24px;padding:20px 18px;background:rgba(212,135,60,.08);border:1px solid rgba(212,135,60,.25);align-items:center;justify-content:space-between;gap:14px">
       <div style="display:flex;align-items:center;gap:12px;flex:1;min-width:0">
@@ -1571,14 +1596,8 @@ code{font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:10p
       <button class="btn-icon" style="width:28px;height:28px;font-size:13px;flex-shrink:0" onclick="dismissNudge()">✕</button>
     </div>
 
-    <!-- Up Next -->
-    <div class="card" id="home-upnext-card" style="margin-top:24px;padding:8px 0">
-      <div style="font-size:10px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:var(--dim);padding:14px 16px 4px">Up Next</div>
-      <div id="home-upnext-list" style="padding:0 16px 14px"></div>
-    </div>
-
     <!-- Ad-hoc section -->
-    <div class="plan-section-hdr">Quick Start</div>
+    <div class="plan-section-hdr">Later Today</div>
     <div class="plan-adhoc-row">
       <button class="plan-adhoc-btn cycling"  onclick="switchWorkoutTab('cycling')">
         <svg class="bnav-icon" style="width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round" viewBox="0 0 24 24"><circle cx="5.5" cy="16" r="3.5"/><circle cx="18.5" cy="16" r="3.5"/><path d="M12 5a2 2 0 100-4 2 2 0 000 4z"/><path d="M12 5l-2 6h5l1.5-3M12 11l-6.5 5M12 11l6.5 5"/></svg>
@@ -3168,7 +3187,8 @@ let S={
   bodyLog:[],
   bxHistory:[],
   activityLog:[],
-  goals:{mode:'overall',period:'weekly',overall:5,cycling:3,boxing:2,strength:2},
+  goals:{mode:'overall',period:'weekly',overall:5,cycling:3,boxing:2,strength:2,comboTarget:3},
+  morningType:'cycling',
 };
 
 // ── GitHub Cloud Sync (token kept separate from S so it never leaks into Export/Import backups) ──
@@ -3340,6 +3360,19 @@ function getVideo(week,day){
   const dayKey={day1:'Day 1',day2:'Day 2',day3:'Day 3'}[day]||'Day 1';
   const lib=WORKOUT_DATA.video_library[dayKey];
   return lib[(week-1)%lib.length]||lib[0];
+}
+// ── Morning Workout — short (≤20 min) cycling or kettlebell options ──────────
+const MORNING_CYCLING_POOL=(WORKOUT_DATA.video_library['Day 1']||[]).filter(v=>{
+  const m=v.duration.match(/(\d+)/);return m&&parseInt(m[1],10)<=20;
+});
+const MORNING_KB_POOL=KB_SUPPLEMENTAL.filter(w=>{
+  const m=w.duration.match(/(\d+)/);return m&&parseInt(m[1],10)<=20;
+});
+function morningPickIndex(len){
+  if(!len)return 0;
+  const start=new Date(new Date().getFullYear(),0,0);
+  const dayOfYear=Math.floor((Date.now()-start.getTime())/86400000);
+  return dayOfYear%len;
 }
 function getPhase(week){
   return WORKOUT_DATA.phases.find(p=>week>=p.range[0]&&week<=p.range[1])||WORKOUT_DATA.phases[0];
@@ -3897,6 +3930,72 @@ function logKbSupplemental(idx){
 function isKbDoneToday(id){
   const today=strTodayKey();
   return(S.strHistory||[]).some(h=>h.date===today&&h.kbId===id);
+}
+
+// ── Morning Workout card (Home tab) ─────────────────────────────────────────
+function setMorningType(type){
+  S.morningType=type;saveState();renderHomeMorning();
+}
+function launchMorningKettlebell(idx){
+  switchWorkoutTab('strength');
+  activateKbView();
+  selectKbWorkout('supp',idx);
+}
+function launchMorningCycling(videoId,title){
+  const modal=document.getElementById('morning-video-modal');
+  const frame=document.getElementById('morning-video-frame');
+  const titleEl=document.getElementById('morning-video-title');
+  if(!modal||!frame)return;
+  frame.innerHTML=`<iframe src="https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1" allow="autoplay;encrypted-media;picture-in-picture" allowfullscreen></iframe>`;
+  if(titleEl)titleEl.textContent=title;
+  modal.classList.add('open');
+}
+function closeMorningVideo(){
+  const modal=document.getElementById('morning-video-modal');
+  const frame=document.getElementById('morning-video-frame');
+  if(modal)modal.classList.remove('open');
+  if(frame)frame.innerHTML='';
+}
+function markMorningCyclingDone(){
+  if(!S.activityLog)S.activityLog=[];
+  S.activityLog.push({date:strTodayKey(),type:'cycling',ts:Date.now()});
+  saveState();
+  closeMorningVideo();
+  renderHomeGoal();renderHomeStats();
+  showToast('','Morning ride logged','Nice work');
+}
+function renderHomeMorning(){
+  const row=document.getElementById('morning-toggle-row');
+  if(row)row.querySelectorAll('.morning-toggle-btn').forEach(b=>b.classList.toggle('active',b.dataset.type===S.morningType));
+  const box=document.getElementById('morning-preview');
+  if(!box)return;
+  if(S.morningType==='kettlebell'){
+    const pool=MORNING_KB_POOL;
+    if(!pool.length){box.innerHTML='';return;}
+    const wb=pool[morningPickIndex(pool.length)];
+    const idx=KB_SUPPLEMENTAL.indexOf(wb);
+    const done=isKbDoneToday(wb.id);
+    box.innerHTML=`<div class="plan-day-card" style="cursor:pointer" onclick="launchMorningKettlebell(${idx})">
+      <div class="plan-day-icon strength">KB</div>
+      <div class="plan-day-body">
+        <div class="plan-day-title">${wb.title}</div>
+        <div class="plan-day-desc">${wb.subtitle} · ${wb.duration}</div>
+      </div>
+      <div class="plan-day-status" style="color:${done?'var(--lime)':'var(--dim)'};font-size:${done?'11px':'16px'};font-weight:${done?'800':'400'}">${done?'Done':'›'}</div>
+    </div>`;
+  } else {
+    const pool=MORNING_CYCLING_POOL;
+    if(!pool.length){box.innerHTML='';return;}
+    const vid=pool[morningPickIndex(pool.length)];
+    box.innerHTML=`<div class="plan-day-card" style="cursor:pointer" onclick="launchMorningCycling('${vid.id}','${vid.title.replace(/'/g,"\\'")}')">
+      <div class="plan-day-icon cycling">CYC</div>
+      <div class="plan-day-body">
+        <div class="plan-day-title">${vid.title}</div>
+        <div class="plan-day-desc">${vid.duration} ride</div>
+      </div>
+      <div class="plan-day-status" style="color:var(--dim);font-size:16px">›</div>
+    </div>`;
+  }
 }
 
 function renderKbView(){
@@ -4566,6 +4665,7 @@ function setGoalMode(mode){
   S.goals.mode=mode;renderGoalInputsUI();
   document.getElementById('gtog-overall')?.classList.toggle('on',mode==='overall');
   document.getElementById('gtog-bytype')?.classList.toggle('on',mode==='bytype');
+  document.getElementById('gtog-combo')?.classList.toggle('on',mode==='combo');
 }
 function setGoalPeriod(period){
   S.goals.period=period;goalViewOffset=0;
@@ -4581,6 +4681,11 @@ function renderGoalInputsUI(){
       <div class="goal-input-lbl">Sessions</div>
       <input class="goal-num" type="number" id="ginp-overall" min="1" max="30" value="${g.overall}"/>
     </div>`;
+  } else if(g.mode==='combo'){
+    row.innerHTML=`<div class="goal-input-grp" style="flex:0 0 80px">
+      <div class="goal-input-lbl" style="color:var(--lime)">Box + Str</div>
+      <input class="goal-num" type="number" id="ginp-combo" min="1" max="14" value="${g.comboTarget}"/>
+    </div>`;
   } else {
     row.innerHTML=`
       <div class="goal-input-grp"><div class="goal-input-lbl" style="color:var(--blue)">Cycling</div>
@@ -4594,6 +4699,7 @@ function renderGoalInputsUI(){
 function saveGoals(){
   const g=S.goals;
   if(g.mode==='overall') g.overall=Math.max(1,parseInt(document.getElementById('ginp-overall')?.value)||5);
+  else if(g.mode==='combo') g.comboTarget=Math.max(1,parseInt(document.getElementById('ginp-combo')?.value)||3);
   else{
     g.cycling=Math.max(0,parseInt(document.getElementById('ginp-cycling')?.value)||0);
     g.boxing=Math.max(0,parseInt(document.getElementById('ginp-boxing')?.value)||0);
@@ -4626,6 +4732,16 @@ function renderGoalCard(){
         ${done?'<div class="goal-ring-done">Goal Complete</div>':''}
       </div>
     </div>`;
+  } else if(g.mode==='combo'){
+    const comboVal=prog.boxing+prog.strength;
+    const done=comboVal>=g.comboTarget;
+    ringsArea.innerHTML=`<div class="goal-rings">
+      <div class="goal-ring-wrap">
+        ${makeSvgRing(comboVal,g.comboTarget,'var(--lime)',120,12)}
+        <div class="goal-ring-lbl">Boxing + Strength</div>
+        ${done?'<div class="goal-ring-done">Goal Complete</div>':''}
+      </div>
+    </div>`;
   } else {
     const types=[
       {key:'cycling',label:'Cycling',col:'var(--blue)',val:prog.cycling,goal:g.cycling},
@@ -4646,7 +4762,7 @@ function renderGoalCard(){
     settingsEl.style.display=goalsSettingsOpen?'block':'none';
     if(goalsSettingsOpen){
       // Sync toggles
-      ['overall','bytype'].forEach(m=>document.getElementById('gtog-'+m)?.classList.toggle('on',g.mode===m));
+      ['overall','bytype','combo'].forEach(m=>document.getElementById('gtog-'+m)?.classList.toggle('on',g.mode===m));
       ['weekly','monthly'].forEach(p=>document.getElementById('gtog-'+p)?.classList.toggle('on',g.period===p));
       renderGoalInputsUI();
     }
@@ -4901,6 +5017,15 @@ function renderHomeGoal(){
         ${prog.total>=g.overall?'<div class="goal-ring-done">Goal Complete</div>':''}
       </div>
     </div>`;
+  } else if(g.mode==='combo'){
+    const comboVal=prog.boxing+prog.strength;
+    el.innerHTML=`<div class="goal-rings" style="padding-top:10px">
+      <div class="goal-ring-wrap">
+        ${makeSvgRing(comboVal,g.comboTarget,'var(--lime)',100,10)}
+        <div class="goal-ring-lbl">Boxing + Strength</div>
+        ${comboVal>=g.comboTarget?'<div class="goal-ring-done">Goal Complete</div>':''}
+      </div>
+    </div>`;
   } else {
     const types=[
       {key:'cycling',label:'Cycling',col:'var(--blue)',val:prog.cycling,goal:g.cycling},
@@ -5103,7 +5228,7 @@ function renderPlan(){
     }).join('')}</div>
     <div style="font-size:11px;color:var(--dim);margin-top:10px;line-height:1.5">Alternates every week so each muscle group has full recovery before being hit again.</div>`;
   }
-  renderHomeUpNext();
+  renderHomeMorning();
   renderHomeGoal();
   renderHomeStats();
   checkMotivationNudge();
@@ -6507,6 +6632,18 @@ function renderGuidedChecklist(){
     <div class="swap-modal-title">Supplemental Workouts</div>
     <div id="supp-modal-opts"></div>
     <button class="swap-cancel-btn" onclick="closeSupplementalModal()">Close</button>
+  </div>
+</div>
+
+<!-- ── Morning Workout: Cycling Video Overlay ─────────────────── -->
+<div class="morning-video-modal" id="morning-video-modal">
+  <div class="morning-video-modal-inner">
+    <div id="morning-video-frame"></div>
+    <div class="morning-video-title" id="morning-video-title"></div>
+    <div class="morning-video-actions">
+      <button class="btn btn-secondary" onclick="closeMorningVideo()">Close</button>
+      <button class="btn btn-primary" onclick="markMorningCyclingDone()">Mark as Done</button>
+    </div>
   </div>
 </div>
 
