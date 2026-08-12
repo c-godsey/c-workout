@@ -171,6 +171,15 @@ body.pip-mode .pip-mask{display:block}
 /* ── WORKOUT CARDS GRID ──────────────────────────── */
 .workout-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
 @media(max-width:620px){.workout-grid{grid-template-columns:1fr}}
+.cy-len-tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:20px}
+.cy-len-tab{padding:12px 4px;border-radius:12px;border:1px solid var(--border);background:var(--surface);cursor:pointer;text-align:center;transition:all .15s}
+.cy-len-tab-label{font-size:12px;font-weight:900;letter-spacing:.5px;text-transform:uppercase;color:var(--dim)}
+.cy-len-tab-sub{font-size:10px;color:var(--dim);margin-top:3px}
+.cy-len-tab.active{background:rgba(255,106,26,.12);border-color:var(--lime)}
+.cy-len-tab.active .cy-len-tab-label,.cy-len-tab.active .cy-len-tab-sub{color:var(--lime)}
+.cy-type-group{margin-bottom:26px}
+.cy-type-hdr{font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--text2);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+.cy-type-count{font-size:10px;font-weight:700;color:var(--dim);background:var(--surface2);border-radius:10px;padding:1px 8px}
 .workout-card{background:var(--surface);border-radius:var(--r);overflow:hidden;transition:all .2s;box-shadow:var(--card-shadow)}
 .workout-card:hover{box-shadow:0 6px 24px rgba(0,0,0,.5);transform:translateY(-1px)}
 .workout-card.logged{box-shadow:0 0 0 1px rgba(255,106,26,.3),var(--card-shadow)}
@@ -1251,9 +1260,9 @@ code{font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:10p
 
     <!-- Cycling Hero -->
     <div class="cy-hero">
-      <div class="cy-hero-eyebrow">Training Program</div>
-      <div class="cy-hero-title">CYCLING<br>WEEK</div>
-      <div class="cy-hero-sub" id="cy-hero-phase">Foundation</div>
+      <div class="cy-hero-eyebrow">Free Ride</div>
+      <div class="cy-hero-title">CYCLING</div>
+      <div class="cy-hero-sub">Pick whatever fits your time today</div>
     </div>
 
     <!-- Stats -->
@@ -1265,41 +1274,10 @@ code{font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:10p
       </div>
     </div>
 
-    <!-- Phase card -->
-    <div class="card">
-      <div class="phase-card" id="phase-card">
-        <div class="phase-badge" id="phase-badge">Phase 1 of 4</div>
-        <div class="phase-name" id="phase-name">Foundation</div>
-        <div class="phase-focus" id="phase-focus">Building aerobic base and pedal stroke efficiency.</div>
-        <div class="phase-bar-track"><div class="phase-bar-fill" id="phase-bar" style="width:2%"></div></div>
-        <div class="phase-markers">
-          <span class="phase-marker">Week 1</span>
-          <span class="phase-marker">Wk 14</span>
-          <span class="phase-marker">Wk 27</span>
-          <span class="phase-marker">Wk 40</span>
-          <span class="phase-marker">Week 52</span>
-        </div>
-        <div class="phase-buttons" id="phase-buttons"></div>
-      </div>
-    </div>
-
-    <!-- Week nav -->
-    <div class="card" id="week-nav-card">
-      <div class="week-nav-inner">
-        <button class="btn-icon" id="btn-prev" onclick="changeWeek(-1)">‹</button>
-        <div class="week-center">
-          <div class="week-big" id="week-big">1</div>
-          <div class="week-of">/ 52 weeks</div>
-          <div id="week-deload-badge" style="display:none" class="deload-week-badge">Deload Week</div>
-          <div class="week-dots" id="week-dots"></div>
-        </div>
-        <button class="btn-icon" id="btn-next" onclick="changeWeek(1)">›</button>
-      </div>
-    </div>
-
-    <!-- Workout cards -->
-    <div class="section-hdr">This Week's Workouts</div>
-    <div class="workout-grid" id="workout-grid"></div>
+    <!-- Browse rides by length, then type -->
+    <div class="section-hdr">Browse Rides</div>
+    <div class="cy-len-tabs" id="cy-length-tabs"></div>
+    <div id="cy-library-list"></div>
 
   </div>
 
@@ -1602,15 +1580,15 @@ code{font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:10p
     <div class="plan-section-hdr">Later Today</div>
     <div class="plan-adhoc-row">
       <button class="plan-adhoc-btn cycling"  onclick="switchWorkoutTab('cycling')">
-        <svg class="bnav-icon" style="width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round" viewBox="0 0 24 24"><circle cx="5.5" cy="16" r="3.5"/><circle cx="18.5" cy="16" r="3.5"/><path d="M12 5a2 2 0 100-4 2 2 0 000 4z"/><path d="M12 5l-2 6h5l1.5-3M12 11l-6.5 5M12 11l6.5 5"/></svg>
+        <svg class="bnav-icon" style="width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round" viewBox="0 0 24 24"><path d="M5 18m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path d="M19 18m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path d="M12 19l0 -4l-3 -3l5 -4l2 3l3 0"/><path d="M17 5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"/></svg>
         Cycling
       </button>
       <button class="plan-adhoc-btn boxing"   onclick="switchWorkoutTab('boxing')">
-        <svg class="bnav-icon" style="width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round" viewBox="0 0 24 24"><path d="M14 12h-4a1 1 0 000 2h4a3 3 0 013 3v1a2 2 0 01-2 2H9a2 2 0 01-2-2v-5l-1-1V8a3 3 0 013-3h4a3 3 0 013 3v3a1 1 0 01-1 1z"/><path d="M9 5V4a1 1 0 011-1h4a1 1 0 011 1v1"/></svg>
+        <svg class="bnav-icon" style="width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round" viewBox="0 0 24 24"><path d="M8.489 17.727h9.867m-9.867 0V21h9.867v-3.273m-9.867 0C5.2 15.546 3.556 10.091 4.104 8.455c.438-1.31 2.375-.91 3.289-.546C7.393 4.091 9.037 3 13.423 3C17.806 3 20 4.09 20 9.545c0 4.364-1.096 7.273-1.644 8.182"/><path d="M7.393 7.91C7.758 8.272 8.818 9 10.133 9h4.934M7.393 7.91c0 3.817 1.644 4.363 2.74 4.363"/></svg>
         Boxing
       </button>
       <button class="plan-adhoc-btn strength" onclick="switchWorkoutTab('strength')">
-        <svg class="bnav-icon" style="width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round" viewBox="0 0 24 24"><rect x="2" y="10" width="3" height="4" rx="1"/><rect x="19" y="10" width="3" height="4" rx="1"/><path d="M5 12h14"/><rect x="6" y="7" width="3" height="10" rx="1"/><rect x="15" y="7" width="3" height="10" rx="1"/></svg>
+        <svg class="bnav-icon" style="width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round" viewBox="0 0 24 24"><path d="M2 12h1"/><path d="M6 8h-2a1 1 0 0 0 -1 1v6a1 1 0 0 0 1 1h2"/><path d="M6 7v10a1 1 0 0 0 1 1h1a1 1 0 0 0 1 -1v-10a1 1 0 0 0 -1 -1h-1a1 1 0 0 0 -1 1z"/><path d="M9 12h6"/><path d="M15 7v10a1 1 0 0 0 1 1h1a1 1 0 0 0 1 -1v-10a1 1 0 0 0 -1 -1h-1a1 1 0 0 0 -1 1z"/><path d="M18 8h2a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-2"/><path d="M22 12h-1"/></svg>
         Strength
       </button>
     </div>
@@ -1699,27 +1677,27 @@ code{font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:10p
 <!-- ── BOTTOM NAV ─────────────────────────────────── -->
 <nav class="bottom-nav">
   <button class="bnav-item active" id="bnav-plan" onclick="switchWorkoutTab('plan')">
-    <svg class="bnav-icon" viewBox="0 0 24 24"><path d="M3 9.5L12 3l9 6.5V20a1 1 0 01-1 1H5a1 1 0 01-1-1V9.5z"/><path d="M9 21V13h6v8"/></svg>
+    <svg class="bnav-icon" viewBox="0 0 24 24"><path d="M5 12l-2 0l9 -9l9 9l-2 0"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7"/><path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6"/></svg>
     <span class="bnav-label">Home</span>
   </button>
   <button class="bnav-item" id="bnav-strength" onclick="switchWorkoutTab('strength')">
-    <svg class="bnav-icon" viewBox="0 0 24 24"><rect x="2" y="10" width="3" height="4" rx="1"/><rect x="19" y="10" width="3" height="4" rx="1"/><path d="M5 12h14"/><rect x="6" y="7" width="3" height="10" rx="1"/><rect x="15" y="7" width="3" height="10" rx="1"/></svg>
+    <svg class="bnav-icon" viewBox="0 0 24 24"><path d="M2 12h1"/><path d="M6 8h-2a1 1 0 0 0 -1 1v6a1 1 0 0 0 1 1h2"/><path d="M6 7v10a1 1 0 0 0 1 1h1a1 1 0 0 0 1 -1v-10a1 1 0 0 0 -1 -1h-1a1 1 0 0 0 -1 1z"/><path d="M9 12h6"/><path d="M15 7v10a1 1 0 0 0 1 1h1a1 1 0 0 0 1 -1v-10a1 1 0 0 0 -1 -1h-1a1 1 0 0 0 -1 1z"/><path d="M18 8h2a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-2"/><path d="M22 12h-1"/></svg>
     <span class="bnav-label">Strength</span>
   </button>
   <button class="bnav-item" id="bnav-boxing" onclick="switchWorkoutTab('boxing')">
-    <svg class="bnav-icon" viewBox="0 0 24 24"><path d="M14 12h-4a1 1 0 000 2h4a3 3 0 013 3v1a2 2 0 01-2 2H9a2 2 0 01-2-2v-5l-1-1V8a3 3 0 013-3h4a3 3 0 013 3v3a1 1 0 01-1 1z"/><path d="M9 5V4a1 1 0 011-1h4a1 1 0 011 1v1"/></svg>
+    <svg class="bnav-icon" viewBox="0 0 24 24"><path d="M8.489 17.727h9.867m-9.867 0V21h9.867v-3.273m-9.867 0C5.2 15.546 3.556 10.091 4.104 8.455c.438-1.31 2.375-.91 3.289-.546C7.393 4.091 9.037 3 13.423 3C17.806 3 20 4.09 20 9.545c0 4.364-1.096 7.273-1.644 8.182"/><path d="M7.393 7.91C7.758 8.272 8.818 9 10.133 9h4.934M7.393 7.91c0 3.817 1.644 4.363 2.74 4.363"/></svg>
     <span class="bnav-label">Boxing</span>
   </button>
   <button class="bnav-item" id="bnav-cycling" onclick="switchWorkoutTab('cycling')">
-    <svg class="bnav-icon" viewBox="0 0 24 24"><circle cx="5.5" cy="16" r="3.5"/><circle cx="18.5" cy="16" r="3.5"/><path d="M12 5a2 2 0 100-4 2 2 0 000 4z"/><path d="M12 5l-2 6h5l1.5-3M12 11l-6.5 5M12 11l6.5 5"/></svg>
+    <svg class="bnav-icon" viewBox="0 0 24 24"><path d="M5 18m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path d="M19 18m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path d="M12 19l0 -4l-3 -3l5 -4l2 3l3 0"/><path d="M17 5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"/></svg>
     <span class="bnav-label">Cycling</span>
   </button>
   <button class="bnav-item" id="bnav-progress" onclick="switchWorkoutTab('progress')">
-    <svg class="bnav-icon" viewBox="0 0 24 24"><rect x="3" y="14" width="4" height="7" rx="1"/><rect x="10" y="9" width="4" height="12" rx="1"/><rect x="17" y="4" width="4" height="17" rx="1"/></svg>
+    <svg class="bnav-icon" viewBox="0 0 24 24"><path d="M3 17l6 -6l4 4l8 -8"/><path d="M14 7l7 0l0 7"/></svg>
     <span class="bnav-label">Progress</span>
   </button>
   <button class="bnav-item" id="bnav-nutrition" onclick="switchWorkoutTab('nutrition')">
-    <svg class="bnav-icon" viewBox="0 0 24 24"><path d="M7 2v7a2 2 0 0 0 2 2h0a2 2 0 0 0 2-2V2M9 2v20M15 2v8a3 3 0 0 0 3 3v9M18 2v6"/></svg>
+    <svg class="bnav-icon" viewBox="0 0 24 24"><path d="M19 3v12h-5c-.023 -3.681 .184 -7.406 5 -12zm0 12v6h-1v-3m-10 -14v17m-3 -17v3a3 3 0 1 0 6 0v-3"/></svg>
     <span class="bnav-label">Nutrition</span>
   </button>
 </nav>
@@ -3136,6 +3114,9 @@ const WORKOUT_DATA={
     {range:[27,39],name:"Shred",focus:"Maximum caloric burn with high-intensity intervals."},
     {range:[40,52],name:"Peak Performance",focus:"Combining speed and strength for maximum fitness."}
   ],
+  // Video library — sourced from the GCN Training YouTube channel
+  // (youtube.com/@GCNTraining), grouped by duration: Day 1 = short/HIIT rides,
+  // Day 2 = long endurance rides, Day 3 = medium-length variety rides.
   video_library:{
     "Day 1":[
       {id:"ewrf_rCHUdA",title:"15 Min HIIT Booster",duration:"15m"},
@@ -3143,7 +3124,22 @@ const WORKOUT_DATA={
       {id:"QuKEyPhRrMM",title:"25 Min HIIT Intervals",duration:"25m"},
       {id:"TO1h5fbOLAA",title:"Quick HIIT Sprints",duration:"20m"},
       {id:"MM4YwZvmdhs",title:"Sharp & Hard Efforts",duration:"20m"},
-      {id:"lwuFoUHxHJ0",title:"Feel the Burn HIIT",duration:"20m"}
+      {id:"lwuFoUHxHJ0",title:"Feel the Burn HIIT",duration:"20m"},
+      {id:"1xuWyHnnPko",title:"Instant Inferno",duration:"18m"},
+      {id:"557ZO8nu08s",title:"Calorie Burning Cycling Workout",duration:"16m"},
+      {id:"0eq8rMnBKJ4",title:"Intense Interval Blast",duration:"15m"},
+      {id:"wjAYieMdQbQ",title:"Easy Riding",duration:"20m"},
+      {id:"DtDmBV412Qc",title:"Super High Cadence Sprints",duration:"20m"},
+      {id:"1hWrYLiB4MQ",title:"Elevate Your Climbing Power",duration:"20m"},
+      {id:"TN5d6KuOHKU",title:"High Power Tempo With Short Sprints",duration:"20m"},
+      {id:"wI2_ym9ig1I",title:"Spicy Maximum Minute Efforts",duration:"20m"},
+      {id:"Ng7v8lPokx4",title:"Beginner Training Session",duration:"20m"},
+      {id:"MM6TnN5qvvE",title:"Quick But Brutal HIIT",duration:"15m"},
+      {id:"FVlbhhZLTFY",title:"Sprint Sprint Sprint",duration:"22m"},
+      {id:"CVvL_gfGP6g",title:"Team Time Trial",duration:"20m"},
+      {id:"W31KdfdL-ZY",title:"Sprintavals",duration:"17m"},
+      {id:"QMaf5BTaefA",title:"Time Is Of The Essence",duration:"15m"},
+      {id:"R3wm3-WtzVs",title:"15-Minute Smash Fest",duration:"15m"}
     ],
     "Day 2":[
       {id:"FtkPs2tFx9I",title:"40 Min Passo Pordoi",duration:"40m"},
@@ -3151,7 +3147,17 @@ const WORKOUT_DATA={
       {id:"J9fAk04oTtA",title:"45 Min VO2 Max",duration:"45m"},
       {id:"V-HmspieYjE",title:"Sweet Spot Endurance",duration:"30m"},
       {id:"jY8MwfuyK94",title:"Cadence & Speed Drills",duration:"60m"},
-      {id:"QB69Pwl6GI8",title:"Endurance Threshold",duration:"60m"}
+      {id:"QB69Pwl6GI8",title:"Endurance Threshold",duration:"60m"},
+      {id:"Tcw22Yph2u0",title:"Boost Your Climbing Power",duration:"40m"},
+      {id:"XAPUZHksyaw",title:"High Power Anaerobic Sprints",duration:"40m"},
+      {id:"4u1G51P756U",title:"Ramp It Up: Punchy Intervals",duration:"40m"},
+      {id:"CatAe9kXrp8",title:"Conor's Racing Bonanza",duration:"35m"},
+      {id:"a22l-aeYhB0",title:"Over/Under Threshold Efforts",duration:"35m"},
+      {id:"Ndia-ql47Yc",title:"Tough Time Trial Efforts",duration:"35m"},
+      {id:"PXamrwTAMvY",title:"Spin Those Legs",duration:"40m"},
+      {id:"7EK-lsQCSWk",title:"Get Fit In 40",duration:"40m"},
+      {id:"c-WAYVYmwc4",title:"Hank's Hardest Training Session",duration:"48m"},
+      {id:"vNcY0mcq4PU",title:"5 Gruelling Minutes",duration:"40m"}
     ],
     "Day 3":[
       {id:"vDKnTjpccf4",title:"30 Min Hill Climb",duration:"30m"},
@@ -3159,7 +3165,37 @@ const WORKOUT_DATA={
       {id:"ZiGE3-L4vyg",title:"30 Min Power Intervals",duration:"30m"},
       {id:"ww8rVspvaLw",title:"High Cadence HIIT",duration:"30m"},
       {id:"ug_1R9oiNvo",title:"On & Off Varied Intensity",duration:"30m"},
-      {id:"vyWJ6PCsjGI",title:"Into the Unknown Mystery Ride",duration:"30m"}
+      {id:"vyWJ6PCsjGI",title:"Into the Unknown Mystery Ride",duration:"30m"},
+      {id:"3ap81sm30P8",title:"Build Your VO2 Max",duration:"30m"},
+      {id:"ORh0C8U5UpY",title:"Calorie Crush",duration:"25m"},
+      {id:"Xor3DLlUwDk",title:"Emily's Short Mix",duration:"30m"},
+      {id:"br5q9MrVVeU",title:"Gradual Threshold Effort Builds",duration:"30m"},
+      {id:"wPOcEj5x59w",title:"Intense VO2 Cycling Efforts",duration:"30m"},
+      {id:"xAUkHJOAdLY",title:"Fast Paced Cadence Variations",duration:"25m"},
+      {id:"EOwiGfISjX0",title:"Get To Work On Your Cycling Fitness",duration:"25m"},
+      {id:"WmlcAORMk9Y",title:"New Year Spin: Get Back To Cycling",duration:"30m"},
+      {id:"39JMWTouY5I",title:"Festive Christmas Spin",duration:"25m"},
+      {id:"W60jdR6ylRc",title:"Tempo Efforts With Sprint Finishes",duration:"28m"},
+      {id:"QR-cFEYn0FM",title:"Quick & Sharp Sprinting Efforts",duration:"25m"},
+      {id:"2P1QPv7dERc",title:"Strength Builder & Quad Burner",duration:"30m"},
+      {id:"PjnNeqS_Yh8",title:"Ollie's Zone 2 Tour Des Stations",duration:"30m"},
+      {id:"4YHC0MVCg0c",title:"Cadence Training To Improve Pedalling",duration:"25m"},
+      {id:"kyifymSXvNk",title:"90-Second Extended Accelerations",duration:"30m"},
+      {id:"XsLU_l8irBA",title:"Short Sweet Spot Efforts",duration:"30m"},
+      {id:"ksmjvCOSYnI",title:"1 Minute VO2 Max Surges",duration:"32m"},
+      {id:"eNyVyngn0l8",title:"The Full Pyramid",duration:"30m"},
+      {id:"20HsAlwtg3Y",title:"Take It Easy",duration:"25m"},
+      {id:"C9TBzwhwyPg",title:"Easy Cadence Workout",duration:"25m"},
+      {id:"pH4ISSkJ4bw",title:"Sprint Surges",duration:"32m"},
+      {id:"g7aFu8D7OZw",title:"The Hurt Locker",duration:"30m"},
+      {id:"Xjr4VrBO-zs",title:"Step It Up",duration:"25m"},
+      {id:"DJJ4YA684qg",title:"Seated Surges",duration:"30m"},
+      {id:"5nwxi58BiaQ",title:"Running On Empty",duration:"25m"},
+      {id:"V1ueaUFuTMg",title:"VO2 Max Race Simulation",duration:"30m"},
+      {id:"xIGaVRXPQ-Y",title:"The Climb",duration:"30m"},
+      {id:"SmUrDhmBe78",title:"Full Effort VO2 Max Intervals",duration:"30m"},
+      {id:"I89MwO1YgUc",title:"The Pyramid",duration:"23m"},
+      {id:"DE5DYJGWDpU",title:"VO2 Max Booster",duration:"30m"}
     ]
   }
 };
@@ -3363,6 +3399,104 @@ function getVideo(week,day){
   const lib=WORKOUT_DATA.video_library[dayKey];
   return lib[(week-1)%lib.length]||lib[0];
 }
+// ── Cycling library — browse by length, then type (no fixed weekly program) ──
+const CYCLING_TYPE_DEFS=[
+  {key:'hiit',label:'HIIT & Sprints',kws:['hiit','sprint','interval','punchy','surge','pyramid','anaerobic','smash','inferno','brutal']},
+  {key:'vo2',label:'VO2 Max',kws:['vo2']},
+  {key:'climbing',label:'Climbing & Power',kws:['climb','hill','power','quad','strength','passo']},
+  {key:'endurance',label:'Endurance & Sweet Spot',kws:['sweet spot','endurance','threshold','tempo','zone 2','over/under','cadence']},
+  {key:'race',label:'Time Trial & Race',kws:['time trial','race','tt']},
+  {key:'easy',label:'Easy & Recovery',kws:['easy','beginner','recovery','low cadence','running on empty']},
+];
+const CYCLING_TYPE_ORDER=['hiit','vo2','climbing','endurance','race','easy','other'];
+function classifyCyclingType(title){
+  const t=title.toLowerCase();
+  for(const c of CYCLING_TYPE_DEFS){ if(c.kws.some(k=>t.includes(k))) return c; }
+  return {key:'other',label:'All-Round'};
+}
+function cyclingDurationMins(v){
+  const m=v.duration.match(/(\d+)/);
+  return m?parseInt(m[1],10):30;
+}
+function cyclingLengthBucket(mins){
+  if(mins<=20)return'quick';
+  if(mins<=27)return'short';
+  if(mins<=35)return'medium';
+  return'long';
+}
+const CYCLING_LENGTH_META={
+  quick:{label:'Quick',sub:'≤20 min'},
+  short:{label:'Short',sub:'21–27 min'},
+  medium:{label:'Medium',sub:'28–35 min'},
+  long:{label:'Long',sub:'36+ min'},
+};
+const ALL_CYCLING_VIDEOS=(function(){
+  const all=[];
+  Object.values(WORKOUT_DATA.video_library).forEach(arr=>arr.forEach(v=>{
+    const mins=cyclingDurationMins(v);
+    all.push({...v,mins,bucket:cyclingLengthBucket(mins),type:classifyCyclingType(v.title)});
+  }));
+  return all;
+})();
+let cyclingLenFilter='quick';
+function setCyclingLenFilter(k){
+  cyclingLenFilter=k;
+  renderCyclingLibrary();
+}
+function cyclingCardHtml(v){
+  const ytUrl=`https://www.youtube.com/watch?v=${v.id}`;
+  const thumb=`https://img.youtube.com/vi/${v.id}/hqdefault.jpg`;
+  const doneToday=(S.activityLog||[]).some(e=>e.type==='cycling'&&e.videoId===v.id&&e.date===strTodayKey());
+  return `<div class="workout-card${doneToday?' logged':''}">
+    <div class="wcard-thumb" onclick="openInlineVideo(this,'${v.id}')">
+      <img src="${thumb}" alt="${v.title}" onerror="this.style.background='var(--surface2)'"/>
+      <div class="wcard-play"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
+      ${doneToday?'<div class="wcard-done-badge">✓ Done</div>':''}
+    </div>
+    <div class="wcard-body">
+      <div class="wcard-title">${v.title}</div>
+      <div class="wcard-sub">⏱ ${v.duration}</div>
+      <div class="wcard-footer">
+        <button class="wcard-log-btn" onclick="logCyclingRide('${v.id}','${v.title.replace(/'/g,"\\'")}')">+ Log Ride</button>
+        <a class="wcard-yt" href="${ytUrl}" target="_blank" rel="noopener" title="Open in YouTube"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></a>
+      </div>
+    </div>
+  </div>`;
+}
+function renderCyclingLibrary(){
+  const tabsEl=document.getElementById('cy-length-tabs');
+  const listEl=document.getElementById('cy-library-list');
+  if(!tabsEl||!listEl)return;
+  tabsEl.innerHTML=Object.keys(CYCLING_LENGTH_META).map(k=>{
+    const m=CYCLING_LENGTH_META[k];
+    const count=ALL_CYCLING_VIDEOS.filter(v=>v.bucket===k).length;
+    return `<button class="cy-len-tab${cyclingLenFilter===k?' active':''}" onclick="setCyclingLenFilter('${k}')">
+      <div class="cy-len-tab-label">${m.label}</div>
+      <div class="cy-len-tab-sub">${m.sub} · ${count}</div>
+    </button>`;
+  }).join('');
+  const videos=ALL_CYCLING_VIDEOS.filter(v=>v.bucket===cyclingLenFilter);
+  const groups={};
+  videos.forEach(v=>{ (groups[v.type.key]=groups[v.type.key]||[]).push(v); });
+  listEl.innerHTML=CYCLING_TYPE_ORDER.filter(k=>groups[k]&&groups[k].length).map(k=>{
+    const label=groups[k][0].type.label;
+    const items=groups[k];
+    return `<div class="cy-type-group">
+      <div class="cy-type-hdr">${label} <span class="cy-type-count">${items.length}</span></div>
+      <div class="workout-grid">${items.map(v=>cyclingCardHtml(v)).join('')}</div>
+    </div>`;
+  }).join('');
+}
+function logCyclingRide(id,title){
+  if(!S.activityLog)S.activityLog=[];
+  S.activityLog.push({date:strTodayKey(),type:'cycling',ts:Date.now(),videoId:id,title});
+  evaluateAchievements();
+  saveState();
+  renderCyclingLibrary();
+  renderHomeGoal();renderHomeStats();
+  showToast('','Ride logged',title);
+}
+
 // ── Morning Workout — short (≤20 min) cycling or kettlebell options ──────────
 const MORNING_CYCLING_POOL=(WORKOUT_DATA.video_library['Day 1']||[]).filter(v=>{
   const m=v.duration.match(/(\d+)/);return m&&parseInt(m[1],10)<=20;
@@ -3654,10 +3788,6 @@ function render(){
   S.streak=dayStreak;
   S.week=w;
 
-  // Cycling hero
-  const chp=document.getElementById('cy-hero-phase');
-  if(chp) chp.textContent=phase.name.toUpperCase();
-
   // Stats row (cycling tab)
   document.getElementById('cy-streak').textContent=streak;
   document.getElementById('cy-badges').textContent=`${earned}/${ACH_DEFS.length}`;
@@ -3674,62 +3804,8 @@ function render(){
   if(pmf) pmf.textContent=`${mc.active}/${mc.total} days`;
   if(pmb) pmb.style.width=mc.pct+'%';
 
-  // Phase card
-  document.getElementById('phase-badge').textContent=`Phase ${phaseIdx+1} of ${WORKOUT_DATA.phases.length}`;
-  document.getElementById('phase-name').textContent=phase.name;
-  document.getElementById('phase-focus').textContent=phase.focus;
-  document.getElementById('phase-bar').style.width=(w/52*100)+'%';
-  const pb=document.getElementById('phase-buttons');
-  pb.innerHTML='';
-  WORKOUT_DATA.phases.forEach((p,i)=>{
-    const btn=document.createElement('button');
-    btn.className='phase-btn'+(i===phaseIdx?' active':'');
-    btn.innerHTML=`<span class="phase-btn-num">P${i+1}</span>${p.name}`;
-    btn.onclick=()=>{S.week=p.range[0];saveState();resetBoxingTimer();render();};
-    pb.appendChild(btn);
-  });
-
-  // Week nav
-  document.getElementById('week-big').textContent=w;
-  document.getElementById('btn-prev').disabled=w<=1;
-  document.getElementById('btn-next').disabled=w>=52;
-  const dotsEl=document.getElementById('week-dots');
-  dotsEl.innerHTML=DAYS.map(d=>`<div class="week-dot${isDayDone(w,d)?' done':''}"></div>`).join('');
-  // Deload badge
-  const deloadBadge=document.getElementById('week-deload-badge');
-  if(deloadBadge) deloadBadge.style.display=isDeloadWeek(w)?'inline-flex':'none';
-
-  // Workout grid — all 3 days
-  const DAY_TYPE={day1:'HIIT',day2:'Endurance',day3:'Power'};
-  const grid=document.getElementById('workout-grid');grid.innerHTML='';
-  // Find the next-up session for this week (first unlogged, in order)
-  const nextUp=DAYS.find(d=>!S.history[w]?.days?.[d]);
-  DAYS.forEach(day=>{
-    const vid=getVideo(w,day);
-    const log=S.history[w]?.days?.[day];
-    const isNextUp=!log&&day===nextUp;
-    const ytUrl=`https://www.youtube.com/watch?v=${vid.id}`;
-    const thumb=`https://img.youtube.com/vi/${vid.id}/hqdefault.jpg`;
-    const card=document.createElement('div');
-    card.className='workout-card'+(log?' logged':'')+(isNextUp?' next-up':'');
-    card.innerHTML=`
-      <div class="wcard-day-badge">${DAY_LABELS[day]} — ${DAY_TYPE[day]}</div>
-      <div class="wcard-thumb" onclick="openInlineVideo(this,'${vid.id}')">
-        <img src="${thumb}" alt="${vid.title}" onerror="this.style.background='var(--surface2)'"/>
-        <div class="wcard-play"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></div>
-        ${log?'<div class="wcard-done-badge">✓ Done</div>':''}
-      </div>
-      <div class="wcard-body">
-        ${isNextUp?'<div class="wcard-next-badge">▶ Next Up</div>':''}
-        <div class="wcard-title">${vid.title}</div>
-        <div class="wcard-sub">⏱ ${vid.duration} · ${phase.name}</div>
-        <div class="wcard-footer">
-          <button class="wcard-log-btn${log?' edit':''}" onclick="openModal('${day}')">${log?'Edit Log':'+ Log Workout'}</button>
-          <a class="wcard-yt" href="${ytUrl}" target="_blank" rel="noopener" title="Open in YouTube"><svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg></a>
-        </div>
-      </div>`;
-    grid.appendChild(card);
-  });
+  // Browse-by-length/type cycling library (replaces the old phase/week program view)
+  renderCyclingLibrary();
 
   // Boxing day tabs — independent from cycling, labeled Workout 1/2/3
   const BOXING_LABELS={day1:'Workout 1',day2:'Workout 2',day3:'Workout 3'};
