@@ -219,6 +219,12 @@ body.pip-mode .pip-mask{display:block}
 .day-tab{flex:1;padding:11px;border-radius:10px;border:1px solid var(--border);background:var(--surface);cursor:pointer;text-align:center;transition:all .15s;font-size:13px;font-weight:700;color:var(--dim)}
 .day-tab:hover{background:var(--surface2);color:var(--text)}
 .day-tab.active{background:rgba(255,106,26,.07);border-color:rgba(255,106,26,.5);color:var(--lime)}
+.bx-picker-row{display:flex;gap:10px;padding:16px 16px 0}
+.bx-picker-btn{flex:1;padding:13px;border-radius:12px;border:1px solid var(--border);background:var(--surface);color:var(--dim);font-size:13px;font-weight:800;letter-spacing:.3px;cursor:pointer;transition:all .15s}
+.bx-picker-btn:hover{background:var(--surface2);color:var(--text)}
+.bx-picker-btn:active{transform:scale(.96)}
+.bx-picker-btn.primary{background:rgba(255,106,26,.1);border-color:rgba(255,106,26,.5);color:var(--lime)}
+.bx-picker-btn.primary:hover{background:rgba(255,106,26,.16)}
 .boxing-header{padding:16px 20px;border-bottom:1px solid var(--border)}
 .boxing-title-main{font-size:20px;font-weight:900;margin-bottom:4px;letter-spacing:-.3px}
 .boxing-subtitle{font-size:12px;color:var(--dim)}
@@ -1292,8 +1298,11 @@ code{font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:10p
     </div>
 
     <div class="card" style="overflow:visible">
-      <!-- Day selector inside boxing tab -->
-      <div class="day-tabs" id="day-tabs"></div>
+      <!-- Free-pick workout selector -->
+      <div class="bx-picker-row">
+        <button class="bx-picker-btn" onclick="shuffleBoxingWorkout()">🔀 Shuffle</button>
+        <button class="bx-picker-btn primary" onclick="openBoxingPickModal()">Pick Workout ›</button>
+      </div>
       <div class="boxing-header" style="margin-top:14px">
         <div class="boxing-title-main" id="boxing-title">—</div>
         <div class="boxing-subtitle" id="boxing-subtitle"></div>
@@ -1348,6 +1357,7 @@ code{font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:10p
           </div>
         </div>
       </div>
+      <button class="str-complete-btn" id="bx-complete-btn" onclick="completeBoxingWorkout()">✓ COMPLETE WORKOUT</button>
     </div>
   </div>
 
@@ -3106,7 +3116,7 @@ function renderNutritionTab(){
   updateNutAIToggleUI();
 }
 
-const K={hist:'cw-history',ach:'cw-ach',timers:'cw-timers',week:'cw-week',strlog:'cw-str-log',strhist:'cw-str-hist',bodylog:'cw-body-log',bxhist:'cw-bx-hist',actlog:'cw-act-log',prs:'cw-prs',goals:'cw-goals',strswaps:'cw-str-swaps',plandays:'cw-plan-days',stsweek:'cw-sts-week',stsdone:'cw-sts-done',stscycle:'cw-sts-cycle',strprogram:'cw-str-program',reminders:'cw-reminders',energylog:'cw-energy-log',nutrition:'cw-nutrition'};
+const K={hist:'cw-history',ach:'cw-ach',timers:'cw-timers',week:'cw-week',strlog:'cw-str-log',strhist:'cw-str-hist',bodylog:'cw-body-log',bxhist:'cw-bx-hist',actlog:'cw-act-log',prs:'cw-prs',goals:'cw-goals',strswaps:'cw-str-swaps',plandays:'cw-plan-days',stsweek:'cw-sts-week',stsdone:'cw-sts-done',stscycle:'cw-sts-cycle',strprogram:'cw-str-program',reminders:'cw-reminders',energylog:'cw-energy-log',nutrition:'cw-nutrition',boxwid:'cw-box-workout-id'};
 const WORKOUT_DATA={
   phases:[
     {range:[1,13],name:"Foundation",focus:"Building aerobic base and pedal stroke efficiency."},
@@ -3201,7 +3211,7 @@ const WORKOUT_DATA={
 };
 
 let S={
-  week:1,activeDay:'day1',activeBoxingDay:'day1',activeStrengthWorkout:0,activeWorkoutTab:'plan',
+  week:1,activeDay:'day1',activeBoxingWorkoutId:BOXING[0].id,activeStrengthWorkout:0,activeWorkoutTab:'plan',
   planDays:[
     {type:'rest',     required:false},
     {type:'strength', required:true},
@@ -3335,6 +3345,7 @@ function loadState(){
   try{S.energyLog=JSON.parse(localStorage.getItem(K.energylog)||'{}');}catch{}
   try{const n=JSON.parse(localStorage.getItem(K.nutrition)||'null');if(n)S.nutrition={goal:2200,log:{},recents:{},useAI:true,...n};}catch{}
   try{S.strProgram=localStorage.getItem(K.strprogram)||'spinesafe';}catch{S.strProgram='spinesafe';}
+  try{const v=parseInt(localStorage.getItem(K.boxwid)||'');if(v&&BOXING.some(b=>b.id===v))S.activeBoxingWorkoutId=v;}catch{}
 }
 function saveState(){
   try{
@@ -3358,6 +3369,7 @@ function saveState(){
     localStorage.setItem(K.reminders,JSON.stringify(S.reminders));
     localStorage.setItem(K.energylog,JSON.stringify(S.energyLog));
     localStorage.setItem(K.nutrition,JSON.stringify(S.nutrition));
+    localStorage.setItem(K.boxwid,String(S.activeBoxingWorkoutId));
   }catch{}
 }
 
@@ -3390,9 +3402,59 @@ function getTotalWorkouts(){
   const backdated=(S.activityLog||[]).length;
   return cycling+strength+boxing+backdated;
 }
-function getBoxing(week,day){
-  const off={day1:0,day2:17,day3:34}[day]||0;
-  return BOXING[((week-1+off)%BOXING.length+BOXING.length)%BOXING.length];
+// Free-pick boxing library — no fixed week/day rotation. S.activeBoxingWorkoutId
+// holds whatever combo workout you last picked (or shuffled to), and persists.
+function getActiveBoxing(){
+  return BOXING.find(b=>b.id===S.activeBoxingWorkoutId)||BOXING[0];
+}
+function selectBoxingWorkout(id){
+  stopTimer();
+  S.activeBoxingWorkoutId=id;
+  saveState();
+  resetBoxingTimer();
+  render();
+}
+function shuffleBoxingWorkout(){
+  let pick=BOXING[Math.floor(Math.random()*BOXING.length)];
+  if(BOXING.length>1){
+    let tries=0;
+    while(pick.id===S.activeBoxingWorkoutId&&tries<10){pick=BOXING[Math.floor(Math.random()*BOXING.length)];tries++;}
+  }
+  selectBoxingWorkout(pick.id);
+  showToast('🔀','Shuffled',pick.title);
+}
+function openBoxingPickModal(){
+  const search=document.getElementById('boxing-pick-search');
+  if(search)search.value='';
+  renderBoxingPickList('');
+  document.getElementById('boxing-pick-modal-bg').classList.add('open');
+}
+function closeBoxingPickModal(){
+  document.getElementById('boxing-pick-modal-bg').classList.remove('open');
+}
+function filterBoxingPickList(){
+  renderBoxingPickList(document.getElementById('boxing-pick-search')?.value||'');
+}
+function renderBoxingPickList(q){
+  const opts=document.getElementById('boxing-pick-modal-opts');
+  if(!opts)return;
+  const cur=S.activeBoxingWorkoutId;
+  const query=q.trim().toLowerCase();
+  const list=query?BOXING.filter(b=>b.title.toLowerCase().includes(query)):BOXING;
+  opts.innerHTML=list.length?list.map(b=>{
+    const isCur=b.id===cur;
+    return`<div class="swap-opt" onclick="pickBoxingWorkout(${b.id})">
+      <div style="flex:1;min-width:0">
+        <div class="swap-opt-name${isCur?' current-swap':''}">${b.title}</div>
+        <div style="font-size:11px;color:var(--dim);margin-top:3px;line-height:1.45">${b.station1}</div>
+      </div>
+      <span class="swap-opt-tag ${isCur?'selected':'original'}" style="flex-shrink:0">${isCur?'Current':'Select'}</span>
+    </div>`;
+  }).join(''):`<div style="padding:20px 0;text-align:center;color:var(--dim);font-size:13px">No workouts match &ldquo;${q}&rdquo;</div>`;
+}
+function pickBoxingWorkout(id){
+  closeBoxingPickModal();
+  selectBoxingWorkout(id);
 }
 function getVideo(week,day){
   const dayKey={day1:'Day 1',day2:'Day 2',day3:'Day 3'}[day]||'Day 1';
@@ -3521,10 +3583,25 @@ function fmt(secs){return Math.floor(secs/60).toString().padStart(2,'0')+':+'+(s
 // Fix format - no + sign
 function fmtTime(secs){const m=Math.floor(secs/60),s=secs%60;return m.toString().padStart(2,'0')+':'+s.toString().padStart(2,'0');}
 
+// ── Shared Audio Context — created once, resumed on every use so orientation
+// changes / backgrounding (which can silently suspend it on mobile browsers)
+// don't leave the timer beeping into a dead context ─────────────────────────
+let sharedAudioCtx=null;
+function getAudioCtx(){
+  try{
+    if(!sharedAudioCtx) sharedAudioCtx=new(window.AudioContext||window.webkitAudioContext)();
+    if(sharedAudioCtx.state==='suspended') sharedAudioCtx.resume().catch(()=>{});
+    return sharedAudioCtx;
+  }catch(e){return null;}
+}
+// Opportunistically (re)unlock audio on any tap — cheap no-op if already running.
+window.addEventListener('pointerdown',()=>{getAudioCtx();},{passive:true});
+
 // ── Boxing Bell (3 dings) ─────────────────────────────────────────────────────
 function bell(dings=3){
   try{
-    const ctx=new(window.AudioContext||window.webkitAudioContext)();
+    const ctx=getAudioCtx();
+    if(!ctx)return;
     for(let i=0;i<dings;i++){
       const t=ctx.currentTime+i*0.55;
       // Primary tone (bell body)
@@ -3568,8 +3645,7 @@ function buildTimerPhases(bx){
       // Rest after every round except the very last round of the last station
       const isLastRoundOfLastStation=si===sts.length-1&&rnd===rounds;
       if(r>0&&!isLastRoundOfLastStation){
-        const isBetweenStations=rnd===rounds;
-        phases.push({label:isBetweenStations?`Rest — Next: ${sts[si+1]?.label||'Finisher'}`:'Rest',type:'rest',stKey:st.key,exercise:isBetweenStations?`Coming up: ${sts[si+1]?.text||bx.finisher}`:'Breathe — stay loose, keep moving',secs:r});
+        phases.push({label:'Rest',type:'rest',stKey:st.key,exercise:'Breathe — stay loose, keep moving',secs:r});
       }
     }
   });
@@ -3579,6 +3655,18 @@ function buildTimerPhases(bx){
     phases.push({label:`Finisher — Round ${rnd}/${fRounds}`,type:'finisher',stKey:'fin',exercise:bx.finisher,secs:fw});
     if(fr>0&&rnd<fRounds)
       phases.push({label:'Finisher Rest',type:'rest',stKey:'fin',exercise:'10 seconds — then back at it!',secs:fr});
+  }
+
+  // 5. Every rest phase previews whatever comes right after it, so you always
+  // know what to get ready for — whether that's another round of the same
+  // station, the next station, or the finisher.
+  for(let i=0;i<phases.length;i++){
+    if(phases[i].type==='rest'&&phases[i+1]){
+      const next=phases[i+1];
+      const nextLabel=next.label.replace(/ — Round.*/,'');
+      phases[i].label=`Rest — Next: ${nextLabel}`;
+      phases[i].exercise=`Coming up: ${next.exercise}`;
+    }
   }
 
   return phases;
@@ -3597,7 +3685,7 @@ function applyTimerSettings(){
 function resetBoxingTimer(){
   if(BT.iv){clearInterval(BT.iv);BT.iv=null;}
   BT.running=false;BT.phaseIdx=0;
-  const bx=getBoxing(S.week,S.activeBoxingDay);
+  const bx=getActiveBoxing();
   BT.phases=buildTimerPhases(bx);
   BT.secsLeft=BT.phases[0].secs;BT.totalSecs=BT.phases[0].secs;
   updateTimerUI();renderStations(bx);
@@ -3617,6 +3705,7 @@ function toggleBoxingTimer(){
   }else{
     // Start / Resume
     BT.running=true;
+    getAudioCtx(); // unlock/resume audio right on the tap gesture
     requestWakeLock();
     resetInactivityTimer();
     document.getElementById('btn-startstop').textContent='⏸ Pause';
@@ -3644,18 +3733,18 @@ function timerTick(){
       BT.secsLeft=0;BT.completedCount++;
       S.timerUses.done=(S.timerUses.done||0)+1;
       // Auto-log boxing session
-      const bxDone=getBoxing(S.week,S.activeBoxingDay);
-      S.bxHistory.push({date:strTodayKey(),workoutId:bxDone.id,title:bxDone.title,week:S.week,day:S.activeBoxingDay,ts:Date.now()});
+      const bxDone=getActiveBoxing();
+      S.bxHistory.push({date:strTodayKey(),workoutId:bxDone.id,title:bxDone.title,ts:Date.now()});
       if(S.bxHistory.length>100)S.bxHistory=S.bxHistory.slice(-100);
       const unlocked=evaluateAchievements();saveState();
       updateTimerUI(true);updateFsUI(true);
-      renderStations(getBoxing(S.week,S.activeBoxingDay),true);
+      renderStations(getActiveBoxing(),true);
       document.getElementById('btn-startstop').textContent='▶ Start';
       document.getElementById('btn-startstop').className='btn-tstart';
       // Close overlay and mini bar when workout is complete
       document.getElementById('fs-overlay').classList.remove('open');
       document.getElementById('timer-bar').classList.remove('show');
-      showToast('','Boxing complete!','Log your session when ready');
+      showToast('','Boxing complete!','Session logged automatically');
       unlocked.forEach((a,i)=>setTimeout(()=>showToast(a.icon,'Achievement Unlocked!',a.title),(i+1)*700));
       return;
     }
@@ -3669,6 +3758,19 @@ function skipPhase(){
   if(BT.phaseIdx>=BT.phases.length-1)return;
   bell(1);BT.phaseIdx++;BT.secsLeft=BT.phases[BT.phaseIdx].secs;BT.totalSecs=BT.secsLeft;
   updateStationHighlight();updateTimerUI();updateFsUI();
+}
+
+// Manual log — for whenever you box without running the full guided timer to
+// its final bell (or just want to mark today's session done outright).
+function completeBoxingWorkout(){
+  const bx=getActiveBoxing();
+  S.bxHistory.push({date:strTodayKey(),workoutId:bx.id,title:bx.title,ts:Date.now()});
+  if(S.bxHistory.length>100)S.bxHistory=S.bxHistory.slice(-100);
+  const unlocked=evaluateAchievements();
+  saveState();
+  render();renderHomeGoal();renderHomeStats();
+  showToast('','Boxing logged',bx.title);
+  unlocked.forEach((a,i)=>setTimeout(()=>showToast(a.icon,'Achievement Unlocked!',a.title),(i+1)*700));
 }
 
 // ── Timer UI ──────────────────────────────────────────────────────────────────
@@ -3807,24 +3909,12 @@ function render(){
   // Browse-by-length/type cycling library (replaces the old phase/week program view)
   renderCyclingLibrary();
 
-  // Boxing day tabs — independent from cycling, labeled Workout 1/2/3
-  const BOXING_LABELS={day1:'Workout 1',day2:'Workout 2',day3:'Workout 3'};
-  const dayTabsEl=document.getElementById('day-tabs');
-  dayTabsEl.innerHTML='';
-  DAYS.forEach(day=>{
-    const btn=document.createElement('button');
-    btn.className='day-tab'+(S.activeBoxingDay===day?' active':'');
-    btn.innerHTML=`<div style="font-size:13px;font-weight:700">${BOXING_LABELS[day]}</div>`;
-    btn.onclick=()=>selectBoxingDay(day);
-    dayTabsEl.appendChild(btn);
-  });
-
-  // Boxing workout
-  const bx=getBoxing(w,S.activeBoxingDay);
+  // Boxing workout — free pick, no fixed week/day rotation
+  const bx=getActiveBoxing();
   document.getElementById('boxing-title').textContent=bx.title;
-  document.getElementById('boxing-subtitle').textContent=`Workout #${bx.id} · ${BOXING_LABELS[S.activeBoxingDay]}, Week ${w}`;
+  document.getElementById('boxing-subtitle').textContent=`Workout #${bx.id} of ${BOXING.length}`;
   const bxhs=document.getElementById('bx-hero-sub');
-  if(bxhs) bxhs.textContent=BOXING_LABELS[S.activeBoxingDay].toUpperCase();
+  if(bxhs) bxhs.textContent='Pick Your Fight';
   renderStations(bx);
 
   // Achievements
@@ -3884,7 +3974,6 @@ function closeInlineVideo(btn){
 // ── Navigation ────────────────────────────────────────────────────────────────
 function changeWeek(dir){const nw=S.week+dir;if(nw<1||nw>52)return;stopTimer();S.week=nw;summaryWeek=null;saveState();resetBoxingTimer();render();}
 function selectDay(day){stopTimer();S.activeDay=day;render();}
-function selectBoxingDay(day){stopTimer();S.activeBoxingDay=day;resetBoxingTimer();render();}
 const NAV_TITLES={cycling:'Cycling',boxing:'Boxing',strength:'Strength',progress:'Progress',plan:''};
 
 function switchWorkoutTab(tab){
@@ -5084,13 +5173,12 @@ function planLaunchWorkout(type){
 function renderHomeUpNext(){
   const el=document.getElementById('home-upnext-list');
   if(!el)return;
-  const BOXING_LABELS_HOME={day1:'Workout 1',day2:'Workout 2',day3:'Workout 3'};
   const rows=[];
   const next=getNextCyclingSession();
   const vid=getVideo(next.week,next.day);
   rows.push({type:'cycling',icon:'CYC',title:vid.title,sub:`Week ${next.week} · ${DAY_LABELS[next.day]} · ${vid.duration}`,onclick:"planLaunchWorkout('cycling')"});
-  const bx=getBoxing(S.week,S.activeBoxingDay);
-  rows.push({type:'boxing',icon:'BOX',title:bx.title,sub:`#${bx.id} · ${BOXING_LABELS_HOME[S.activeBoxingDay]}, Week ${S.week}`,onclick:"switchWorkoutTab('boxing')"});
+  const bx=getActiveBoxing();
+  rows.push({type:'boxing',icon:'BOX',title:bx.title,sub:`Workout #${bx.id} of ${BOXING.length}`,onclick:"switchWorkoutTab('boxing')"});
   syncStsExercises();
   const swo=STRENGTH[S.activeStrengthWorkout];
   rows.push({type:'strength',icon:'STR',title:swo.title,sub:swo.muscles,onclick:"switchWorkoutTab('strength')"});
@@ -5522,6 +5610,7 @@ document.addEventListener('visibilitychange',()=>{
   if(document.visibilityState==='visible'){
     if(BT.running||GW.active){
       requestWakeLock();
+      getAudioCtx();
       resetInactivityTimer();
     }
     // Mobile browsers suspend/throttle setInterval while backgrounded — force an
@@ -5601,6 +5690,7 @@ function isLandscapePhone(){
 }
 function handleOrientationChange(){
   if(!BT.running) return; // only act while timer is active
+  getAudioCtx(); // re-arm audio — mobile browsers can suspend it across an orientation flip
   const overlay=document.getElementById('fs-overlay');
   const timerBar=document.getElementById('timer-bar');
   if(isLandscapePhone()){
@@ -6038,7 +6128,7 @@ function logHistSession(type){
     if(!S.activityLog)S.activityLog=[];
     S.activityLog.push({date:histDate,type:'cycling',ts});
   } else if(type==='boxing'){
-    S.bxHistory.push({date:histDate,workoutId:0,title:'Boxing Session',week:S.week,day:S.activeBoxingDay,ts,backdated:true});
+    S.bxHistory.push({date:histDate,workoutId:0,title:'Boxing Session',ts,backdated:true});
     S.bxHistory.sort((a,b)=>new Date(a.date)-new Date(b.date));
   } else if(type==='strength'){
     S.strHistory.push({date:histDate,wIdx:S.activeStrengthWorkout,title:STRENGTH[S.activeStrengthWorkout].title,totalSets:0,ts,backdated:true});
@@ -6760,6 +6850,16 @@ function renderGuidedChecklist(){
 </div>
 
 <!-- ── Morning Workout: Choose a specific workout ─────────────────── -->
+<div class="swap-modal-bg" id="boxing-pick-modal-bg" onclick="closeBoxingPickModal()">
+  <div class="swap-modal" onclick="event.stopPropagation()">
+    <div class="swap-modal-handle"></div>
+    <div class="swap-modal-title">Pick a Boxing Workout</div>
+    <input class="finput" type="text" id="boxing-pick-search" placeholder="Search workouts…" oninput="filterBoxingPickList()" style="margin-bottom:14px;padding:10px 12px"/>
+    <div id="boxing-pick-modal-opts" style="max-height:52vh;overflow-y:auto"></div>
+    <button class="swap-cancel-btn" onclick="closeBoxingPickModal()">Close</button>
+  </div>
+</div>
+
 <div class="swap-modal-bg" id="morning-pick-modal-bg" onclick="closeMorningPickModal()">
   <div class="swap-modal" onclick="event.stopPropagation()">
     <div class="swap-modal-handle"></div>
