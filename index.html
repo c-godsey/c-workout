@@ -1300,7 +1300,7 @@ code{font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:10p
     <div class="card" style="overflow:visible">
       <!-- Free-pick workout selector -->
       <div class="bx-picker-row">
-        <button class="bx-picker-btn" onclick="shuffleBoxingWorkout()">🔀 Shuffle</button>
+        <button class="bx-picker-btn" onclick="shuffleBoxingWorkout()"><svg width="16" height="16" viewBox="0 0 24 24" style="stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:-3px;margin-right:6px"><path d="M18 4l3 3l-3 3"/><path d="M18 20l3 -3l-3 -3"/><path d="M3 7h3a5 5 0 0 1 5 5a5 5 0 0 0 5 5h5"/><path d="M21 7h-5a4.978 4.978 0 0 0 -3 1m-4 8a4.984 4.984 0 0 1 -3 1h-3"/></svg>Shuffle</button>
         <button class="bx-picker-btn primary" onclick="openBoxingPickModal()">Pick Workout ›</button>
       </div>
       <div class="boxing-header" style="margin-top:14px">
@@ -3421,7 +3421,7 @@ function shuffleBoxingWorkout(){
     while(pick.id===S.activeBoxingWorkoutId&&tries<10){pick=BOXING[Math.floor(Math.random()*BOXING.length)];tries++;}
   }
   selectBoxingWorkout(pick.id);
-  showToast('🔀','Shuffled',pick.title);
+  showToast('','Shuffled',pick.title);
 }
 function openBoxingPickModal(){
   const search=document.getElementById('boxing-pick-search');
