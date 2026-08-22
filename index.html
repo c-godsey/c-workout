@@ -752,6 +752,52 @@ code{font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:10p
 .bw-row{display:flex;align-items:center;gap:8px;margin-bottom:12px}
 .bw-input{background:var(--surface2);border:1px solid var(--border);border-radius:14px;padding:9px 14px;color:var(--text);font-size:18px;font-weight:800;outline:none;font-family:inherit;transition:border-color .15s;width:100px;text-align:center}
 .bw-input:focus{border-color:var(--lime)}
+
+/* ── Bodyweight Rep Benchmarks (pull-up/push-up/squat + Cindy) ──────── */
+.bwx-section{background:var(--glass);border:1px solid var(--glass-border);border-radius:20px;margin-top:14px;overflow:hidden}
+.bwx-hdr{padding:14px 18px;border-bottom:1px solid var(--glass-border);font-size:13px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px}
+.bwx-body{padding:14px 18px 6px}
+.bwx-row{margin-bottom:16px}
+.bwx-row-top{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:6px}
+.bwx-row-name{font-size:13px;font-weight:800;color:var(--text)}
+.bwx-row-val{font-size:12px;color:var(--dim)}
+.bwx-row-val strong{color:var(--lime);font-weight:800}
+.bwx-bar-track{height:8px;background:var(--surface2);border-radius:4px;overflow:hidden}
+.bwx-bar-fill{height:100%;background:var(--amber-gradient);border-radius:4px;transition:width .6s}
+.bwx-log-btn{margin-top:2px;margin-bottom:14px;padding:9px 16px;background:var(--surface2);border:1px solid var(--border);border-radius:12px;color:var(--text);font-size:12px;font-weight:800;letter-spacing:.5px;cursor:pointer}
+.bwx-log-btn:active{transform:scale(.96)}
+.bwx-log-row{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:11px 0;border-bottom:1px solid var(--border)}
+.bwx-log-row:last-child{border-bottom:none}
+.bwx-log-row-name{font-size:13px;font-weight:800;color:var(--text)}
+.bwx-log-row-sub{font-size:10.5px;color:var(--dim);margin-top:2px}
+.bwx-log-row-input{width:64px;background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:9px 4px;color:var(--lime);font-size:18px;font-weight:900;outline:none;font-family:inherit;text-align:center;flex-shrink:0;-moz-appearance:textfield}
+.bwx-log-row-input::-webkit-outer-spin-button,.bwx-log-row-input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.bwx-log-row-input:focus{border-color:var(--lime)}
+.bwx-plan{padding:6px 18px 16px;border-top:1px solid var(--glass-border)}
+.bwx-plan-title{font-size:13px;font-weight:800;color:var(--text);margin:12px 0 8px}
+.bwx-plan-freq{display:inline-block;font-size:10px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:var(--lime);background:rgba(255,106,26,.1);border:1px solid rgba(255,106,26,.35);border-radius:20px;padding:4px 10px;margin-bottom:10px}
+.bwx-plan-desc{font-size:11.5px;color:var(--dim);line-height:1.5;margin-bottom:14px}
+.bwx-plan-row{margin-bottom:14px}
+.bwx-plan-row:last-child{margin-bottom:0}
+.bwx-plan-row-top{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:8px}
+.bwx-plan-row-name{font-size:13px;font-weight:800;color:var(--text)}
+.bwx-plan-row-rx{font-size:12px;color:var(--lime);font-weight:800}
+.bwx-plan-dots{display:flex;gap:8px}
+.bwx-plan-dot{flex:1;height:36px;border-radius:10px;background:var(--surface2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:var(--dim);cursor:pointer;transition:all .15s}
+.bwx-plan-dot.done{background:rgba(255,106,26,.14);border-color:rgba(255,106,26,.5);color:var(--lime)}
+.bwx-plan-dot:active{transform:scale(.94)}
+.bwx-plan-empty{font-size:12px;color:var(--dim)}
+.bwx-cindy{padding:16px 18px 18px;border-top:1px solid var(--glass-border)}
+.bwx-cindy-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.bwx-cindy-title{font-size:13px;font-weight:800;color:var(--text)}
+.bwx-cindy-desc{font-size:11.5px;color:var(--dim);line-height:1.5;margin-bottom:10px}
+.bwx-cindy-last{font-size:11px;color:var(--dim);margin-bottom:12px}
+.bwx-cindy-last.due{color:#e6b439}
+.bwx-cindy-start{width:100%;padding:12px;background:rgba(255,106,26,.1);border:1px solid rgba(255,106,26,.5);color:var(--lime);border-radius:12px;font-size:13px;font-weight:800;letter-spacing:1px;text-transform:uppercase;cursor:pointer}
+.bwx-cindy-start:active{transform:scale(.97)}
+.bwx-step-btn{width:44px;height:44px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-size:22px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.bwx-step-btn.small{width:32px;height:32px;font-size:16px}
+.bwx-step-btn:active{transform:scale(.92)}
 .bw-unit{font-size:12px;color:var(--dim);font-weight:600}
 .bw-save-btn{padding:9px 18px;border-radius:14px;background:var(--lime);color:#fff;border:none;font-size:13px;font-weight:800;cursor:pointer;transition:background .15s}
 .bw-save-btn:hover{background:var(--lime-dim)}
@@ -1561,6 +1607,22 @@ code{font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:10p
     </div>
   </div>
 
+  <!-- ── BODYWEIGHT PROGRESSION TAB ────────────────── -->
+  <div class="tab-content" id="tab-bodyweight">
+    <div class="prog-hero">
+      <div class="prog-hero-eyebrow">Bodyweight Training</div>
+      <div class="cy-hero-title">BODYWEIGHT<br>GOALS</div>
+    </div>
+
+    <!-- Bodyweight Rep Benchmarks + Progression Plan + Cindy -->
+    <div class="bwx-section" style="margin-top:14px">
+      <div class="bwx-hdr">Bodyweight Benchmarks</div>
+      <div class="bwx-body" id="bwx-body"><!-- rendered by JS --></div>
+      <div class="bwx-plan" id="bwx-plan"><!-- rendered by JS --></div>
+      <div class="bwx-cindy" id="bwx-cindy"><!-- rendered by JS --></div>
+    </div>
+  </div>
+
   <!-- ── PLAN TAB ────────────────────────────────── -->
   <div class="tab-content active" id="tab-plan">
 
@@ -1701,6 +1763,10 @@ code{font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:10p
   <button class="bnav-item" id="bnav-cycling" onclick="switchWorkoutTab('cycling')">
     <svg class="bnav-icon" viewBox="0 0 24 24"><path d="M5 18m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path d="M19 18m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path d="M12 19l0 -4l-3 -3l5 -4l2 3l3 0"/><path d="M17 5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"/></svg>
     <span class="bnav-label">Cycling</span>
+  </button>
+  <button class="bnav-item" id="bnav-bodyweight" onclick="switchWorkoutTab('bodyweight')">
+    <svg class="bnav-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/></svg>
+    <span class="bnav-label">Progression</span>
   </button>
   <button class="bnav-item" id="bnav-progress" onclick="switchWorkoutTab('progress')">
     <svg class="bnav-icon" viewBox="0 0 24 24"><path d="M3 17l6 -6l4 4l8 -8"/><path d="M14 7l7 0l0 7"/></svg>
@@ -2154,10 +2220,12 @@ function openSupplementalModal(){
     {key:4,name:STRENGTH[4].title,desc:`${STRENGTH[4].muscles} · ${STRENGTH[4].time}`},
     {key:5,name:STRENGTH[5].title,desc:`${STRENGTH[5].muscles} · ${STRENGTH[5].time}`},
     {key:6,name:STRENGTH[6].title,desc:`${STRENGTH[6].muscles} · ${STRENGTH[6].time}`},
+    {key:7,name:STRENGTH[7].title,desc:`${STRENGTH[7].muscles} · ${STRENGTH[7].time}`},
+    {key:'cindy',name:'Cindy',desc:'Benchmark AMRAP · 20 min — 5 Pull-Ups, 10 Push-Ups, 15 Air Squats'},
     {key:'kb',name:'Kettlebell',desc:'20 supplemental kettlebell workouts'},
   ];
   opts.innerHTML=items.map(it=>{
-    const active=it.key==='kb'?kbViewActive:(!kbViewActive&&S.activeStrengthWorkout===it.key);
+    const active=it.key==='kb'?kbViewActive:it.key==='cindy'?CT.active:(!kbViewActive&&S.activeStrengthWorkout===it.key);
     const arg=typeof it.key==='number'?it.key:`'${it.key}'`;
     return`<div class="swap-opt" onclick="selectSupplemental(${arg})">
       <div style="flex:1;min-width:0">
@@ -2173,6 +2241,14 @@ function selectSupplemental(choice){
   closeSupplementalModal();
   if(choice==='kb'){
     activateKbView();
+  } else if(choice==='cindy'){
+    if(kbViewActive) deactivateKbView();
+    switchWorkoutTab('bodyweight');
+    openCindyPanel();
+    setTimeout(()=>{
+      const el=document.getElementById('bwx-cindy');
+      if(el) el.scrollIntoView({behavior:'smooth',block:'center'});
+    },150);
   } else {
     if(kbViewActive) deactivateKbView();
     selectStrengthWorkout(choice);
@@ -2236,6 +2312,15 @@ const STRENGTH=[
     {name:"Preacher Death Curls",sets:"2",reps:"12-15",rest:"1.5m",notes:"RPE 10. 1-second pause at 90° elbow flexion on both the positive and negative of every rep. Reach failure, rest 3 seconds, then hold at 90° for 15 seconds.",swaps:["Standard Preacher Curl","Machine Preacher Curl","EZ Bar Preacher Curl"]},
     {name:"Heavy Negative Concentration Curls",sets:"1",reps:"to failure",rest:"1.5m",notes:"RPE 10. Technique finisher — use your free hand to assist the positive, control the negative unassisted. Load heavy but keep control.",swaps:["Standard Concentration Curl","DB Preacher Curl","Cable Concentration Curl"]},
     {name:"Farmer's Walks",sets:"3",reps:"40 strides",rest:"1m",notes:"Optional forearm work — lift heavy dumbbells for 40 total strides.",swaps:["Farmer's Carry (single arm)","Suitcase Carry","Plate Pinch Carry"]},
+  ]},
+  {id:8,title:"Calisthenics Pull & Core",time:"~45 min",muscles:"Back · Chest · Core",exercises:[
+    {name:"Hollow Body Hold",sets:"3",reps:"20–30s",rest:"45s",notes:"Lower back pressed flat into the floor, arms and legs extended. This is the foundational tension pattern for every static hold below — brace hard.",warmup:true,swaps:["Dead Bug","Tuck Hollow Hold","Plank"]},
+    {name:"Weighted Pull-Up",sets:"4",reps:"5–8",rest:"2m",notes:"Full dead hang to chin over the bar. Bodyweight only if you can't yet hit 10–12 clean reps — add a belt or vest once you can.",swaps:["Bodyweight Pull-Up","Band-Assisted Pull-Up","Lat Pulldown"]},
+    {name:"Parallel Bar Dip",sets:"4",reps:"8–12",rest:"2m",notes:"Lean forward, chest down between the bars, elbows track back. Control the descent — no bouncing out of the bottom.",swaps:["Ring Dip","Bench Dip","Assisted Dip"]},
+    {name:"Chin-Up (Supinated)",sets:"3",reps:"6–10",rest:"90s",notes:"Underhand grip, shoulder-width. Hits the same pulling pattern from a biceps-forward angle.",swaps:["Close-Grip Lat Pulldown","Band-Assisted Chin-Up","Inverted Row"]},
+    {name:"Hanging Leg Raise",sets:"3",reps:"10–15",rest:"60s",notes:"Dead hang, legs straight if you can — knees tucked if not. Control the lower, no swinging.",swaps:["Hanging Knee Raise","Captain's Chair Leg Raise","Lying Leg Raise"]},
+    {name:"L-Sit Hold",sets:"3",reps:"10–20s",rest:"60s",notes:"Press shoulders down away from your ears. Tuck one or both knees if a full straight-leg L-sit isn't there yet — the hold quality matters more than the shape.",swaps:["Tuck L-Sit","Parallette L-Sit","Foot-Supported L-Sit"]},
+    {name:"Pseudo Planche Push-Up",sets:"3",reps:"6–10",rest:"90s",notes:"Hands turned in, lean your shoulders forward past your hands. Builds the straight-arm shoulder strength that gives calisthenics physiques their look.",swaps:["Archer Push-Up","Diamond Push-Up","Standard Push-Up"]},
   ]},
 ];
 
@@ -3116,7 +3201,7 @@ function renderNutritionTab(){
   updateNutAIToggleUI();
 }
 
-const K={hist:'cw-history',ach:'cw-ach',timers:'cw-timers',week:'cw-week',strlog:'cw-str-log',strhist:'cw-str-hist',bodylog:'cw-body-log',bxhist:'cw-bx-hist',actlog:'cw-act-log',prs:'cw-prs',goals:'cw-goals',strswaps:'cw-str-swaps',plandays:'cw-plan-days',stsweek:'cw-sts-week',stsdone:'cw-sts-done',stscycle:'cw-sts-cycle',strprogram:'cw-str-program',reminders:'cw-reminders',energylog:'cw-energy-log',nutrition:'cw-nutrition',boxwid:'cw-box-workout-id'};
+const K={hist:'cw-history',ach:'cw-ach',timers:'cw-timers',week:'cw-week',strlog:'cw-str-log',strhist:'cw-str-hist',bodylog:'cw-body-log',bxhist:'cw-bx-hist',actlog:'cw-act-log',prs:'cw-prs',goals:'cw-goals',strswaps:'cw-str-swaps',plandays:'cw-plan-days',stsweek:'cw-sts-week',stsdone:'cw-sts-done',stscycle:'cw-sts-cycle',strprogram:'cw-str-program',reminders:'cw-reminders',energylog:'cw-energy-log',nutrition:'cw-nutrition',boxwid:'cw-box-workout-id',bwlog:'cw-bw-rep-log',cindylog:'cw-cindy-log'};
 const WORKOUT_DATA={
   phases:[
     {range:[1,13],name:"Foundation",focus:"Building aerobic base and pedal stroke efficiency."},
@@ -3235,6 +3320,8 @@ let S={
   bodyLog:[],
   bxHistory:[],
   activityLog:[],
+  bwLog:{pullup:[],pushup:[],squat:[]},
+  cindyLog:[],
   goals:{mode:'overall',period:'weekly',overall:5,cycling:3,boxing:2,strength:2,comboTarget:3},
   morningType:'cycling',
 };
@@ -3346,6 +3433,8 @@ function loadState(){
   try{const n=JSON.parse(localStorage.getItem(K.nutrition)||'null');if(n)S.nutrition={goal:2200,log:{},recents:{},useAI:true,...n};}catch{}
   try{S.strProgram=localStorage.getItem(K.strprogram)||'spinesafe';}catch{S.strProgram='spinesafe';}
   try{const v=parseInt(localStorage.getItem(K.boxwid)||'');if(v&&BOXING.some(b=>b.id===v))S.activeBoxingWorkoutId=v;}catch{}
+  try{const b=JSON.parse(localStorage.getItem(K.bwlog)||'null');if(b)S.bwLog={pullup:[],pushup:[],squat:[],...b};}catch{}
+  try{S.cindyLog=JSON.parse(localStorage.getItem(K.cindylog)||'[]');}catch{}
 }
 function saveState(){
   try{
@@ -3370,6 +3459,8 @@ function saveState(){
     localStorage.setItem(K.energylog,JSON.stringify(S.energyLog));
     localStorage.setItem(K.nutrition,JSON.stringify(S.nutrition));
     localStorage.setItem(K.boxwid,String(S.activeBoxingWorkoutId));
+    localStorage.setItem(K.bwlog,JSON.stringify(S.bwLog));
+    localStorage.setItem(K.cindylog,JSON.stringify(S.cindyLog));
   }catch{}
 }
 
@@ -3931,6 +4022,9 @@ function render(){
   renderGoalCard();
   renderWeeklySummary();
   renderPRBoard();
+  renderBwProgress();
+  renderGtgPlan();
+  renderCindyCard();
 }
 
 function renderStations(bx,allDone=false){
@@ -3979,7 +4073,7 @@ const NAV_TITLES={cycling:'Cycling',boxing:'Boxing',strength:'Strength',progress
 function switchWorkoutTab(tab){
   closeBarcodeScanner();
   S.activeWorkoutTab=tab;
-  ['cycling','boxing','strength','progress','plan','nutrition'].forEach(t=>{
+  ['cycling','boxing','strength','progress','plan','nutrition','bodyweight'].forEach(t=>{
     const tc=document.getElementById('tab-'+t);
     if(tc) tc.classList.toggle('active',t===tab);
     // Bottom nav active state
@@ -3990,6 +4084,7 @@ function switchWorkoutTab(tab){
   if(tab==='progress') renderCalendar();
   if(tab==='plan') renderPlan();
   if(tab==='nutrition') renderNutritionTab();
+  if(tab==='bodyweight'){renderBwProgress();renderGtgPlan();renderCindyCard();}
 }
 
 // Legacy nav menu functions — no-ops with bottom nav
@@ -4376,9 +4471,9 @@ function renderStrength(){
       <div class="str-wbtn-title">${s.title}</div>
       <div class="str-wbtn-meta">${s.muscles}</div>
     </button>`).join('')+
-    `<button class="str-wbtn${[4,5,6].includes(S.activeStrengthWorkout)?' active':''}" onclick="openSupplementalModal()">
-      <div class="str-wbtn-title">${[4,5,6].includes(S.activeStrengthWorkout)?STRENGTH[S.activeStrengthWorkout].title:'Supplemental'}</div>
-      <div class="str-wbtn-meta">${[4,5,6].includes(S.activeStrengthWorkout)?STRENGTH[S.activeStrengthWorkout].muscles:'Arm Day · Kettlebell'}</div>
+    `<button class="str-wbtn${[4,5,6,7].includes(S.activeStrengthWorkout)?' active':''}" onclick="openSupplementalModal()">
+      <div class="str-wbtn-title">${[4,5,6,7].includes(S.activeStrengthWorkout)?STRENGTH[S.activeStrengthWorkout].title:'Supplemental'}</div>
+      <div class="str-wbtn-meta">${[4,5,6,7].includes(S.activeStrengthWorkout)?STRENGTH[S.activeStrengthWorkout].muscles:'Arm Day · Kettlebell'}</div>
     </button>`;
 
   // Toggle dashboard / analytics
@@ -5021,6 +5116,237 @@ function checkForPR(wIdx,eIdx,weight,reps){
   if(isNew){S.prs[key]={weight,reps,date:strTodayKey(),wTitle:STRENGTH[wIdx]?.title||''};return true;}
   return false;
 }
+// ── Bodyweight Rep Benchmarks (pull-up / push-up / squat) + Cindy ──────────────
+const BW_GOALS={
+  pullup:{label:'Pull-Ups',goal:20},
+  pushup:{label:'Push-Ups',goal:50},
+  dip:{label:'Dips',goal:25},
+  squat:{label:'Bodyweight Squats',goal:75},
+};
+function bwBest(type){
+  const log=S.bwLog?.[type]||[];
+  return log.reduce((m,e)=>Math.max(m,e.reps),0);
+}
+function renderBwProgress(){
+  const el=document.getElementById('bwx-body');
+  if(!el)return;
+  el.innerHTML=Object.entries(BW_GOALS).map(([key,def])=>{
+    const best=bwBest(key);
+    const pct=Math.min(100,Math.round(best/def.goal*100));
+    return`<div class="bwx-row">
+      <div class="bwx-row-top">
+        <div class="bwx-row-name">${def.label}</div>
+        <div class="bwx-row-val"><strong>${best}</strong> / ${def.goal}</div>
+      </div>
+      <div class="bwx-bar-track"><div class="bwx-bar-fill" style="width:${pct}%"></div></div>
+    </div>`;
+  }).join('')+`<button class="bwx-log-btn" onclick="openBwLogModal()">+ Log Max Reps</button>`;
+}
+function openBwLogModal(){
+  renderBwLogModalRows();
+  document.getElementById('bwx-log-modal-bg').classList.add('open');
+}
+function closeBwLogModal(){
+  document.getElementById('bwx-log-modal-bg').classList.remove('open');
+}
+function renderBwLogModalRows(){
+  const wrap=document.getElementById('bwx-log-modal-rows');
+  if(!wrap)return;
+  wrap.innerHTML=Object.entries(BW_GOALS).map(([key,def])=>{
+    const best=bwBest(key);
+    return`<div class="bwx-log-row">
+      <div>
+        <div class="bwx-log-row-name">${def.label}</div>
+        <div class="bwx-log-row-sub">Best: ${best} · Goal: ${def.goal}</div>
+      </div>
+      <input type="number" class="bwx-log-row-input" id="bwx-log-input-${key}" placeholder="${best||0}" min="1" step="1" inputmode="numeric">
+    </div>`;
+  }).join('');
+}
+// Each movement has its own field — fill in whichever you tested today
+// (one, a few, or all four) and Save logs every non-empty one at once.
+function saveBwLog(){
+  if(!S.bwLog)S.bwLog={pullup:[],pushup:[],dip:[],squat:[]};
+  const logged=[];
+  Object.keys(BW_GOALS).forEach(key=>{
+    const inp=document.getElementById('bwx-log-input-'+key);
+    const reps=parseInt(inp?.value||'0',10);
+    if(!reps||reps<=0)return;
+    if(!S.bwLog[key])S.bwLog[key]=[];
+    const prevBest=bwBest(key);
+    S.bwLog[key].push({date:strTodayKey(),reps,ts:Date.now()});
+    if(S.bwLog[key].length>100)S.bwLog[key]=S.bwLog[key].slice(-100);
+    logged.push(`${BW_GOALS[key].label}: ${reps}${reps>prevBest?' PR':''}`);
+  });
+  if(!logged.length)return;
+  saveState();
+  closeBwLogModal();
+  renderBwProgress();
+  renderGtgPlan();
+  showToast('','Logged',logged.join(' · '));
+}
+
+// ── Push/Pull/Dip Progression Plan ─────────────────────────────────────────────
+// Submax "grease the groove" ladder: 5 sets at ~55% of your current tested max,
+// 60-90s rest between. Retest your max (via "+ Log Max Reps" above) every 2-3
+// weeks — these prescribed reps auto-scale up as your max climbs, no manual
+// program restructuring needed. This is the standard low-fatigue method for
+// building toward a big unbroken max without burning out every session.
+let gtgDone={pullup:0,pushup:0,dip:0,squat:0}; // ephemeral — today's checkmarks, resets on reload
+const GTG_TYPES=['pullup','pushup','dip','squat'];
+const GTG_SETS=5;
+const GTG_PCT=0.55;
+function gtgTarget(type){
+  const best=bwBest(type);
+  if(!best)return null;
+  return Math.max(1,Math.round(best*GTG_PCT));
+}
+function toggleGtgSet(type,idx){
+  const cur=gtgDone[type]||0;
+  gtgDone[type]=(idx<cur)?idx:idx+1;
+  renderGtgPlan();
+}
+function renderGtgPlan(){
+  const el=document.getElementById('bwx-plan');
+  if(!el)return;
+  el.innerHTML=`
+    <div class="bwx-plan-title">Progression Plan</div>
+    <div class="bwx-plan-freq">3×/week · non-consecutive days</div>
+    <div class="bwx-plan-desc">Submax ladder — 5 sets at ~55% of your current max, 60–90s rest. Run this on 3 non-consecutive days (e.g. Mon · Wed · Fri) — it's low-fatigue, so it's fine to stack it on a strength or boxing day rather than needing its own slot. Retest your max above every 2–3 weeks and these targets climb with you.</div>
+    ${GTG_TYPES.map(type=>{
+      const target=gtgTarget(type);
+      const done=gtgDone[type]||0;
+      if(target===null){
+        return`<div class="bwx-plan-row">
+          <div class="bwx-plan-row-top"><div class="bwx-plan-row-name">${BW_GOALS[type].label}</div></div>
+          <div class="bwx-plan-empty">Log a max set above to unlock this plan</div>
+        </div>`;
+      }
+      return`<div class="bwx-plan-row">
+        <div class="bwx-plan-row-top">
+          <div class="bwx-plan-row-name">${BW_GOALS[type].label}</div>
+          <div class="bwx-plan-row-rx">${GTG_SETS} × ${target}</div>
+        </div>
+        <div class="bwx-plan-dots">
+          ${Array.from({length:GTG_SETS}).map((_,i)=>`<div class="bwx-plan-dot${i<done?' done':''}" onclick="toggleGtgSet('${type}',${i})">${i<done?'✓':target}</div>`).join('')}
+        </div>
+      </div>`;
+    }).join('')}`;
+}
+
+// Cindy — 20 min AMRAP: 5 Pull-Ups, 10 Push-Ups, 15 Air Squats. Score = rounds + reps.
+let CT={active:false,running:false,secsLeft:1200,iv:null,rounds:0,reps:0};
+function fmtCindyTime(s){const m=Math.floor(s/60),sec=s%60;return m.toString().padStart(2,'0')+':'+sec.toString().padStart(2,'0');}
+function daysSinceDate(dateStr){
+  const d=new Date(dateStr);const now=new Date();
+  return Math.floor((now-d)/86400000);
+}
+function openCindyPanel(){
+  CT={active:true,running:false,secsLeft:1200,iv:null,rounds:0,reps:0};
+  renderCindyCard();
+}
+function startCindyTimer(){
+  if(CT.iv)return;
+  CT.running=true;
+  requestWakeLock();
+  resetInactivityTimer();
+  CT.iv=setInterval(cindyTick,1000);
+  renderCindyCard();
+}
+function pauseCindyTimer(){
+  if(CT.iv){clearInterval(CT.iv);CT.iv=null;}
+  CT.running=false;
+  renderCindyCard();
+}
+function cindyTick(){
+  CT.secsLeft--;
+  if(CT.secsLeft<=0){
+    CT.secsLeft=0;
+    bell(3);
+    finishCindy();
+    return;
+  }
+  renderCindyCard();
+}
+function addCindyRound(delta){
+  CT.rounds=Math.max(0,CT.rounds+delta);
+  renderCindyCard();
+}
+function addCindyRep(delta){
+  CT.reps+=delta;
+  if(CT.reps>=30){CT.reps-=30;CT.rounds++;}
+  else if(CT.reps<0){ if(CT.rounds>0){CT.rounds--;CT.reps+=30;} else CT.reps=0; }
+  renderCindyCard();
+}
+function finishCindy(){
+  if(CT.iv){clearInterval(CT.iv);CT.iv=null;}
+  const wasActive=CT.active;
+  CT.running=false;CT.active=false;
+  releaseWakeLock();
+  if(wasActive){
+    const totalReps=CT.rounds*30+CT.reps;
+    if(totalReps>0){
+      if(!S.cindyLog)S.cindyLog=[];
+      S.cindyLog.push({date:strTodayKey(),rounds:CT.rounds,reps:CT.reps,totalReps,ts:Date.now()});
+      if(S.cindyLog.length>50)S.cindyLog=S.cindyLog.slice(-50);
+      saveState();
+      showToast('','Cindy logged',`${CT.rounds} rounds + ${CT.reps} reps`);
+    }
+  }
+  renderCindyCard();
+}
+function cancelCindy(){
+  if(CT.iv){clearInterval(CT.iv);CT.iv=null;}
+  CT.running=false;CT.active=false;
+  releaseWakeLock();
+  renderCindyCard();
+}
+function renderCindyCard(){
+  const el=document.getElementById('bwx-cindy');
+  if(!el)return;
+  if(CT.active){
+    el.innerHTML=`
+      <div class="bwx-cindy-hdr"><div class="bwx-cindy-title">Cindy — AMRAP 20:00</div></div>
+      <div style="text-align:center;padding:6px 0 4px">
+        <div style="font-size:40px;font-weight:900;font-variant-numeric:tabular-nums;color:${CT.secsLeft<=60?'#e63946':'var(--text)'}">${fmtCindyTime(CT.secsLeft)}</div>
+        <div style="font-size:11px;color:var(--dim);margin-top:2px">5 Pull-Ups · 10 Push-Ups · 15 Air Squats</div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:center;gap:16px;margin:14px 0 10px">
+        <button class="bwx-step-btn" onclick="addCindyRound(-1)">−</button>
+        <div style="text-align:center;min-width:56px">
+          <div style="font-size:32px;font-weight:900;color:var(--lime)">${CT.rounds}</div>
+          <div style="font-size:9px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--dim)">Rounds</div>
+        </div>
+        <button class="bwx-step-btn" onclick="addCindyRound(1)">+</button>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:16px">
+        <button class="bwx-step-btn small" onclick="addCindyRep(-1)">−</button>
+        <div style="text-align:center;min-width:70px">
+          <div style="font-size:16px;font-weight:800;color:var(--text)">+${CT.reps}</div>
+          <div style="font-size:9px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--dim)">Extra Reps</div>
+        </div>
+        <button class="bwx-step-btn small" onclick="addCindyRep(1)">+</button>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button class="bwx-cindy-start" style="flex:1;background:var(--surface2);border-color:var(--border);color:var(--text)" onclick="cancelCindy()">Cancel</button>
+        ${CT.running
+          ?`<button class="bwx-cindy-start" style="flex:1" onclick="pauseCindyTimer()">Pause</button>`
+          :`<button class="bwx-cindy-start" style="flex:1" onclick="startCindyTimer()">${CT.secsLeft===1200?'Start':'Resume'}</button>`}
+        <button class="bwx-cindy-start" style="flex:1" onclick="finishCindy()">Finish</button>
+      </div>`;
+    return;
+  }
+  const log=S.cindyLog||[];
+  const last=log[log.length-1];
+  const dsince=last?daysSinceDate(last.date):null;
+  const due=dsince===null||dsince>=42;
+  el.innerHTML=`
+    <div class="bwx-cindy-hdr"><div class="bwx-cindy-title">Cindy Benchmark</div></div>
+    <div class="bwx-cindy-desc">AMRAP 20 min: 5 Pull-Ups, 10 Push-Ups, 15 Air Squats. Score = total rounds + reps.</div>
+    <div class="bwx-cindy-last${due?' due':''}">${last?`Last: ${last.rounds} rounds + ${last.reps} reps · ${dsince===0?'today':dsince+'d ago'}${due?' — time to retest':''}`:'Never attempted — run it as a baseline'}</div>
+    <button class="bwx-cindy-start" onclick="openCindyPanel()">${last?'Retest Cindy':'Start Cindy'}</button>`;
+}
+
 function renderPRBoard(){
   const el=document.getElementById('pr-list');if(!el)return;
   const entries=Object.entries(S.prs||{});
@@ -5600,8 +5926,8 @@ async function requestWakeLock(){
   try{if('wakeLock' in navigator){wakeLock=await navigator.wakeLock.request('screen');}}catch(e){}
 }
 function releaseWakeLock(){
-  // Only release if neither boxing nor guided workout is active
-  if(BT.running||GW.active) return;
+  // Only release if no boxing, guided workout, or Cindy timer is active
+  if(BT.running||GW.active||CT.running) return;
   try{if(wakeLock){wakeLock.release();wakeLock=null;}}catch(e){}
 }
 function forceReleaseWakeLock(){try{if(wakeLock){wakeLock.release();wakeLock=null;}}catch(e){}}
@@ -5624,7 +5950,8 @@ document.addEventListener('visibilitychange',()=>{
 // ── Inactivity Auto-End ───────────────────────────────────────────────────────
 let inactivityTimer=null;
 let inactivityWarningTimer=null;
-const INACTIVITY_SECS=10*60; // 10 minutes
+const INACTIVITY_SECS=10*60; // 10 minutes (strength / guided workout)
+const BOXING_INACTIVITY_SECS=30*60; // 30 minutes — boxing has longer natural rest breaks between stations
 const INACTIVITY_WARNING_SECS=2*60; // warn at 2 min remaining
 
 function resetInactivityTimer(){
@@ -5635,10 +5962,11 @@ function resetInactivityTimer(){
   hideInactivityBanner();
   // Only set timer if a workout is active
   if(!BT.running&&!GW.active) return;
-  // Warning at (INACTIVITY_SECS - INACTIVITY_WARNING_SECS)
-  inactivityWarningTimer=setTimeout(showInactivityBanner, (INACTIVITY_SECS-INACTIVITY_WARNING_SECS)*1000);
-  // Auto-end at INACTIVITY_SECS
-  inactivityTimer=setTimeout(autoEndWorkout, INACTIVITY_SECS*1000);
+  const secs=BT.running?BOXING_INACTIVITY_SECS:INACTIVITY_SECS;
+  // Warning at (secs - INACTIVITY_WARNING_SECS)
+  inactivityWarningTimer=setTimeout(showInactivityBanner, (secs-INACTIVITY_WARNING_SECS)*1000);
+  // Auto-end at secs
+  inactivityTimer=setTimeout(autoEndWorkout, secs*1000);
 }
 
 let inactivityCountdownIv=null;
@@ -6850,6 +7178,17 @@ function renderGuidedChecklist(){
 </div>
 
 <!-- ── Morning Workout: Choose a specific workout ─────────────────── -->
+<div class="swap-modal-bg" id="bwx-log-modal-bg" onclick="closeBwLogModal()">
+  <div class="swap-modal" onclick="event.stopPropagation()">
+    <div class="swap-modal-handle"></div>
+    <div class="swap-modal-title">Log Max Reps</div>
+    <div style="font-size:11px;color:var(--dim);margin-bottom:12px">Enter whichever you tested today — leave the rest blank.</div>
+    <div id="bwx-log-modal-rows" style="margin-bottom:16px"></div>
+    <button onclick="saveBwLog()" style="width:100%;padding:14px;background:var(--lime);color:#fff;border:none;border-radius:14px;font-size:14px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer">Save</button>
+    <button class="swap-cancel-btn" onclick="closeBwLogModal()">Cancel</button>
+  </div>
+</div>
+
 <div class="swap-modal-bg" id="boxing-pick-modal-bg" onclick="closeBoxingPickModal()">
   <div class="swap-modal" onclick="event.stopPropagation()">
     <div class="swap-modal-handle"></div>
