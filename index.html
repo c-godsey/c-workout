@@ -805,6 +805,9 @@ code{font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:10p
 .bwx-log-session-btn{padding:9px 14px;background:rgba(255,106,26,.1);border:1px solid rgba(255,106,26,.5);color:var(--lime);border-radius:12px;font-size:11px;font-weight:800;letter-spacing:.3px;cursor:pointer;white-space:nowrap;flex-shrink:0;font-family:inherit}
 .bwx-log-session-btn.done{background:var(--surface2);border-color:var(--border);color:var(--dim);cursor:default}
 .bwx-log-session-btn:active{transform:scale(.96)}
+.beer-chip{padding:8px 13px;background:var(--surface2);border:1px solid var(--border);border-radius:20px;color:var(--dim);font-size:11px;font-weight:800;letter-spacing:.3px;cursor:pointer;font-family:inherit}
+.beer-chip.active{background:rgba(255,106,26,.14);border-color:rgba(255,106,26,.5);color:var(--lime)}
+.beer-chip:active{transform:scale(.96)}
 .bwx-cindy{padding:16px 18px 18px;border-top:1px solid var(--glass-border)}
 .bwx-cindy-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
 .bwx-cindy-title{font-size:13px;font-weight:800;color:var(--text)}
@@ -1731,6 +1734,17 @@ code{font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:10p
         <div style="font-size:12px;font-weight:800;color:var(--lime)" id="home-gtg-count">0/3 this week</div>
       </div>
       <div id="home-gtg-strip"></div>
+    </div>
+
+    <!-- Beer Rewards (gamified kcal-to-beer conversion) -->
+    <div class="card" id="home-beer-card" style="margin-top:16px;padding:20px 18px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:2px">
+        <div style="font-size:10px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:var(--dim)">Beer Rewards</div>
+        <div style="font-size:18px;font-weight:900;color:var(--lime)" id="home-beer-count">0.0 🍺</div>
+      </div>
+      <div style="font-size:10.5px;color:var(--dim);margin-bottom:12px" id="home-beer-sub">0 / 1050 kcal this week</div>
+      <div class="bwx-bar-track" style="margin-bottom:12px"><div class="bwx-bar-fill" id="home-beer-bar-fill" style="width:0%"></div></div>
+      <div id="home-beer-chips" style="display:flex;flex-wrap:wrap;gap:8px"></div>
     </div>
 
     <!-- Strength rotation (collapsible) -->
@@ -3246,7 +3260,7 @@ function renderNutritionTab(){
   updateNutAIToggleUI();
 }
 
-const K={hist:'cw-history',ach:'cw-ach',timers:'cw-timers',week:'cw-week',strlog:'cw-str-log',strhist:'cw-str-hist',bodylog:'cw-body-log',bxhist:'cw-bx-hist',actlog:'cw-act-log',prs:'cw-prs',goals:'cw-goals',strswaps:'cw-str-swaps',plandays:'cw-plan-days',stsweek:'cw-sts-week',stsdone:'cw-sts-done',stscycle:'cw-sts-cycle',strprogram:'cw-str-program',reminders:'cw-reminders',energylog:'cw-energy-log',nutrition:'cw-nutrition',boxwid:'cw-box-workout-id',bwlog:'cw-bw-rep-log',cindylog:'cw-cindy-log',gtglog:'cw-gtg-log'};
+const K={hist:'cw-history',ach:'cw-ach',timers:'cw-timers',week:'cw-week',strlog:'cw-str-log',strhist:'cw-str-hist',bodylog:'cw-body-log',bxhist:'cw-bx-hist',actlog:'cw-act-log',prs:'cw-prs',goals:'cw-goals',strswaps:'cw-str-swaps',plandays:'cw-plan-days',stsweek:'cw-sts-week',stsdone:'cw-sts-done',stscycle:'cw-sts-cycle',strprogram:'cw-str-program',reminders:'cw-reminders',energylog:'cw-energy-log',nutrition:'cw-nutrition',boxwid:'cw-box-workout-id',bwlog:'cw-bw-rep-log',cindylog:'cw-cindy-log',gtglog:'cw-gtg-log',beerlog:'cw-beer-log',beerpref:'cw-beer-pref'};
 const WORKOUT_DATA={
   phases:[
     {range:[1,13],name:"Foundation",focus:"Building aerobic base and pedal stroke efficiency."},
@@ -3368,6 +3382,7 @@ let S={
   bwLog:{pullup:[],pushup:[],dip:[],squat:[]},
   cindyLog:[],
   gtgLog:[],
+  beerLog:[],beerPrefType:'lager',
   goals:{mode:'overall',period:'weekly',overall:5,cycling:3,boxing:2,strength:2,comboTarget:3},
   morningType:'cycling',
 };
@@ -3482,6 +3497,8 @@ function loadState(){
   try{const b=JSON.parse(localStorage.getItem(K.bwlog)||'null');if(b)S.bwLog={pullup:[],pushup:[],dip:[],squat:[],...b};}catch{}
   try{S.cindyLog=JSON.parse(localStorage.getItem(K.cindylog)||'[]');}catch{}
   try{S.gtgLog=JSON.parse(localStorage.getItem(K.gtglog)||'[]');}catch{}
+  try{S.beerLog=JSON.parse(localStorage.getItem(K.beerlog)||'[]');}catch{}
+  try{S.beerPrefType=localStorage.getItem(K.beerpref)||'lager';}catch{S.beerPrefType='lager';}
 }
 function saveState(){
   try{
@@ -3509,6 +3526,8 @@ function saveState(){
     localStorage.setItem(K.bwlog,JSON.stringify(S.bwLog));
     localStorage.setItem(K.cindylog,JSON.stringify(S.cindyLog));
     localStorage.setItem(K.gtglog,JSON.stringify(S.gtgLog));
+    localStorage.setItem(K.beerlog,JSON.stringify(S.beerLog));
+    localStorage.setItem(K.beerpref,S.beerPrefType);
   }catch{}
 }
 
@@ -3695,6 +3714,9 @@ function logCyclingRide(id,title){
   saveState();
   renderCyclingLibrary();
   renderHomeGoal();renderHomeStats();
+  const vid=ALL_CYCLING_VIDEOS.find(v=>v.id===id);
+  const mins=vid?parseInt((vid.duration.match(/(\d+)/)||[])[1]||'20',10):20;
+  logBeerKcal('cycling',mins*10);
   showToast('','Ride logged',title);
 }
 
@@ -3906,6 +3928,8 @@ function completeBoxingWorkout(){
   S.bxHistory.push({date:strTodayKey(),workoutId:bx.id,title:bx.title,ts:Date.now()});
   if(S.bxHistory.length>100)S.bxHistory=S.bxHistory.slice(-100);
   const unlocked=evaluateAchievements();
+  const totalSecs=buildTimerPhases(bx).reduce((s,p)=>s+p.secs,0);
+  logBeerKcal('boxing',(totalSecs/60)*11);
   saveState();
   render();renderHomeGoal();renderHomeStats();
   showToast('','Boxing logged',bx.title);
@@ -4315,6 +4339,7 @@ function pickMorningCycling(id,title){
 function markMorningCyclingDone(){
   if(!S.activityLog)S.activityLog=[];
   S.activityLog.push({date:strTodayKey(),type:'cycling',ts:Date.now()});
+  logBeerKcal('cycling',150); // morning rides are ≤20 min — flat ~15 min estimate
   saveState();
   closeMorningVideo();
   renderHomeGoal();renderHomeStats();
@@ -4722,6 +4747,7 @@ function completeStrengthWorkout(){
   }
   // Clear today's session for this workout (so exercises reset)
   if(S.strLog[today]) delete S.strLog[today][wIdx];
+  logBeerKcal('strength',totalSets*12);
   saveState();renderStrength();renderCalendar();
   const msg=weekAdvanced
     ?`All 3 done — now on STS Week ${S.stsWeek}`
@@ -5354,6 +5380,7 @@ function logGtgSession(){
   if(!S.gtgLog)S.gtgLog=[];
   S.gtgLog.push({date:strTodayKey(),ts:Date.now()});
   if(S.gtgLog.length>200)S.gtgLog=S.gtgLog.slice(-200);
+  logBeerKcal('gtg',40);
   saveState();
   renderGtgPlan();
   showToast('','Session logged',`${gtgSessionsThisWeek()}/3 this week`);
@@ -5381,6 +5408,68 @@ function renderGtgAdherenceHtml(){
       </div>`).join('')}
     </div>
   </div>`;
+}
+
+// ── Beer Rewards — gamified kcal-to-beer conversion ─────────────────────────────
+// Every completed session earns an estimated kcal amount (based on real session
+// data where available: boxing's planned round/rest timing, cycling video length,
+// strength set count, Cindy's fixed 20-min AMRAP, GTG's low-fatigue submax sets).
+// 1 beer ≈ 150 kcal is the reference; different styles convert at their own kcal.
+// Capped per week (not per day) so a big day doesn't distort the weekly picture —
+// weekly cap is ~1050 kcal, roughly 7 standard beers, a commonly-cited moderate
+// weekly ceiling.
+const BEER_TYPES={
+  lager_light:{label:'Light Lager',kcal:100},
+  lager:{label:'Lager / Pilsner',kcal:150},
+  ipa:{label:'IPA',kcal:200},
+  stout:{label:'Stout / Porter',kcal:210},
+  dipa:{label:'Double IPA',kcal:280},
+};
+const BEER_WEEKLY_CAP_KCAL=1050;
+function mondayOf(d){
+  const dow=d.getDay();
+  const mon=new Date(d);
+  mon.setDate(d.getDate()-((dow+6)%7));
+  mon.setHours(0,0,0,0);
+  return mon;
+}
+function logBeerKcal(source,kcal){
+  if(!kcal||kcal<=0)return;
+  if(!S.beerLog)S.beerLog=[];
+  S.beerLog.push({date:strTodayKey(),source,kcal:Math.round(kcal),ts:Date.now()});
+  if(S.beerLog.length>500)S.beerLog=S.beerLog.slice(-500);
+  saveState();
+  renderHomeBeerCard();
+}
+function beerKcalThisWeek(){
+  const mon=mondayOf(new Date());
+  return (S.beerLog||[]).filter(e=>new Date(e.date)>=mon).reduce((s,e)=>s+e.kcal,0);
+}
+function beerKcalThisWeekCapped(){
+  return Math.min(beerKcalThisWeek(),BEER_WEEKLY_CAP_KCAL);
+}
+function setBeerPrefType(type){
+  S.beerPrefType=type;
+  saveState();
+  renderHomeBeerCard();
+}
+function renderHomeBeerCard(){
+  const chipsEl=document.getElementById('home-beer-chips');
+  const countEl=document.getElementById('home-beer-count');
+  const subEl=document.getElementById('home-beer-sub');
+  const fillEl=document.getElementById('home-beer-bar-fill');
+  if(!chipsEl||!countEl)return;
+  const rawKcal=beerKcalThisWeek();
+  const cappedKcal=Math.min(rawKcal,BEER_WEEKLY_CAP_KCAL);
+  const type=BEER_TYPES[S.beerPrefType]||BEER_TYPES.lager;
+  const count=cappedKcal/type.kcal;
+  chipsEl.innerHTML=Object.entries(BEER_TYPES).map(([key,def])=>
+    `<button class="beer-chip${key===S.beerPrefType?' active':''}" onclick="setBeerPrefType('${key}')">${def.label}</button>`
+  ).join('');
+  countEl.textContent=`${count.toFixed(1)} 🍺`;
+  const capped=rawKcal>=BEER_WEEKLY_CAP_KCAL;
+  subEl.textContent=`${rawKcal} / ${BEER_WEEKLY_CAP_KCAL} kcal this week${capped?' · weekly cap reached':''} · ~150 kcal/beer estimate`;
+  if(fillEl)fillEl.style.width=Math.min(100,Math.round(rawKcal/BEER_WEEKLY_CAP_KCAL*100))+'%';
 }
 
 // Cindy — 20 min AMRAP: 5 Pull-Ups, 10 Push-Ups, 15 Air Squats. Score = rounds + reps.
@@ -5438,6 +5527,7 @@ function finishCindy(){
       if(!S.cindyLog)S.cindyLog=[];
       S.cindyLog.push({date:strTodayKey(),rounds:CT.rounds,reps:CT.reps,totalReps,ts:Date.now()});
       if(S.cindyLog.length>50)S.cindyLog=S.cindyLog.slice(-50);
+      logBeerKcal('cindy',260);
       saveState();
       showToast('','Cindy logged',`${CT.rounds} rounds + ${CT.reps} reps`);
     }
@@ -5908,6 +5998,7 @@ function renderHomeGtgCard(){
 function renderHomeStats(){
   renderHomeStreakStrip();
   renderHomeGtgCard();
+  renderHomeBeerCard();
   const el=document.getElementById('home-stats-row');
   if(!el)return;
   const total=getTotalWorkouts();
