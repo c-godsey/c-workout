@@ -425,6 +425,7 @@ body.pip-mode .pip-mask{display:block}
 .panel{background:var(--glass);border:1px solid var(--glass-border);border-radius:20px;overflow:hidden}
 .panel-hdr{padding:14px 18px;border-bottom:1px solid var(--glass-border);display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none}
 .panel-title{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;display:flex;align-items:center;gap:6px}
+.hidden{display:none}
 .panel-body{padding:14px 16px}.panel-body.hidden{display:none}
 .chev{color:var(--dim);font-size:12px}
 .ach-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:7px}
@@ -784,6 +785,22 @@ code{font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:10p
 .bwx-cta-text{font-size:12px;color:var(--text);line-height:1.5;margin-bottom:10px}
 .bwx-cta-btn{width:100%;padding:11px;background:rgba(255,106,26,.14);border:1px solid rgba(255,106,26,.5);color:var(--lime);border-radius:12px;font-size:12px;font-weight:800;letter-spacing:.5px;cursor:pointer;font-family:inherit}
 .bwx-cta-btn:active{transform:scale(.97)}
+.sc-card{padding:16px 18px;border-bottom:1px solid var(--border)}
+.sc-card:last-child{border-bottom:none}
+.sc-card-top{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.sc-icon{font-size:22px;line-height:1}
+.sc-title{font-size:13px;font-weight:800;color:var(--text)}
+.sc-tagline{font-size:10.5px;color:var(--dim);margin-top:1px}
+.sc-desc{font-size:11.5px;color:var(--dim);line-height:1.5;margin-bottom:12px}
+.sc-locked{font-size:11.5px;color:var(--dim);font-style:italic}
+.sc-expired{font-size:11.5px;color:var(--dim)}
+.sc-start-btn{width:100%;padding:11px;background:var(--lime);color:#fff;border:none;border-radius:12px;font-size:12px;font-weight:900;letter-spacing:1px;text-transform:uppercase;cursor:pointer;font-family:inherit}
+.sc-start-btn:active{transform:scale(.97)}
+.sc-progress-row{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:8px}
+.sc-progress-lbl{font-size:11px;color:var(--dim)}
+.sc-progress-lbl strong{color:var(--lime);font-weight:800}
+.sc-days-left{font-size:10.5px;color:var(--dim)}
+.sc-completed-badge{display:flex;align-items:center;gap:8px;padding:10px 12px;background:rgba(255,106,26,.1);border:1px solid rgba(255,106,26,.35);border-radius:12px;font-size:11.5px;color:var(--lime);font-weight:700}
 .bwx-plan{padding:6px 18px 16px;border-top:1px solid var(--glass-border)}
 .bwx-plan-title{font-size:13px;font-weight:800;color:var(--text);margin:12px 0 8px}
 .bwx-plan-freq{display:inline-block;font-size:10px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:var(--lime);background:rgba(255,106,26,.1);border:1px solid rgba(255,106,26,.35);border-radius:20px;padding:4px 10px;margin-bottom:10px}
@@ -1597,6 +1614,12 @@ code{font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:10p
       <div class="bw-body" id="bw-body"><!-- rendered by JS --></div>
     </div>
 
+    <!-- Seasonal Challenges -->
+    <div class="bwx-section">
+      <div class="bwx-hdr">Seasonal Challenges</div>
+      <div id="sc-body"><!-- rendered by JS --></div>
+    </div>
+
     <div class="bottom-row">
       <div class="panel">
         <div class="panel-hdr" onclick="togglePanel('ach')">
@@ -1823,19 +1846,38 @@ code{font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:10p
     <svg class="bnav-icon" viewBox="0 0 24 24"><path d="M5 18m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path d="M19 18m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path d="M12 19l0 -4l-3 -3l5 -4l2 3l3 0"/><path d="M17 5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"/></svg>
     <span class="bnav-label">Cycling</span>
   </button>
-  <button class="bnav-item" id="bnav-bodyweight" onclick="switchWorkoutTab('bodyweight')">
-    <svg class="bnav-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/></svg>
-    <span class="bnav-label">Progression</span>
-  </button>
   <button class="bnav-item" id="bnav-progress" onclick="switchWorkoutTab('progress')">
     <svg class="bnav-icon" viewBox="0 0 24 24"><path d="M3 17l6 -6l4 4l8 -8"/><path d="M14 7l7 0l0 7"/></svg>
     <span class="bnav-label">Progress</span>
   </button>
-  <button class="bnav-item" id="bnav-nutrition" onclick="switchWorkoutTab('nutrition')">
-    <svg class="bnav-icon" viewBox="0 0 24 24"><path d="M19 3v12h-5c-.023 -3.681 .184 -7.406 5 -12zm0 12v6h-1v-3m-10 -14v17m-3 -17v3a3 3 0 1 0 6 0v-3"/></svg>
-    <span class="bnav-label">Nutrition</span>
+  <button class="bnav-item" id="bnav-more" onclick="openMoreMenu()">
+    <svg class="bnav-icon" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.6" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r="1.6" fill="currentColor" stroke="none"/><circle cx="19" cy="12" r="1.6" fill="currentColor" stroke="none"/></svg>
+    <span class="bnav-label">More</span>
   </button>
 </nav>
+
+<!-- More menu — Progression + Nutrition live here so the bottom nav stays at 5 primary tabs -->
+<div class="swap-modal-bg" id="more-modal-bg" onclick="closeMoreMenu()">
+  <div class="swap-modal" onclick="event.stopPropagation()">
+    <div class="swap-modal-handle"></div>
+    <div class="swap-modal-title">More</div>
+    <div class="swap-opt" onclick="navFromMore('bodyweight')">
+      <div style="display:flex;align-items:center;gap:12px">
+        <svg class="bnav-icon" style="width:20px;height:20px;flex-shrink:0" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1" fill="currentColor" stroke="none"/></svg>
+        <div class="swap-opt-name">Progression</div>
+      </div>
+      <span class="swap-opt-tag original">›</span>
+    </div>
+    <div class="swap-opt" onclick="navFromMore('nutrition')">
+      <div style="display:flex;align-items:center;gap:12px">
+        <svg class="bnav-icon" style="width:20px;height:20px;flex-shrink:0" viewBox="0 0 24 24"><path d="M19 3v12h-5c-.023 -3.681 .184 -7.406 5 -12zm0 12v6h-1v-3m-10 -14v17m-3 -17v3a3 3 0 1 0 6 0v-3"/></svg>
+        <div class="swap-opt-name">Nutrition</div>
+      </div>
+      <span class="swap-opt-tag original">›</span>
+    </div>
+    <button class="swap-cancel-btn" onclick="closeMoreMenu()">Close</button>
+  </div>
+</div>
 
 <!-- Historical Log Modal -->
 <div class="modal-overlay" id="hist-log-modal">
@@ -1847,17 +1889,28 @@ code{font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:10p
     </div>
     <div class="modal-body">
       <div id="hist-log-existing"></div>
-      <div class="hist-modal-add-lbl">Add a workout</div>
-      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
-        <button class="str-wbtn" onclick="logHistSession('cycling')">
-          <div class="str-wbtn-title" style="font-size:13px">Cycling</div>
-        </button>
-        <button class="str-wbtn" onclick="logHistSession('boxing')">
-          <div class="str-wbtn-title" style="font-size:13px">Boxing</div>
-        </button>
-        <button class="str-wbtn" onclick="logHistSession('strength')">
-          <div class="str-wbtn-title" style="font-size:13px">Strength</div>
-        </button>
+      <div id="hist-type-picker">
+        <div class="hist-modal-add-lbl">Add a workout</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
+          <button class="str-wbtn" onclick="openHistDurationStep('cycling')">
+            <div class="str-wbtn-title" style="font-size:13px">Cycling</div>
+          </button>
+          <button class="str-wbtn" onclick="openHistDurationStep('boxing')">
+            <div class="str-wbtn-title" style="font-size:13px">Boxing</div>
+          </button>
+          <button class="str-wbtn" onclick="openHistDurationStep('strength')">
+            <div class="str-wbtn-title" style="font-size:13px">Strength</div>
+          </button>
+        </div>
+      </div>
+      <div id="hist-duration-step" class="hidden">
+        <div class="hist-modal-add-lbl" id="hist-duration-lbl">How long was it?</div>
+        <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin:6px 0 16px">
+          <input type="number" class="bwx-log-row-input" id="hist-duration-input" style="width:90px;font-size:22px" min="1" step="1" inputmode="numeric">
+          <div style="font-size:13px;color:var(--dim);font-weight:700">minutes</div>
+        </div>
+        <button onclick="confirmHistSession()" style="width:100%;padding:14px;background:var(--lime);color:#fff;border:none;border-radius:14px;font-size:14px;font-weight:900;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;margin-bottom:8px">Log Session</button>
+        <button class="swap-cancel-btn" onclick="closeHistDurationStep()">Back</button>
       </div>
     </div>
     <div class="modal-footer">
@@ -3260,7 +3313,7 @@ function renderNutritionTab(){
   updateNutAIToggleUI();
 }
 
-const K={hist:'cw-history',ach:'cw-ach',timers:'cw-timers',week:'cw-week',strlog:'cw-str-log',strhist:'cw-str-hist',bodylog:'cw-body-log',bxhist:'cw-bx-hist',actlog:'cw-act-log',prs:'cw-prs',goals:'cw-goals',strswaps:'cw-str-swaps',plandays:'cw-plan-days',stsweek:'cw-sts-week',stsdone:'cw-sts-done',stscycle:'cw-sts-cycle',strprogram:'cw-str-program',reminders:'cw-reminders',energylog:'cw-energy-log',nutrition:'cw-nutrition',boxwid:'cw-box-workout-id',bwlog:'cw-bw-rep-log',cindylog:'cw-cindy-log',gtglog:'cw-gtg-log',beerlog:'cw-beer-log',beerpref:'cw-beer-pref'};
+const K={hist:'cw-history',ach:'cw-ach',timers:'cw-timers',week:'cw-week',strlog:'cw-str-log',strhist:'cw-str-hist',bodylog:'cw-body-log',bxhist:'cw-bx-hist',actlog:'cw-act-log',prs:'cw-prs',goals:'cw-goals',strswaps:'cw-str-swaps',plandays:'cw-plan-days',stsweek:'cw-sts-week',stsdone:'cw-sts-done',stscycle:'cw-sts-cycle',strprogram:'cw-str-program',reminders:'cw-reminders',energylog:'cw-energy-log',nutrition:'cw-nutrition',boxwid:'cw-box-workout-id',bwlog:'cw-bw-rep-log',cindylog:'cw-cindy-log',gtglog:'cw-gtg-log',beerlog:'cw-beer-log',beerpref:'cw-beer-pref',challenges:'cw-challenges'};
 const WORKOUT_DATA={
   phases:[
     {range:[1,13],name:"Foundation",focus:"Building aerobic base and pedal stroke efficiency."},
@@ -3383,6 +3436,7 @@ let S={
   cindyLog:[],
   gtgLog:[],
   beerLog:[],beerPrefType:'lager',
+  challenges:{},
   goals:{mode:'overall',period:'weekly',overall:5,cycling:3,boxing:2,strength:2,comboTarget:3},
   morningType:'cycling',
 };
@@ -3499,6 +3553,7 @@ function loadState(){
   try{S.gtgLog=JSON.parse(localStorage.getItem(K.gtglog)||'[]');}catch{}
   try{S.beerLog=JSON.parse(localStorage.getItem(K.beerlog)||'[]');}catch{}
   try{S.beerPrefType=localStorage.getItem(K.beerpref)||'lager';}catch{S.beerPrefType='lager';}
+  try{S.challenges=JSON.parse(localStorage.getItem(K.challenges)||'{}');}catch{S.challenges={};}
 }
 function saveState(){
   try{
@@ -3528,6 +3583,7 @@ function saveState(){
     localStorage.setItem(K.gtglog,JSON.stringify(S.gtgLog));
     localStorage.setItem(K.beerlog,JSON.stringify(S.beerLog));
     localStorage.setItem(K.beerpref,S.beerPrefType);
+    localStorage.setItem(K.challenges,JSON.stringify(S.challenges));
   }catch{}
 }
 
@@ -3716,8 +3772,9 @@ function logCyclingRide(id,title){
   renderHomeGoal();renderHomeStats();
   const vid=ALL_CYCLING_VIDEOS.find(v=>v.id===id);
   const mins=vid?parseInt((vid.duration.match(/(\d+)/)||[])[1]||'20',10):20;
-  logBeerKcal('cycling',mins*10);
+  logBeerKcal('cycling',mins*BEER_KCAL_PER_MIN.cycling);
   showToast('','Ride logged',title);
+  checkChallenges().forEach((c,i)=>setTimeout(()=>showToast(c.icon,'Challenge Complete!',c.title),(i+1)*700));
 }
 
 // ── Morning Workout — short (≤20 min) cycling or kettlebell options ──────────
@@ -3929,11 +3986,12 @@ function completeBoxingWorkout(){
   if(S.bxHistory.length>100)S.bxHistory=S.bxHistory.slice(-100);
   const unlocked=evaluateAchievements();
   const totalSecs=buildTimerPhases(bx).reduce((s,p)=>s+p.secs,0);
-  logBeerKcal('boxing',(totalSecs/60)*11);
+  logBeerKcal('boxing',(totalSecs/60)*BEER_KCAL_PER_MIN.boxing);
   saveState();
   render();renderHomeGoal();renderHomeStats();
   showToast('','Boxing logged',bx.title);
   unlocked.forEach((a,i)=>setTimeout(()=>showToast(a.icon,'Achievement Unlocked!',a.title),(i+1)*700));
+  checkChallenges().forEach((c,i)=>setTimeout(()=>showToast(c.icon,'Challenge Complete!',c.title),(unlocked.length+i+1)*700));
 }
 
 // ── Timer UI ──────────────────────────────────────────────────────────────────
@@ -4097,6 +4155,7 @@ function render(){
   renderBwProgress();
   renderGtgPlan();
   renderCindyCard();
+  renderSeasonalChallenges();
 }
 
 function renderStations(bx,allDone=false){
@@ -4152,11 +4211,25 @@ function switchWorkoutTab(tab){
     const bn=document.getElementById('bnav-'+t);
     if(bn) bn.classList.toggle('active',t===tab);
   });
+  // Progression/Nutrition live in the "More" sheet, not their own nav icon —
+  // light up the More icon itself so there's still an active-tab indicator.
+  const moreBtn=document.getElementById('bnav-more');
+  if(moreBtn) moreBtn.classList.toggle('active',tab==='bodyweight'||tab==='nutrition');
   if(tab==='strength') renderStrength();
   if(tab==='progress') renderCalendar();
   if(tab==='plan') renderPlan();
   if(tab==='nutrition') renderNutritionTab();
   if(tab==='bodyweight'){renderBwProgress();renderGtgPlan();renderCindyCard();}
+}
+function openMoreMenu(){
+  document.getElementById('more-modal-bg').classList.add('open');
+}
+function closeMoreMenu(){
+  document.getElementById('more-modal-bg').classList.remove('open');
+}
+function navFromMore(tab){
+  closeMoreMenu();
+  switchWorkoutTab(tab);
 }
 
 // Legacy nav menu functions — no-ops with bottom nav
@@ -4339,11 +4412,12 @@ function pickMorningCycling(id,title){
 function markMorningCyclingDone(){
   if(!S.activityLog)S.activityLog=[];
   S.activityLog.push({date:strTodayKey(),type:'cycling',ts:Date.now()});
-  logBeerKcal('cycling',150); // morning rides are ≤20 min — flat ~15 min estimate
+  logBeerKcal('cycling',15*BEER_KCAL_PER_MIN.cycling); // morning rides are ≤20 min — flat ~15 min estimate
   saveState();
   closeMorningVideo();
   renderHomeGoal();renderHomeStats();
   showToast('','Morning ride logged','Nice work');
+  checkChallenges().forEach((c,i)=>setTimeout(()=>showToast(c.icon,'Challenge Complete!',c.title),(i+1)*700));
 }
 function renderHomeMorning(){
   const row=document.getElementById('morning-toggle-row');
@@ -4747,12 +4821,13 @@ function completeStrengthWorkout(){
   }
   // Clear today's session for this workout (so exercises reset)
   if(S.strLog[today]) delete S.strLog[today][wIdx];
-  logBeerKcal('strength',totalSets*12);
+  logBeerKcal('strength',totalSets*7);
   saveState();renderStrength();renderCalendar();
   const msg=weekAdvanced
     ?`All 3 done — now on STS Week ${S.stsWeek}`
     :`${STRENGTH[wIdx].title} — ${totalSets} sets logged`;
   showToast('','Workout Complete!',msg);
+  checkChallenges().forEach((c,i)=>setTimeout(()=>showToast(c.icon,'Challenge Complete!',c.title),(i+1)*700));
 }
 function unlogSet(wIdx,eIdx,setIdx){
   const today=strTodayKey();
@@ -4946,6 +5021,16 @@ function getAllActivityDates(){
   (S.bxHistory||[]).forEach(h=>dates.add(h.date));
   (S.activityLog||[]).forEach(e=>dates.add(e.date));
   return dates;
+}
+// Same sources as getAllActivityDates() but un-deduped — one entry per logged
+// session, for counting how many sessions fall inside a challenge window.
+function getAllSessionDatesList(){
+  const list=[];
+  Object.values(S.history).forEach(wh=>Object.values(wh.days||{}).forEach(d=>{if(d.completedAt)list.push(new Date(d.completedAt).toDateString());}));
+  (S.strHistory||[]).forEach(h=>list.push(h.date));
+  (S.bxHistory||[]).forEach(h=>list.push(h.date));
+  (S.activityLog||[]).forEach(e=>list.push(e.date));
+  return list;
 }
 function getConsecutiveDayStreak(){
   const dates=getAllActivityDates();
@@ -5380,7 +5465,7 @@ function logGtgSession(){
   if(!S.gtgLog)S.gtgLog=[];
   S.gtgLog.push({date:strTodayKey(),ts:Date.now()});
   if(S.gtgLog.length>200)S.gtgLog=S.gtgLog.slice(-200);
-  logBeerKcal('gtg',40);
+  logBeerKcal('gtg',15);
   saveState();
   renderGtgPlan();
   showToast('','Session logged',`${gtgSessionsThisWeek()}/3 this week`);
@@ -5415,9 +5500,10 @@ function renderGtgAdherenceHtml(){
 // data where available: boxing's planned round/rest timing, cycling video length,
 // strength set count, Cindy's fixed 20-min AMRAP, GTG's low-fatigue submax sets).
 // 1 beer ≈ 150 kcal is the reference; different styles convert at their own kcal.
-// Capped per week (not per day) so a big day doesn't distort the weekly picture —
-// weekly cap is ~1050 kcal, roughly 7 standard beers, a commonly-cited moderate
-// weekly ceiling.
+// Capped per week (not per day) so a big day doesn't distort the weekly picture.
+// Earn rates and the cap are intentionally conservative — a single session
+// shouldn't come close to maxing the week; it should take real, sustained
+// training to earn out.
 const BEER_TYPES={
   lager_light:{label:'Light Lager',kcal:100},
   lager:{label:'Lager / Pilsner',kcal:150},
@@ -5425,7 +5511,8 @@ const BEER_TYPES={
   stout:{label:'Stout / Porter',kcal:210},
   dipa:{label:'Double IPA',kcal:280},
 };
-const BEER_WEEKLY_CAP_KCAL=1050;
+const BEER_WEEKLY_CAP_KCAL=600; // ~4 lagers/week at full effort, not from one session
+const BEER_KCAL_PER_MIN={cycling:5,boxing:6,strength:7}; // shared by live logging + ad-hoc backdated entries
 function mondayOf(d){
   const dow=d.getDay();
   const mon=new Date(d);
@@ -5470,6 +5557,131 @@ function renderHomeBeerCard(){
   const capped=rawKcal>=BEER_WEEKLY_CAP_KCAL;
   subEl.textContent=`${rawKcal} / ${BEER_WEEKLY_CAP_KCAL} kcal this week${capped?' · weekly cap reached':''} · ~150 kcal/beer estimate`;
   if(fillEl)fillEl.style.width=Math.min(100,Math.round(rawKcal/BEER_WEEKLY_CAP_KCAL*100))+'%';
+}
+
+// ── Seasonal Challenges — limited-time events tied to the real calendar ─────────
+// Each challenge only shows as startable during its real-world season; once
+// started, it runs for a fixed number of days from that date regardless of when
+// in the season you began. Completing one awards a permanent badge plus a
+// one-time bonus added to that week's Beer Rewards tally.
+const SEASONAL_CHALLENGES=[
+  {id:'new_year_reset',title:'New Year Reset',icon:'🔥',tagline:"30 days, don't miss one.",
+    desc:'Hit a 30-day daily-activity streak — log something every single day.',
+    seasonMonths:[0],durationDays:30,type:'streak',target:30,bonusBeerKcal:150},
+  {id:'summer_shred',title:'Summer Shred',icon:'☀️',tagline:'20 sessions in 45 days.',
+    desc:'Log 20 workouts of any type within a 45-day window.',
+    seasonMonths:[5,6,7],durationDays:45,type:'sessions',target:20,bonusBeerKcal:200},
+  {id:'movember_gauntlet',title:'Movember Boxing Gauntlet',icon:'🥊',tagline:'12 boxing sessions in 30 days.',
+    desc:'Complete 12 boxing sessions within 30 days.',
+    seasonMonths:[10],durationDays:30,type:'boxing_sessions',target:12,bonusBeerKcal:180},
+  {id:'holiday_hustle',title:'Holiday Hustle',icon:'🎄',tagline:'15 sessions before the year ends.',
+    desc:'Log 15 workouts before Dec 31 — stay ahead of the holiday chaos.',
+    seasonMonths:[11],durationDays:31,type:'sessions',target:15,bonusBeerKcal:160},
+];
+function isSeasonActive(ch,d=new Date()){
+  return ch.seasonMonths.includes(d.getMonth());
+}
+function challengeState(ch){
+  const rec=S.challenges?.[ch.id];
+  if(rec?.completed)return 'completed';
+  if(rec?.startedAt){
+    const start=new Date(rec.startedAt);
+    const daysElapsed=Math.floor((Date.now()-start)/86400000);
+    return daysElapsed<ch.durationDays?'active':'expired';
+  }
+  return isSeasonActive(ch)?'available':'locked';
+}
+function challengeProgressValue(ch,rec){
+  if(!rec?.startedAt)return 0;
+  const start=new Date(rec.startedAt);start.setHours(0,0,0,0);
+  const end=new Date(start);end.setDate(end.getDate()+ch.durationDays);
+  const inWindow=dateStr=>{const d=new Date(dateStr);return d>=start&&d<end;};
+  if(ch.type==='streak'){
+    const dates=getAllActivityDates();
+    const today=new Date();today.setHours(0,0,0,0);
+    let count=0;const cursor=new Date(start);
+    for(let i=0;i<ch.durationDays;i++){
+      if(cursor>today)break;
+      if(!dates.has(cursor.toDateString()))break;
+      count++;cursor.setDate(cursor.getDate()+1);
+    }
+    return count;
+  }
+  if(ch.type==='boxing_sessions')return (S.bxHistory||[]).filter(h=>inWindow(h.date)).length;
+  if(ch.type==='sessions')return getAllSessionDatesList().filter(inWindow).length;
+  return 0;
+}
+function startChallenge(id){
+  const ch=SEASONAL_CHALLENGES.find(c=>c.id===id);
+  if(!ch)return;
+  if(!S.challenges)S.challenges={};
+  S.challenges[id]={startedAt:new Date().toDateString(),completed:false,completedAt:null};
+  saveState();
+  renderSeasonalChallenges();
+  showToast(ch.icon,'Challenge Started',ch.title);
+}
+function checkChallenges(){
+  if(!S.challenges)S.challenges={};
+  const newlyDone=[];
+  SEASONAL_CHALLENGES.forEach(ch=>{
+    const rec=S.challenges[ch.id];
+    if(!rec||rec.completed||!rec.startedAt)return;
+    if(challengeProgressValue(ch,rec)>=ch.target){
+      rec.completed=true;rec.completedAt=new Date().toISOString();
+      logBeerKcal('challenge',ch.bonusBeerKcal);
+      newlyDone.push(ch);
+    }
+  });
+  if(newlyDone.length){saveState();renderSeasonalChallenges();}
+  return newlyDone;
+}
+function renderSeasonalChallenges(){
+  const el=document.getElementById('sc-body');
+  if(!el)return;
+  el.innerHTML=SEASONAL_CHALLENGES.map(ch=>{
+    const state=challengeState(ch);
+    const rec=S.challenges?.[ch.id];
+    if(state==='completed'){
+      const d=rec.completedAt?new Date(rec.completedAt):null;
+      const dLabel=d?`${HIST_MONTHS[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`:'';
+      return`<div class="sc-card">
+        <div class="sc-card-top"><div class="sc-icon">${ch.icon}</div><div><div class="sc-title">${ch.title}</div><div class="sc-tagline">${ch.tagline}</div></div></div>
+        <div class="sc-completed-badge">🏆 Completed ${dLabel} — +${ch.bonusBeerKcal} kcal bonus</div>
+      </div>`;
+    }
+    if(state==='active'){
+      const progress=challengeProgressValue(ch,rec);
+      const start=new Date(rec.startedAt);
+      const daysElapsed=Math.floor((Date.now()-start)/86400000);
+      const daysLeft=Math.max(0,ch.durationDays-daysElapsed);
+      const pct=Math.min(100,Math.round(progress/ch.target*100));
+      return`<div class="sc-card">
+        <div class="sc-card-top"><div class="sc-icon">${ch.icon}</div><div><div class="sc-title">${ch.title}</div><div class="sc-tagline">${ch.tagline}</div></div></div>
+        <div class="sc-progress-row"><div class="sc-progress-lbl"><strong>${progress}</strong> / ${ch.target}</div><div class="sc-days-left">${daysLeft} day${daysLeft===1?'':'s'} left</div></div>
+        <div class="bwx-bar-track"><div class="bwx-bar-fill" style="width:${pct}%"></div></div>
+      </div>`;
+    }
+    if(state==='expired'){
+      const canRetry=isSeasonActive(ch);
+      return`<div class="sc-card">
+        <div class="sc-card-top"><div class="sc-icon">${ch.icon}</div><div><div class="sc-title">${ch.title}</div><div class="sc-tagline">${ch.tagline}</div></div></div>
+        <div class="sc-expired">Window closed — ${canRetry?'you can try again this season':'come back next season to retry'}</div>
+        ${canRetry?`<button class="sc-start-btn" style="margin-top:10px" onclick="startChallenge('${ch.id}')">Try Again</button>`:''}
+      </div>`;
+    }
+    if(state==='available'){
+      return`<div class="sc-card">
+        <div class="sc-card-top"><div class="sc-icon">${ch.icon}</div><div><div class="sc-title">${ch.title}</div><div class="sc-tagline">${ch.tagline}</div></div></div>
+        <div class="sc-desc">${ch.desc}</div>
+        <button class="sc-start-btn" onclick="startChallenge('${ch.id}')">Start Challenge</button>
+      </div>`;
+    }
+    const seasonLabel=ch.seasonMonths.map(m=>HIST_MONTHS[m]).join('/');
+    return`<div class="sc-card">
+      <div class="sc-card-top"><div class="sc-icon" style="opacity:.4">${ch.icon}</div><div><div class="sc-title" style="color:var(--dim)">${ch.title}</div><div class="sc-tagline">${ch.tagline}</div></div></div>
+      <div class="sc-locked">Returns in ${seasonLabel}</div>
+    </div>`;
+  }).join('');
 }
 
 // Cindy — 20 min AMRAP: 5 Pull-Ups, 10 Push-Ups, 15 Air Squats. Score = rounds + reps.
@@ -5527,7 +5739,7 @@ function finishCindy(){
       if(!S.cindyLog)S.cindyLog=[];
       S.cindyLog.push({date:strTodayKey(),rounds:CT.rounds,reps:CT.reps,totalReps,ts:Date.now()});
       if(S.cindyLog.length>50)S.cindyLog=S.cindyLog.slice(-50);
-      logBeerKcal('cindy',260);
+      logBeerKcal('cindy',150);
       saveState();
       showToast('','Cindy logged',`${CT.rounds} rounds + ${CT.reps} reps`);
     }
@@ -6731,31 +6943,66 @@ function openHistoryModal(dateStr){
   const d=new Date(dateStr);
   document.getElementById('hist-log-title').textContent=`${HIST_MONTHS[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
   renderHistModalEntries();
+  closeHistDurationStep();
   document.getElementById('hist-log-modal').classList.add('open');
   document.body.style.overflow='hidden';
 }
 function closeHistoryModal(){
   document.getElementById('hist-log-modal').classList.remove('open');
   document.body.style.overflow='';
+  closeHistDurationStep();
 }
-function logHistSession(type){
+// Ad-hoc "Add a workout" — asks how long the session was before logging, since
+// there's no live timer/set-count to derive it from. That duration also drives
+// the Beer Rewards kcal estimate for the entry.
+let histPendingType=null;
+const HIST_DURATION_DEFAULT={cycling:20,boxing:40,strength:45};
+function openHistDurationStep(type){
+  histPendingType=type;
+  const lbl=document.getElementById('hist-duration-lbl');
+  if(lbl)lbl.textContent=`How long was your ${type.charAt(0).toUpperCase()+type.slice(1)} session?`;
+  const inp=document.getElementById('hist-duration-input');
+  if(inp)inp.value=HIST_DURATION_DEFAULT[type]||30;
+  document.getElementById('hist-type-picker').classList.add('hidden');
+  document.getElementById('hist-duration-step').classList.remove('hidden');
+  setTimeout(()=>{const el=document.getElementById('hist-duration-input');if(el){el.focus();el.select();}},50);
+}
+function closeHistDurationStep(){
+  histPendingType=null;
+  const step=document.getElementById('hist-duration-step');
+  const picker=document.getElementById('hist-type-picker');
+  if(step)step.classList.add('hidden');
+  if(picker)picker.classList.remove('hidden');
+}
+function confirmHistSession(){
+  const type=histPendingType;
+  if(!type)return;
+  const inp=document.getElementById('hist-duration-input');
+  const mins=Math.max(1,parseInt(inp?.value||HIST_DURATION_DEFAULT[type]||30,10));
+  logHistSession(type,mins);
+  closeHistDurationStep();
+}
+function logHistSession(type,mins){
   if(!histDate)return;
   const ts=Date.now();
+  mins=mins||HIST_DURATION_DEFAULT[type]||30;
   if(type==='cycling'){
     if(!S.activityLog)S.activityLog=[];
-    S.activityLog.push({date:histDate,type:'cycling',ts});
+    S.activityLog.push({date:histDate,type:'cycling',ts,mins});
   } else if(type==='boxing'){
-    S.bxHistory.push({date:histDate,workoutId:0,title:'Boxing Session',ts,backdated:true});
+    S.bxHistory.push({date:histDate,workoutId:0,title:'Boxing Session',ts,mins,backdated:true});
     S.bxHistory.sort((a,b)=>new Date(a.date)-new Date(b.date));
   } else if(type==='strength'){
-    S.strHistory.push({date:histDate,wIdx:S.activeStrengthWorkout,title:STRENGTH[S.activeStrengthWorkout].title,totalSets:0,ts,backdated:true});
+    S.strHistory.push({date:histDate,wIdx:S.activeStrengthWorkout,title:STRENGTH[S.activeStrengthWorkout].title,totalSets:0,mins,ts,backdated:true});
     S.strHistory.sort((a,b)=>new Date(a.date)-new Date(b.date));
   }
+  logBeerKcal(type,mins*(BEER_KCAL_PER_MIN[type]||6));
   evaluateAchievements();saveState();
   renderHistModalEntries();
   renderCalendar();renderBxHistory();render();
   const label=type.charAt(0).toUpperCase()+type.slice(1);
-  showToast('','Logged',`${label} session added`);
+  showToast('','Logged',`${label} session added — ${mins} min`);
+  checkChallenges().forEach((c,i)=>setTimeout(()=>showToast(c.icon,'Challenge Complete!',c.title),(i+1)*700));
 }
 
 // ── Boxing Presets ────────────────────────────────────────────────────────────
@@ -6880,6 +7127,7 @@ function saveLog(){
   const dateLabel=dateVal&&dateVal!==toDateInput(new Date())?` · ${dateVal}`:'';
   showToast('','Workout logged!',`Week ${w} · ${DAY_LABELS[day]}${dateLabel}`);
   unlocked.forEach((a,i)=>setTimeout(()=>showToast(a.icon,'Achievement Unlocked!',a.title),(i+1)*700));
+  checkChallenges().forEach((c,i)=>setTimeout(()=>showToast(c.icon,'Challenge Complete!',c.title),(unlocked.length+i+1)*700));
 }
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.getElementById('modal').classList.contains('open'))closeModal();});
 
