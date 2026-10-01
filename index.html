@@ -481,6 +481,9 @@ body.pip-mode .pip-mask{display:block}
 .str-sets-done{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;color:var(--lime);background:rgba(255,106,26,.08);border:1px solid rgba(255,106,26,.2);border-radius:14px;padding:3px 9px}
 .str-edit-set-btn{background:none;border:none;color:var(--dim);font-size:10px;font-weight:700;cursor:pointer;padding:3px 2px;transition:color .15s}
 .str-edit-set-btn:hover{color:var(--lime)}
+.str-superset-group{margin-bottom:16px;padding:10px 0 2px;border-radius:18px;background:rgba(255,106,26,.05);border:1px solid rgba(255,106,26,.18)}
+.str-superset-badge{font-size:10px;font-weight:700;letter-spacing:.4px;color:var(--lime);text-transform:uppercase;padding:0 16px 8px;display:flex;align-items:center;gap:4px}
+.str-superset-group .str-lift-item{margin:0 10px 10px}
 
 /* Warm-up card (reused) */
 .warmup-step{display:flex;align-items:flex-start;gap:12px;font-size:13px;color:var(--text)}
@@ -2134,7 +2137,44 @@ const JNFULL_B_WORKOUTS=[
     {name:"Standing Calf Raise",sets:"3",reps:"10",rest:"1.5m",notes:"RPE 8. Press all the way up to your toes, stretch your calves at the bottom, don't bounce.",swaps:["Dumbbell Standing Calf Raise","Leg Press Calf Raise","Smith Machine Calf Raise"]},
   ]},
 ];
+// ── Pull-Up/Dip + Bodybuilding Program ─────────────────────────────────────────
+// 3 days (Volume/Strength/Density pull-up+dip block, then superset bodybuilding work).
+// Superset pairs share a "pair" key on the exercise object — see getPairPartnerIdx()/
+// pairPrimaryIdx() and the pairing logic in guidedLogSet() for how they're consumed.
+const PULLDIP_WORKOUTS=[
+  {title:"Day A: Volume",time:"50–60 min",muscles:"Pull-Ups & Dips · Delts, Arms & Core",exercises:[
+    {name:"Pull-Up",sets:"5",reps:"6–10",rest:"60s",notes:"Volume day — moderate reps, moderate rest. Stop 1–2 reps short of failure each set. Once every set hits the top of the range, add a rep target next time; once you're clean at 10 across all 5 sets, start adding weight and drop back to 6.",warmup:true,swaps:["Lat Pulldown","Assisted Pull-Up","Band-Assisted Pull-Up"]},
+    {name:"Dip",sets:"5",reps:"8–12",rest:"60s",notes:"Same double-progression rule as pull-ups — chase the top of the range across all 5 sets before adding load.",swaps:["Bench Dip","Assisted Dip","Close-Grip Push-Up"]},
+    {name:"Goblet Squat",sets:"3",reps:"10–12",rest:"60s",notes:"Done on its own, not paired. Full depth, chest tall."},
+    {name:"Seated Lateral Raise",sets:"3",reps:"12–15",rest:"60s",pair:"a-delts",notes:"Superset with Rear Delt Fly — go straight into that exercise with no rest, then rest 60s once both are done. Side delts recover quickly and respond well to frequent work, which is why they show up every day this week — they're the biggest driver of wider-looking shoulders.",swaps:["Cable Lateral Raise","Machine Lateral Raise","Band Lateral Raise"]},
+    {name:"Rear Delt Fly",sets:"3",reps:"15–20",rest:"60s",pair:"a-delts",notes:"Second half of the lateral raise/rear delt fly superset."},
+    {name:"Incline Dumbbell Curl",sets:"3",reps:"10–12",rest:"60s",pair:"a-arms",notes:"Superset with Overhead KB Triceps Extension — no rest between the two, rest 60s after completing both.",swaps:["Standing DB Curl","Cable Curl","EZ-Bar Curl"]},
+    {name:"Overhead Kettlebell Triceps Extension",sets:"3",reps:"10–12",rest:"60s",pair:"a-arms",notes:"Second half of the curl/triceps extension superset.",swaps:["Overhead DB Triceps Extension","Cable Overhead Extension","Rope Pushdown"]},
+    {name:"Ab Wheel Rollout",sets:"2",reps:"8–10",rest:"60s",notes:"Core finisher, done on its own. Stop the rollout before your lower back rounds.",swaps:["Plank","Hanging Leg Raise","Cable Crunch"]},
+  ]},
+  {title:"Day B: Strength",time:"50–60 min",muscles:"Pull-Ups & Dips · Legs, Delts & Back",exercises:[
+    {name:"Weighted Pull-Up",sets:"4",reps:"3–5",rest:"60s",notes:"Strength day — the heaviest pull-up work of the week. Stop 1–2 reps short of failure. Add weight once every set hits 5 clean reps, then drop back to 3.",warmup:true,swaps:["Bodyweight Pull-Up","Band-Assisted Pull-Up","Lat Pulldown"]},
+    {name:"Weighted Dip",sets:"4",reps:"5–6",rest:"60s",notes:"Add weight once every set hits the top of the range. These wear your triceps out, which is why there's no direct triceps isolation later today.",swaps:["Bodyweight Dip","Assisted Dip","Close-Grip Bench Press"]},
+    {name:"Kettlebell Romanian Deadlift",sets:"3",reps:"8–10",rest:"60s",notes:"Done on its own. Hinge at the hips, soft knees, feel the stretch through the hamstrings.",swaps:["DB Romanian Deadlift","Barbell RDL","Good Morning"]},
+    {name:"Half-Kneeling Single-Arm KB Press",sets:"3",reps:"8–10",rest:"60s",pair:"b-delts",notes:"Per side. Superset with Lateral Raise — go straight into that with no rest, then rest 60s once both sides are done.",swaps:["DB Shoulder Press","Landmine Press","Standing KB Press"]},
+    {name:"Lateral Raise",sets:"3",reps:"12–15",rest:"60s",pair:"b-delts",notes:"Second half of the KB press/lateral raise superset. Side delts recover fast, which is why they're back again today.",swaps:["Cable Lateral Raise","Machine Lateral Raise","Band Lateral Raise"]},
+    {name:"Hammer Curl",sets:"3",reps:"10–12",rest:"60s",pair:"b-arms",notes:"Superset with Face Pulls — no rest between the two, rest 60s after both. No triceps work today since the weighted dips already hit them hard.",swaps:["DB Curl","Cable Hammer Curl","Rope Curl"]},
+    {name:"Face Pulls",sets:"3",reps:"15–20",rest:"60s",pair:"b-arms",notes:"Second half of the hammer curl/face pull superset. Keeps the shoulders healthy under all the dip volume — don't skip this even when short on time.",swaps:["Band Pull-Aparts","Reverse Pec Deck","Rear Delt Fly"]},
+    {name:"Pallof Press",sets:"2",reps:"10",rest:"60s",notes:"Per side. Core finisher, done on its own. Resist rotation — don't let the band or cable pull your torso.",swaps:["Side Plank","Anti-Rotation Press","Cable Woodchop"]},
+  ]},
+  {title:"Day C: Density",time:"50–60 min",muscles:"Pull-Ups & Dips · Legs, Delts & Arms",exercises:[
+    {name:"Pull-Up",sets:"6",reps:"10–15",rest:"60s",notes:"Density day — short rest, high volume, bodyweight only (no added load today). Keep the rest tight; this is also why today's bodybuilding loads are lighter.",warmup:true,swaps:["Lat Pulldown","Assisted Pull-Up","Band-Assisted Pull-Up"]},
+    {name:"Dip",sets:"6",reps:"10–15",rest:"60s",notes:"Same short-rest, high-rep format as pull-ups. Your arms will carry fatigue into the lifts below.",swaps:["Bench Dip","Assisted Dip","Close-Grip Push-Up"]},
+    {name:"Kettlebell Reverse Lunge",sets:"3",reps:"8–10",rest:"60s",notes:"Per side. Done on its own.",swaps:["DB Reverse Lunge","Walking Lunge","Split Squat"]},
+    {name:"Incline Dumbbell Press",sets:"2",reps:"10–12",rest:"60s",pair:"c-delts",notes:"Superset with Lateral Raise — no rest between the two, rest 60s after both. Lighter loads today since your arms are already fatigued from the pull-up/dip work.",swaps:["Incline Barbell Press","Machine Chest Press","Flat DB Press"]},
+    {name:"Lateral Raise",sets:"3",reps:"15–20",rest:"60s",pair:"c-delts",notes:"Superset with Incline Dumbbell Press. Finish this last set as a drop set — the moment you hit failure, drop the weight and keep going.",swaps:["Cable Lateral Raise","Machine Lateral Raise","Band Lateral Raise"]},
+    {name:"Biceps Curl",sets:"2",reps:"12–15",rest:"60s",pair:"c-arms",notes:"Superset with Triceps Skull Crusher — no rest between the two, rest 60s after both. Light loads — today's about finishing the week, not setting PRs.",swaps:["Hammer Curl","Cable Curl","EZ-Bar Curl"]},
+    {name:"Triceps Skull Crusher",sets:"2",reps:"12–15",rest:"60s",pair:"c-arms",notes:"Second half of the curl/skull crusher superset. Swap for band pushdowns if your elbows are cranky — curls and extensions add stress on top of all the pull-up and dip volume.",swaps:["Band Pushdown","Cable Pushdown","Overhead DB Extension"]},
+    {name:"Suitcase Carry",sets:"2",reps:"30–40m",rest:"60s",notes:"Per side. Core/carry finisher, done on its own. Stay tall, don't lean toward the loaded side.",swaps:["Farmer's Carry","Offset Carry","Waiter's Carry"]},
+  ]},
+];
 const PROGRAM_LIBRARY={
+  pulldip:{name:"Pull-Up & Dip Strength + Bodybuilding",desc:"3-day pull-up & dip program (Mon/Wed/Fri) — ~25 min of pull-ups and dips each session, then 25–30 min of superset bodybuilding work for delts, arms, legs and core. Day A (Volume): moderate reps, moderate rest. Day B (Strength): heaviest pull-up/dip loads, longest rest, triceps isolation skipped. Day C (Density): short rest, high reps, lighter bodybuilding loads. Double progression throughout — hit the top of the rep range on every set before adding weight. Deload/test weeks: cut every exercise to 1–2 sets at lighter weights, and skip the bodybuilding work entirely on test days. Watch your elbows — if they ache, cut arm isolation to 2 sets before touching the main lifts."},
   spinesafe:{name:"Spine-Safe Hypertrophy",desc:"3-day rotating full-body split. Mechanical tension + metabolic stress with strict spinal-safety protocols — belt squats, seated/supported pressing, no axial spinal loading. 3s eccentric tempo, 60–90s rest, RPE 8–9."},
   sts:{name:"Shortcut to Size (STS)",desc:"12-week periodized 3-day split (Chest & Triceps / Back & Biceps / Shoulders & Traps) with rest-pause and drop-set techniques across 3 phases."},
   jnfullA:{name:"JN Fundamentals — Full Body (Block A)",desc:"3-day full-body split from Jeff Nippard's Fundamentals Hypertrophy Program — Weeks 1-4 Strength Base block. Squat, deadlift and bench-focused compounds, RPE 7-8, 3-4 min rest on primary lifts. Run for 4 weeks, then switch to Block B."},
@@ -2284,6 +2324,12 @@ function advanceStsWeekIfComplete(){
 
 // Sync STRENGTH[0-2].exercises from STS_PHASES based on current STS week
 function syncStsExercises(){
+  if(S.strProgram==='pulldip'){
+    STRENGTH[0].title=PULLDIP_WORKOUTS[0].title;STRENGTH[0].muscles=PULLDIP_WORKOUTS[0].muscles;STRENGTH[0].time=PULLDIP_WORKOUTS[0].time;STRENGTH[0].exercises=PULLDIP_WORKOUTS[0].exercises;
+    STRENGTH[1].title=PULLDIP_WORKOUTS[1].title;STRENGTH[1].muscles=PULLDIP_WORKOUTS[1].muscles;STRENGTH[1].time=PULLDIP_WORKOUTS[1].time;STRENGTH[1].exercises=PULLDIP_WORKOUTS[1].exercises;
+    STRENGTH[2].title=PULLDIP_WORKOUTS[2].title;STRENGTH[2].muscles=PULLDIP_WORKOUTS[2].muscles;STRENGTH[2].time=PULLDIP_WORKOUTS[2].time;STRENGTH[2].exercises=PULLDIP_WORKOUTS[2].exercises;
+    return;
+  }
   if(S.strProgram==='spinesafe'){
     STRENGTH[0].title=SPINESAFE_WORKOUTS[0].title;STRENGTH[0].muscles=SPINESAFE_WORKOUTS[0].muscles;STRENGTH[0].time=SPINESAFE_WORKOUTS[0].time;STRENGTH[0].exercises=SPINESAFE_WORKOUTS[0].exercises;
     STRENGTH[1].title=SPINESAFE_WORKOUTS[1].title;STRENGTH[1].muscles=SPINESAFE_WORKOUTS[1].muscles;STRENGTH[1].time=SPINESAFE_WORKOUTS[1].time;STRENGTH[1].exercises=SPINESAFE_WORKOUTS[1].exercises;
@@ -3424,7 +3470,7 @@ let S={
   strLog:{},strHistory:[],strSwaps:{},
   strLogWeight:135,strLogReps:5,strLogExIdx:0,
   strAnalyticsOpen:false,
-  strProgram:'spinesafe',
+  strProgram:'pulldip',
   reminders:{enabled:false,thresholdDays:3,lastNotified:null},
   energyLog:{},
   nutrition:{goal:2200,log:{},recents:{},useAI:true},
@@ -3546,7 +3592,7 @@ function loadState(){
   try{const r=JSON.parse(localStorage.getItem(K.reminders)||'null');if(r)S.reminders={...S.reminders,...r};}catch{}
   try{S.energyLog=JSON.parse(localStorage.getItem(K.energylog)||'{}');}catch{}
   try{const n=JSON.parse(localStorage.getItem(K.nutrition)||'null');if(n)S.nutrition={goal:2200,log:{},recents:{},useAI:true,...n};}catch{}
-  try{S.strProgram=localStorage.getItem(K.strprogram)||'spinesafe';}catch{S.strProgram='spinesafe';}
+  try{S.strProgram=localStorage.getItem(K.strprogram)||'pulldip';}catch{S.strProgram='pulldip';}
   try{const v=parseInt(localStorage.getItem(K.boxwid)||'');if(v&&BOXING.some(b=>b.id===v))S.activeBoxingWorkoutId=v;}catch{}
   try{const b=JSON.parse(localStorage.getItem(K.bwlog)||'null');if(b)S.bwLog={pullup:[],pushup:[],dip:[],squat:[],...b};}catch{}
   try{S.cindyLog=JSON.parse(localStorage.getItem(K.cindylog)||'[]');}catch{}
@@ -4583,6 +4629,25 @@ function strGetSets(wIdx,eIdx){
   return sets.filter(s=>!s.exName||s.exName===curName);
 }
 function strTargetSets(e){return Math.max(1,parseInt(e.sets)||3);}
+// ── Superset pairing ──────────────────────────────────────────────────────────
+// Two exercises in the same workout that share an e.pair string are a superset:
+// no rest between them, shared rest only after a round where both have matched
+// set counts. Pair members don't need equal target set counts (e.g. 2 sets of
+// one move paired with 3 of another) — see guidedLogSet() for how the tail round
+// (one side already finished) is handled.
+function getPairPartnerIdx(wIdx,eIdx){
+  const wo=STRENGTH[wIdx];
+  const key=wo?.exercises?.[eIdx]?.pair;
+  if(!key)return -1;
+  return wo.exercises.findIndex((ex,i)=>i!==eIdx&&ex.pair===key);
+}
+function pairPrimaryIdx(wIdx,eIdx){
+  const wo=STRENGTH[wIdx];
+  const key=wo?.exercises?.[eIdx]?.pair;
+  if(!key)return eIdx;
+  const idx=wo.exercises.findIndex(ex=>ex.pair===key);
+  return idx<0?eIdx:idx;
+}
 function strTodaySetCount(wIdx){
   const today=S.strLog[strTodayKey()]?.[wIdx]||{};
   return Object.values(today).reduce((t,sets)=>t+sets.length,0);
@@ -4652,7 +4717,13 @@ function renderStrength(){
     const displayName=getExName(wIdx,i);
     const isSwapped=S.strSwaps&&S.strSwaps[`${wIdx}-${i}`]!==undefined;
     const swapBtn=e.swaps?.length?`<button class="str-swap-btn${isSwapped?' swapped':''}" onclick="openSwapModal(${wIdx},${i})">⇄ Swap</button>`:'';
-    return`<div class="str-lift-item">
+    // Superset pairing: consecutive paired exercises are wrapped in a shared
+    // group — opened on the primary (first) member, closed on the partner.
+    const isPairPrimary=e.pair&&i===pairPrimaryIdx(wIdx,i);
+    const isPairSecondary=e.pair&&!isPairPrimary;
+    const groupOpen=isPairPrimary?`<div class="str-superset-group"><div class="str-superset-badge">⚡ Superset — rest 45–60s after both</div>`:'';
+    const groupClose=isPairSecondary?`</div>`:'';
+    return`${groupOpen}<div class="str-lift-item">
       <div class="str-lift-name-row">
         <div class="str-lift-name">${displayName}${blockMeta}</div>
         ${swapBtn}
@@ -4660,7 +4731,7 @@ function renderStrength(){
       <div class="str-lift-meta" style="padding:0 16px 8px">${e.sets} sets · ${displayReps} reps · ${e.rest}${techNote}</div>
       ${e.notes&&!isSwapped?`<div class="str-lift-notes">${e.notes}</div>`:''}
       ${progressNote?`<div class="str-lift-progress">${progressNote}</div>`:''}
-    </div>`;
+    </div>${groupClose}`;
   }).join('');
 
   // Complete button — enabled only if there are logged sets today
@@ -6295,7 +6366,7 @@ function parseTargetReps(str){
 // Bodyweight moves (no external load to log) — resolved by name so swaps are
 // respected automatically, since a swap can turn a weighted exercise into a
 // bodyweight one (or vice versa) without changing the underlying data object.
-const BODYWEIGHT_EXERCISES=new Set(['push-up','close-grip push-up','diamond push-up','medicine ball push-ups','bench dip','dip','dips','wide-grip pull-up','crunch','bicycle crunch','reverse crunch','oblique crunch','glute bridge','hanging leg raise','lying leg raise','hanging knee raise']);
+const BODYWEIGHT_EXERCISES=new Set(['push-up','close-grip push-up','diamond push-up','medicine ball push-ups','bench dip','dip','dips','pull-up','pull-ups','wide-grip pull-up','crunch','bicycle crunch','reverse crunch','oblique crunch','glute bridge','hanging leg raise','lying leg raise','hanging knee raise']);
 function isBodyweightExercise(name){
   return !!name && BODYWEIGHT_EXERCISES.has(String(name).trim().toLowerCase());
 }
@@ -7317,7 +7388,8 @@ function renderGuidedWorkout(){
   }
   document.getElementById('gw-set-label').textContent=`Set ${setNum} of ${target}`;
   const targetRepsSrc=(S.strProgram==='sts'&&wIdx<3)?block.repRange:e.reps;
-  document.getElementById('gw-target-hint').textContent=(S.strProgram==='sts'&&wIdx<3)?`Target: ${block.repRange} reps · ${block.intensity}`:`Target: ${e.reps} reps`;
+  const pairSuffix=e.pair?' · Superset — no rest to partner':'';
+  document.getElementById('gw-target-hint').textContent=((S.strProgram==='sts'&&wIdx<3)?`Target: ${block.repRange} reps · ${block.intensity}`:`Target: ${e.reps} reps`)+pairSuffix;
 
   // Bodyweight moves don't need a weight input at all
   const bw=isBodyweightExercise(getExName(wIdx,GW.exIdx));
@@ -7398,11 +7470,34 @@ function guidedLogSet(){
   const setDesc=bw?`${reps} reps`:`${weight}lbs × ${reps}`;
   if(isPR){showToast('','New PR!',`${STRENGTH[wIdx].exercises[eIdx]?.name} — ${setDesc}`);pulseEl('gw-ex-name','pop');}
   else showToast('','Set logged',setDesc);
+  // Superset handling: hand off to the paired exercise with no rest until both
+  // sides have matched set counts for this round. Pair members don't need equal
+  // targets — once one side finishes its own target it stops being a jump
+  // destination, and the other side just finishes its remaining rounds solo.
+  const partnerIdx=getPairPartnerIdx(wIdx,eIdx);
+  if(partnerIdx>=0){
+    const wo=STRENGTH[wIdx];
+    const partnerTarget=strTargetSets(wo.exercises[partnerIdx]);
+    const mySets=strGetSets(wIdx,eIdx).length;
+    const partnerSets=strGetSets(wIdx,partnerIdx).length;
+    if(partnerSets<mySets&&partnerSets<partnerTarget){
+      GW.exIdx=partnerIdx;
+      renderGuidedChecklist();
+      updateGuidedSessionProgress();
+      pulseEl('gw-session-progress-fill');
+      renderGuidedWorkout();
+      return;
+    }
+    // This round of the pair is complete (or the partner already hit its own
+    // target) — normalize to the pair's primary exercise so the rest/advance
+    // logic below reads the right target, and alternation resumes there.
+    GW.exIdx=pairPrimaryIdx(wIdx,eIdx);
+  }
   // Determine rest duration and next label
-  const exRest=STRENGTH[wIdx].exercises[eIdx]?.rest||'';
+  const exRest=STRENGTH[wIdx].exercises[GW.exIdx]?.rest||'';
   const restSecs=parseRestStr(exRest)||RT.duration;
-  const newSets=strGetSets(wIdx,eIdx);
-  const target=strTargetSets(STRENGTH[wIdx].exercises[eIdx]);
+  const newSets=strGetSets(wIdx,GW.exIdx);
+  const target=strTargetSets(STRENGTH[wIdx].exercises[GW.exIdx]);
   let nextLabel;
   if(newSets.length>=target){
     const nextEx=STRENGTH[wIdx].exercises[GW.exIdx+1];
@@ -7565,7 +7660,7 @@ function renderGuidedChecklist(){
     const cur=i===GW.exIdx&&!done;
     return`<div class="gw-check-item${done?' done':''}${cur?' current':''}">
       <div class="gw-check-dot"></div>
-      <div class="gw-check-name">${getExName(wIdx,i)}</div>
+      <div class="gw-check-name">${getExName(wIdx,i)}${ex.pair?' ⚡':''}</div>
       <div class="gw-check-sets">${sets.length}/${target} sets</div>
     </div>`;
   }).join('');
