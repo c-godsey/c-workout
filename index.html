@@ -7410,6 +7410,19 @@ if(incompleteDays.length)S.activeDay=incompleteDays[0];
 render();resetBoxingTimer();initSwipe();
 switchWorkoutTab('plan');
 autoSyncOnLoad(); // background pull/push against GitHub — doesn't block the initial render above
+// autoSyncOnLoad() above only runs once when this script first executes. On a phone/tablet
+// the app is usually resumed from the background (home-screen PWA, or a browser tab that was
+// just switched to) rather than freshly reloaded, so without this the JS never re-runs and the
+// device never notices another device's changes. Re-check whenever the tab/app becomes visible
+// again, throttled so rapid tab-switching doesn't spam the GitHub API.
+let lastAutoSyncCheck=Date.now();
+function maybeAutoSync(){
+  if(Date.now()-lastAutoSyncCheck<20000)return; // at most once per 20s
+  lastAutoSyncCheck=Date.now();
+  autoSyncOnLoad();
+}
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')maybeAutoSync();});
+window.addEventListener('pageshow',()=>{maybeAutoSync();}); // covers iOS Safari/PWA back-forward-cache restores
 
 // ── Guided Workout ────────────────────────────────────────────────────────────
 const GW={active:false,exIdx:0,restIv:null,restSecs:0,restTotal:0,restEndTime:0,startTime:0};
