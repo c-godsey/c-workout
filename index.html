@@ -1072,6 +1072,18 @@ code{font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:10p
 .plan-editorial-meta{font-size:12px;color:var(--dim);margin-top:6px;font-weight:500;letter-spacing:.3px}
 .plan-stat-row{display:none}
 .plan-stat-card{display:none}
+/* ── Home hero card (Hero Focus layout) ─────────────── */
+.home-hero{border-radius:20px;padding:24px 22px;margin-top:20px;background:linear-gradient(160deg,#ff8a3d,#b8440d);position:relative;overflow:hidden}
+.home-hero-eyebrow{font-size:11px;font-weight:800;letter-spacing:2px;color:rgba(255,255,255,.85)}
+.home-hero-title{font-size:24px;font-weight:800;margin-top:6px;line-height:1.2;color:#fff}
+.home-hero-sub{font-size:12px;color:rgba(255,255,255,.85);margin-top:4px}
+.home-hero-cta{margin-top:16px;width:100%;padding:14px;border:none;border-radius:12px;background:#120b06;color:#ffb347;font-size:13px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;transition:transform .12s}
+.home-hero-cta:active{transform:scale(.96)}
+.home-hero-meta{margin-top:12px;font-size:11px;color:rgba(255,255,255,.75)}
+/* ── Horizontal scroll chip row (replaces stacked stat grids) ── */
+.chip-scroll-row{display:flex;gap:10px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;margin-bottom:0}
+.chip-scroll-row::-webkit-scrollbar{display:none}
+.chip-scroll-row>.prog-stat-card{flex:0 0 auto;min-width:84px}
 /* ── PLAN DASHBOARD ──────────────────────────────── */
 .plan-header{padding:4px 0 18px}
 .plan-header-eyebrow{font-size:12px;font-weight:600;color:var(--dim);margin-bottom:6px}
@@ -1373,10 +1385,11 @@ code{font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:10p
   <div class="tab-content" id="tab-cycling">
 
     <!-- Cycling Hero -->
-    <div class="cy-hero">
-      <div class="cy-hero-eyebrow">Free Ride</div>
-      <div class="cy-hero-title">CYCLING</div>
-      <div class="cy-hero-sub">Pick whatever fits your time today</div>
+    <div class="home-hero" id="cy-hero-card" style="margin-top:12px;background:linear-gradient(160deg,#8ECAE6,#4f8aa8)">
+      <div class="home-hero-eyebrow">Today's pick</div>
+      <div class="home-hero-title" id="cy-hero-title" style="color:#06202b">CYCLING</div>
+      <div class="home-hero-sub" id="cy-hero-sub" style="color:#0a2a38">Pick whatever fits your time today</div>
+      <button class="home-hero-cta" id="cy-hero-cta" style="background:#06202b;color:#8ECAE6">Press play</button>
     </div>
 
     <!-- Stats -->
@@ -1399,10 +1412,11 @@ code{font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:10p
   <div class="tab-content" id="tab-boxing">
 
     <!-- Boxing Hero -->
-    <div class="bx-hero">
-      <div class="bx-hero-eyebrow">Boxing Session</div>
-      <div class="bx-hero-title">BOXING<br>DAY</div>
-      <div class="bx-hero-sub" id="bx-hero-sub">Workout 1</div>
+    <div class="home-hero" style="margin-top:12px;background:linear-gradient(160deg,#e0633a,#9c3c1f)">
+      <div class="home-hero-eyebrow">Boxing session</div>
+      <div class="home-hero-title" id="bx-hero-title">BOXING DAY</div>
+      <div class="home-hero-sub" id="bx-hero-sub2">Workout 1</div>
+      <button class="home-hero-cta" style="background:#2a0f08;color:#ffb089" onclick="document.querySelector('.timer-section').scrollIntoView({behavior:'smooth',block:'start'})">Start session</button>
     </div>
 
     <div class="card" style="overflow:visible">
@@ -1473,10 +1487,11 @@ code{font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:10p
   <div class="tab-content" id="tab-strength">
 
     <!-- Hero -->
-    <div class="str-hero">
-      <div class="str-hero-eyebrow">Strength Training</div>
-      <div class="str-training-day">STRENGTH<br>DAY</div>
-      <div class="str-focus-name" id="str-focus-name">CHEST &amp; TRICEPS</div>
+    <div class="home-hero" id="str-hero-card" style="margin-top:12px">
+      <div class="home-hero-eyebrow">Strength training</div>
+      <div class="home-hero-title" id="str-focus-name">CHEST &amp; TRICEPS</div>
+      <div class="home-hero-sub" id="str-hero-sub"></div>
+      <button class="home-hero-cta" onclick="startGuidedWorkout()">Start workout</button>
     </div>
 
     <!-- Program switcher -->
@@ -1541,12 +1556,14 @@ code{font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:10p
   <!-- ── PROGRESS TAB ──────────────────────────────── -->
   <div class="tab-content" id="tab-progress">
 
-    <!-- Progress Hero Stats -->
-    <div class="prog-hero">
-      <div class="prog-hero-eyebrow">Your Progress</div>
-      <div class="cy-hero-title">DATA &amp;<br>HISTORY</div>
+    <!-- Progress Hero -->
+    <div class="home-hero" style="margin-top:12px">
+      <div class="home-hero-eyebrow">Your progress</div>
+      <div class="home-hero-title" id="prog-hero-title">0 day streak</div>
+      <div class="home-hero-sub" id="prog-hero-sub">0 sessions all-time</div>
+      <button class="home-hero-cta" onclick="document.getElementById('goal-card').scrollIntoView({behavior:'smooth',block:'start'})">View session goal</button>
     </div>
-    <div class="prog-stats-row" style="grid-template-columns:repeat(4,1fr)">
+    <div class="chip-scroll-row" style="margin-top:14px">
       <div class="prog-stat-card">
         <div class="prog-stat-val" id="prog-total">0</div>
         <div class="prog-stat-lbl">Sessions</div>
@@ -1559,7 +1576,7 @@ code{font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:10p
         <div class="prog-stat-val" id="prog-ach">0</div>
         <div class="prog-stat-lbl">Badges</div>
       </div>
-      <div class="prog-stat-card">
+      <div class="prog-stat-card" style="min-width:110px">
         <div class="prog-stat-val" id="prog-month" style="font-size:28px">0%</div>
         <div id="prog-month-fraction" style="font-size:10px;color:var(--dim);margin-top:2px;font-weight:700">0/0 days</div>
         <div class="prog-stat-lbl">This Month</div>
@@ -1677,9 +1694,11 @@ code{font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:10p
 
   <!-- ── BODYWEIGHT PROGRESSION TAB ────────────────── -->
   <div class="tab-content" id="tab-bodyweight">
-    <div class="prog-hero">
-      <div class="prog-hero-eyebrow">Bodyweight Training</div>
-      <div class="cy-hero-title">BODYWEIGHT<br>GOALS</div>
+    <div class="home-hero" style="margin-top:12px">
+      <div class="home-hero-eyebrow">Bodyweight training</div>
+      <div class="home-hero-title" id="bwx-hero-title">0/3 this week</div>
+      <div class="home-hero-sub" id="bwx-hero-sub">Progression plan adherence</div>
+      <button class="home-hero-cta" id="bwx-hero-cta" onclick="logGtgSession();renderGtgPlan();renderHomeGtgCard();">Log today's session</button>
     </div>
 
     <!-- Bodyweight Rep Benchmarks + Progression Plan + Cindy -->
@@ -1772,16 +1791,11 @@ code{font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:10p
       </div>
       <div id="home-goal-rings"></div>
     </div>
-    <!-- Lifetime stats — bento row: two uneven tiles side by side -->
-    <div class="bento-row" id="home-stats-card">
-      <div class="card bento-tile" style="padding:20px 18px">
-        <div style="font-size:10px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:var(--dim);margin-bottom:12px">This Week</div>
-        <div id="home-streak-strip"></div>
-      </div>
-      <div class="card bento-tile" style="padding:20px 18px">
-        <div style="font-size:10px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:var(--dim);margin-bottom:12px">Lifetime Stats</div>
-        <div class="prog-stats-row" id="home-stats-row" style="margin-bottom:0;grid-template-columns:repeat(2,1fr);gap:10px"></div>
-      </div>
+    <!-- This Week + Lifetime Stats — one compact card, stats as a horizontal scroll row -->
+    <div class="card" id="home-stats-card" style="margin-top:16px;padding:18px 16px">
+      <div style="font-size:10px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:var(--dim);margin-bottom:12px">This Week</div>
+      <div id="home-streak-strip"></div>
+      <div class="chip-scroll-row" id="home-stats-row" style="margin-top:14px"></div>
     </div>
 
     <!-- Progression Plan adherence (GTG) -->
@@ -4385,6 +4399,9 @@ function render(){
   const pt=document.getElementById('prog-total');const ps=document.getElementById('prog-streak');const pa=document.getElementById('prog-ach');
   if(pt) pt.textContent=total;
   if(ps) ps.textContent=dayStreak;
+  const pht=document.getElementById('prog-hero-title'),phs=document.getElementById('prog-hero-sub');
+  if(pht) pht.textContent=dayStreak>0?`${dayStreak} day streak`:'Start your streak';
+  if(phs) phs.textContent=`${total} sessions all-time`;
   if(pa) pa.textContent=earned;
   const pm=document.getElementById('prog-month');
   const pmf=document.getElementById('prog-month-fraction');
@@ -4396,12 +4413,25 @@ function render(){
   // Browse-by-length/type cycling library (replaces the old phase/week program view)
   renderCyclingLibrary();
 
+  // Cycling hero — same deterministic "today's pick" used by the Morning Workout card,
+  // so the two don't suggest different rides on the same day.
+  {
+    const pick=MORNING_CYCLING_POOL[morningPickIndex(MORNING_CYCLING_POOL.length)];
+    const ct=document.getElementById('cy-hero-title'),cs=document.getElementById('cy-hero-sub'),cc=document.getElementById('cy-hero-cta');
+    if(pick&&ct&&cs&&cc){
+      ct.textContent=pick.title;
+      cs.textContent=`${pick.duration} · tap play, or browse the full library below`;
+      cc.onclick=()=>launchMorningCycling(pick.id,pick.title);
+    }
+  }
+
   // Boxing workout — free pick, no fixed week/day rotation
   const bx=getActiveBoxing();
   document.getElementById('boxing-title').textContent=bx.title;
   document.getElementById('boxing-subtitle').textContent=`Workout #${bx.id} of ${BOXING.length}`;
-  const bxhs=document.getElementById('bx-hero-sub');
-  if(bxhs) bxhs.textContent='Pick Your Fight';
+  const bxht=document.getElementById('bx-hero-title'),bxhs2=document.getElementById('bx-hero-sub2');
+  if(bxht) bxht.textContent=bx.title;
+  if(bxhs2) bxhs2.textContent=`Workout #${bx.id} of ${BOXING.length}`;
   renderStations(bx);
 
   // Achievements
@@ -4888,6 +4918,8 @@ function renderStrength(){
   const kbView=document.getElementById('str-kb-view');
   if(stsView) stsView.style.display=kbViewActive?'none':'block';
   if(kbView)  kbView.style.display=kbViewActive?'block':'none';
+  const heroCard=document.getElementById('str-hero-card');
+  if(heroCard) heroCard.style.display=kbViewActive?'none':'block'; // hero's Start Workout targets the STS flow, not kettlebell
   if(kbViewActive){renderKbView();return;}
 
   // STS phase card only renders when collapsible is open
@@ -4917,6 +4949,8 @@ function renderStrength(){
   // Hero focus name
   const fn=document.getElementById('str-focus-name');
   if(fn) fn.textContent=wo.title.toUpperCase();
+  const fs=document.getElementById('str-hero-sub');
+  if(fs) fs.textContent=`${wo.muscles} · ${wo.exercises.length} exercises`;
 
   // Block info for rep range hints
   const block=getStrengthBlock(S.week);
@@ -5713,6 +5747,13 @@ function toggleGtgSet(type,idx){
   renderGtgPlan();
 }
 function renderGtgPlan(){
+  const bwxt=document.getElementById('bwx-hero-title'),bwxc=document.getElementById('bwx-hero-cta');
+  if(bwxt) bwxt.textContent=`${gtgSessionsThisWeek()}/3 this week`;
+  if(bwxc){
+    const done=gtgLoggedToday();
+    bwxc.textContent=done?"Logged for today":"Log today's session";
+    bwxc.style.opacity=done?'.6':'1';
+  }
   const el=document.getElementById('bwx-plan');
   if(!el)return;
   el.innerHTML=`
@@ -6539,10 +6580,17 @@ function renderPlan(){
     const streak=S.streak||0;
     const week=S.week||1;
     const total=((S.strHistory||[]).length+(S.bxHistory||[]).length+Object.values(S.history||{}).reduce((a,wh)=>a+Object.values(wh.days||{}).filter(d=>d.completedAt).length,0));
-    headerSection.innerHTML=`<div class="plan-editorial-header">
-  <div class="plan-editorial-week">${greeting.toUpperCase()}</div>
-  <div class="plan-editorial-subweek" style="color:var(--lime)">Week ${String(week).padStart(2,'0')}</div>
-  <div class="plan-editorial-meta">${streak > 0 ? streak+' day streak' : 'Start your streak'} &nbsp;·&nbsp; ${total} sessions total</div>
+    // Hero card surfaces one concrete next action (the next cycling session, since
+    // that program runs on a fixed week/day schedule) rather than a flat text header —
+    // boxing/strength stay available as their own quick-start buttons right below.
+    const heroNext=getNextCyclingSession();
+    const heroVid=getVideo(heroNext.week,heroNext.day);
+    headerSection.innerHTML=`<div class="home-hero">
+  <div class="home-hero-eyebrow">${greeting.toUpperCase()} · WEEK ${String(week).padStart(2,'0')}</div>
+  <div class="home-hero-title">${heroVid.title}</div>
+  <div class="home-hero-sub">${DAY_LABELS[heroNext.day]} · ${heroVid.duration} cycling</div>
+  <button class="home-hero-cta" onclick="planLaunchWorkout('cycling')">Start workout</button>
+  <div class="home-hero-meta">${streak > 0 ? streak+' day streak' : 'Start your streak'} &nbsp;·&nbsp; ${total} sessions total</div>
 </div>`;
   }
   // ── Strength rotation ──
