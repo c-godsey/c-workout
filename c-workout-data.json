@@ -209,14 +209,24 @@
   "modalRpe": 0,
   "prs": {},
   "strLog": {},
-  "strHistory": [],
+  "strHistory": [
+    {
+      "date": "Thu Oct 01 2026",
+      "wIdx": 0,
+      "title": "Chest & Triceps",
+      "totalSets": 0,
+      "mins": 45,
+      "ts": 1790969553527,
+      "backdated": true
+    }
+  ],
   "strSwaps": {},
   "strLogWeight": 135,
   "strLogReps": 5,
   "strLogExIdx": 0,
   "strAnalyticsOpen": false,
   "strProgram": "sts",
-  "lastModified": 1790969512629,
+  "lastModified": 1790969553528,
   "reminders": {
     "enabled": false,
     "thresholdDays": 3,
@@ -257,6 +267,12 @@
       "source": "cycling",
       "kcal": 100,
       "ts": 1790969450125
+    },
+    {
+      "date": "Fri Oct 02 2026",
+      "source": "strength",
+      "kcal": 315,
+      "ts": 1790969553527
     }
   ],
   "beerPrefType": "lager",
@@ -271,5 +287,5 @@
     "comboTarget": 3
   },
   "morningType": "cycling",
-  "streak": 0
+  "streak": 1
 }
