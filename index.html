@@ -982,6 +982,10 @@ code{font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:10p
 .inactivity-banner.show{display:flex}
 .inactivity-banner-time{font-size:22px;font-weight:900;color:#fff}
 .inactivity-banner-tap{font-size:12px;opacity:.85;font-weight:600}
+.sync-warn-banner{display:none;align-items:center;gap:12px;background:rgba(230,57,70,.1);border:1px solid rgba(230,57,70,.35);border-radius:16px;padding:14px 16px;margin-bottom:16px;cursor:pointer}
+.sync-warn-icon{font-size:20px;flex-shrink:0}
+.sync-warn-title{font-size:13px;font-weight:800;color:#e63946}
+.sync-warn-sub{font-size:11px;color:var(--dim);margin-top:2px}
 /* ── Plan Edit UI ── */
 .plan-edit-toggle{width:100%;margin-top:14px;padding:12px;background:var(--surface);border:1px solid var(--border);color:var(--dim);font-size:13px;font-weight:800;letter-spacing:1px;text-transform:uppercase;border-radius:14px;cursor:pointer;transition:all .2s}
 .plan-edit-toggle:hover{border-color:var(--lime);color:var(--lime)}
@@ -1694,6 +1698,16 @@ code{font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:10p
 
   <!-- ── PLAN TAB ────────────────────────────────── -->
   <div class="tab-content active" id="tab-plan">
+
+    <!-- Sync warning — shown when auto-sync has failed repeatedly (e.g. expired token) -->
+    <div class="sync-warn-banner" id="sync-warn-banner" style="display:none" onclick="toggleSettings()">
+      <div class="sync-warn-icon">⚠️</div>
+      <div style="flex:1;min-width:0">
+        <div class="sync-warn-title">Sync isn't working</div>
+        <div class="sync-warn-sub">Check your GitHub token in Settings</div>
+      </div>
+      <button class="btn-icon" style="width:28px;height:28px;font-size:13px;flex-shrink:0" onclick="event.stopPropagation();dismissSyncWarning()">✕</button>
+    </div>
 
     <!-- Dashboard header — rendered by JS -->
     <div id="plan-header-section"></div>
@@ -3509,6 +3523,15 @@ function scheduleGhAutoPush(){
   if(ghAutoPushTimer)clearTimeout(ghAutoPushTimer);
   ghAutoPushTimer=setTimeout(()=>{ghPush(true);},4000);
 }
+// Tracks consecutive push/pull failures so the Home-tab warning banner only shows
+// up after a real pattern (2+ in a row) rather than one transient network blip.
+let syncWarnDismissed=false;
+function recordSyncResult(ok){
+  if(ok){GH.failCount=0;}
+  else{GH.failCount=(GH.failCount||0)+1;syncWarnDismissed=false;} // a fresh failure re-surfaces even if previously dismissed
+  saveGhConfig();updateSyncStatusUI();
+}
+function dismissSyncWarning(){syncWarnDismissed=true;updateSyncStatusUI();}
 // auto=true marks a background sync — suppresses toasts so it doesn't interrupt
 // whatever the user's doing; failures are logged to console instead.
 async function ghPush(auto){
@@ -3526,9 +3549,10 @@ async function ghPush(auto){
     if(sha)body.sha=sha;
     const putRes=await fetch(apiUrl,{method:'PUT',headers:{Authorization:`Bearer ${GH.token}`,Accept:'application/vnd.github+json','Content-Type':'application/json'},body:JSON.stringify(body)});
     if(!putRes.ok){const err=await putRes.json().catch(()=>({}));throw new Error(err.message||`HTTP ${putRes.status}`);}
-    GH.lastSync=new Date().toISOString();saveGhConfig();updateSyncStatusUI();
+    GH.lastSync=new Date().toISOString();recordSyncResult(true);
     if(!auto)showToast('','Synced to GitHub','Your data has been pushed');
   }catch(e){
+    recordSyncResult(false);
     if(!auto)showToast('','Sync failed',e.message||'Check your token and repo settings');
     else console.error('Auto-sync push failed:',e);
   }
@@ -3551,9 +3575,10 @@ async function ghPull(){
     if(typeof data.week!=='number')throw new Error('Invalid data file');
     Object.assign(S,data);
     saveState();render();renderStrength();
-    GH.lastSync=new Date().toISOString();saveGhConfig();updateSyncStatusUI();
+    GH.lastSync=new Date().toISOString();recordSyncResult(true);
     showToast('','Synced from GitHub','Your data has been restored');
   }catch(e){
+    recordSyncResult(false);
     showToast('','Sync failed',e.message||'Check your token, repo, and file path');
   }
 }
@@ -3583,14 +3608,15 @@ async function autoSyncOnLoad(){
       Object.assign(S,data);
       saveState(true); // skip the auto-push that would otherwise immediately re-send what we just pulled
       render();renderStrength();
-      GH.lastSync=new Date().toISOString();saveGhConfig();updateSyncStatusUI();
+      GH.lastSync=new Date().toISOString();recordSyncResult(true);
       showToast('','Synced from GitHub','Newer data found from another device');
     } else if(localMod>remoteMod){
       ghPush(true); // this device has unsynced changes — push them up
     } else {
-      GH.lastSync=new Date().toISOString();saveGhConfig();updateSyncStatusUI();
+      GH.lastSync=new Date().toISOString();recordSyncResult(true);
     }
   }catch(e){
+    recordSyncResult(false);
     console.error('Auto-sync pull failed:',e);
   }
 }
@@ -3618,6 +3644,8 @@ function updateSyncStatusUI(){
   if(pathInp&&!pathInp.value) pathInp.value=GH.path;
   const autoInp=document.getElementById('gh-autosync-input');
   if(autoInp) autoInp.checked=GH.autoSync!==false;
+  const warnBanner=document.getElementById('sync-warn-banner');
+  if(warnBanner) warnBanner.style.display=(GH.token&&GH.repo&&(GH.failCount||0)>=2&&!syncWarnDismissed)?'flex':'none';
 }
 
 // Boxing timer
