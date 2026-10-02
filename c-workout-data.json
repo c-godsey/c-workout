@@ -1,0 +1,2233 @@
+{
+  "week": 6,
+  "activeDay": "day3",
+  "activeBoxingWorkoutId": 1,
+  "activeStrengthWorkout": 0,
+  "activeWorkoutTab": "progress",
+  "planDays": [
+    {
+      "type": "rest",
+      "required": false
+    },
+    {
+      "type": "cycling",
+      "required": true
+    },
+    {
+      "type": "strength",
+      "required": true
+    },
+    {
+      "type": "cycling",
+      "required": true
+    },
+    {
+      "type": "boxing",
+      "required": true
+    },
+    {
+      "type": "cycling",
+      "required": true
+    },
+    {
+      "type": "strength",
+      "required": false
+    }
+  ],
+  "history": {
+    "1": {
+      "days": {
+        "day1": {
+          "rpe": 8,
+          "hr": "",
+          "notes": "",
+          "completedAt": "2026-04-06T19:00:00.000Z"
+        },
+        "day2": {
+          "rpe": 7,
+          "hr": "",
+          "notes": "",
+          "completedAt": "2026-04-10T19:00:00.000Z"
+        },
+        "day3": {
+          "rpe": 7,
+          "hr": "",
+          "notes": "",
+          "completedAt": "2026-04-11T19:00:00.000Z"
+        }
+      }
+    },
+    "2": {
+      "days": {
+        "day1": {
+          "rpe": 8,
+          "hr": "",
+          "notes": "",
+          "completedAt": "2026-04-13T19:00:00.000Z"
+        },
+        "day3": {
+          "rpe": 6,
+          "hr": "",
+          "notes": "",
+          "completedAt": "2026-04-15T19:00:00.000Z"
+        },
+        "day2": {
+          "rpe": 8,
+          "hr": "",
+          "notes": "",
+          "completedAt": "2026-04-17T19:00:00.000Z"
+        }
+      }
+    },
+    "3": {
+      "days": {
+        "day1": {
+          "rpe": 9,
+          "hr": "",
+          "notes": "",
+          "completedAt": "2026-04-20T19:00:00.000Z"
+        },
+        "day2": {
+          "rpe": 8,
+          "hr": "",
+          "notes": "",
+          "completedAt": "2026-04-22T19:00:00.000Z"
+        },
+        "day3": {
+          "rpe": 8,
+          "hr": "",
+          "notes": "",
+          "completedAt": "2026-04-24T19:00:00.000Z"
+        }
+      }
+    },
+    "4": {
+      "days": {
+        "day1": {
+          "rpe": 7,
+          "hr": "",
+          "notes": "",
+          "completedAt": "2026-04-27T19:00:00.000Z"
+        },
+        "day2": {
+          "rpe": 7,
+          "hr": "",
+          "notes": "",
+          "completedAt": "2026-04-29T19:00:00.000Z"
+        },
+        "day3": {
+          "rpe": 8,
+          "hr": "",
+          "notes": "",
+          "completedAt": "2026-05-01T19:00:00.000Z"
+        }
+      }
+    },
+    "5": {
+      "days": {
+        "day1": {
+          "rpe": 9,
+          "hr": "",
+          "notes": "",
+          "completedAt": "2026-05-11T19:00:00.000Z"
+        },
+        "day2": {
+          "rpe": 8,
+          "hr": "",
+          "notes": "",
+          "completedAt": "2026-05-20T19:00:00.000Z"
+        },
+        "day3": {
+          "rpe": 7,
+          "hr": "",
+          "notes": "",
+          "completedAt": "2026-05-27T19:00:00.000Z"
+        }
+      }
+    },
+    "6": {
+      "days": {
+        "day2": {
+          "rpe": 10,
+          "hr": "",
+          "notes": "",
+          "completedAt": "2026-06-01T19:00:00.000Z"
+        },
+        "day1": {
+          "rpe": 8,
+          "hr": "",
+          "notes": "",
+          "completedAt": "2026-08-11T19:00:00.000Z"
+        }
+      }
+    }
+  },
+  "achievements": [
+    {
+      "id": "consistency_3",
+      "title": "Hat Trick",
+      "icon": "★",
+      "requirement": "Complete 3 weeks in a row",
+      "earned": true,
+      "earnedAt": "2026-05-11T20:42:21.720Z"
+    },
+    {
+      "id": "consistency_12",
+      "title": "Quarter Century",
+      "icon": "★",
+      "requirement": "Complete 12 weeks in a row",
+      "earned": false,
+      "earnedAt": null
+    },
+    {
+      "id": "dawn_patrol",
+      "title": "Dawn Patrol",
+      "icon": "★",
+      "requirement": "Log before 6:00 AM",
+      "earned": false,
+      "earnedAt": null
+    },
+    {
+      "id": "night_owl",
+      "title": "Night Owl",
+      "icon": "★",
+      "requirement": "Log after 8:00 PM",
+      "earned": false,
+      "earnedAt": null
+    },
+    {
+      "id": "weekend_warrior",
+      "title": "Weekend Warrior",
+      "icon": "★",
+      "requirement": "Log on a weekend",
+      "earned": true,
+      "earnedAt": "2026-04-14T20:23:06.759Z"
+    },
+    {
+      "id": "perfect_month",
+      "title": "Perfect Month",
+      "icon": "★",
+      "requirement": "4+ full weeks in a month",
+      "earned": true,
+      "earnedAt": "2026-05-11T20:42:53.708Z"
+    },
+    {
+      "id": "max_effort",
+      "title": "Beast Mode",
+      "icon": "★",
+      "requirement": "Log RPE of 10",
+      "earned": true,
+      "earnedAt": "2026-06-01T22:18:21.773Z"
+    },
+    {
+      "id": "smooth_operator",
+      "title": "Smooth Operator",
+      "icon": "★",
+      "requirement": "Log RPE of 4 or below",
+      "earned": false,
+      "earnedAt": null
+    },
+    {
+      "id": "heart_rate_champ",
+      "title": "Zone Runner",
+      "icon": "★",
+      "requirement": "Avg HR over 150 bpm",
+      "earned": false,
+      "earnedAt": null
+    },
+    {
+      "id": "heavy_pedals",
+      "title": "Diesel Engine",
+      "icon": "★",
+      "requirement": "Log RPE 8+",
+      "earned": true,
+      "earnedAt": "2026-04-14T20:22:48.484Z"
+    },
+    {
+      "id": "century_club",
+      "title": "Century Rider",
+      "icon": "★",
+      "requirement": "Complete 100 workouts",
+      "earned": false,
+      "earnedAt": null
+    },
+    {
+      "id": "halfway_there",
+      "title": "Summit View",
+      "icon": "★",
+      "requirement": "Complete all of Week 26",
+      "earned": false,
+      "earnedAt": null
+    },
+    {
+      "id": "finish_line",
+      "title": "Yellow Jersey",
+      "icon": "★",
+      "requirement": "Complete all of Week 52",
+      "earned": false,
+      "earnedAt": null
+    },
+    {
+      "id": "streak_5",
+      "title": "High Five",
+      "icon": "★",
+      "requirement": "5-week perfect streak",
+      "earned": true,
+      "earnedAt": "2026-05-27T21:53:43.785Z"
+    },
+    {
+      "id": "warmup_king",
+      "title": "Prepped & Primed",
+      "icon": "★",
+      "requirement": "Complete boxing timer 5 times",
+      "earned": false,
+      "earnedAt": null
+    },
+    {
+      "id": "cooldown_king",
+      "title": "Recovery Master",
+      "icon": "★",
+      "requirement": "Complete boxing timer 10 times",
+      "earned": false,
+      "earnedAt": null
+    },
+    {
+      "id": "full_rotation",
+      "title": "Video Jockey",
+      "icon": "★",
+      "requirement": "Workouts across 6 weeks",
+      "earned": false,
+      "earnedAt": null
+    },
+    {
+      "id": "comeback_kid",
+      "title": "Comeback Kid",
+      "icon": "★",
+      "requirement": "Log after skipping a week",
+      "earned": false,
+      "earnedAt": null
+    },
+    {
+      "id": "data_nerd",
+      "title": "Data Analyst",
+      "icon": "★",
+      "requirement": "Notes on 10 workouts",
+      "earned": false,
+      "earnedAt": null
+    },
+    {
+      "id": "adaptation",
+      "title": "Chameleon",
+      "icon": "★",
+      "requirement": "Complete all of Week 14",
+      "earned": false,
+      "earnedAt": null
+    }
+  ],
+  "timerUses": {
+    "done": 0
+  },
+  "panels": {
+    "ach": false,
+    "hist": false,
+    "bxhist": false,
+    "prs": false
+  },
+  "modalRpe": 0,
+  "prs": {
+    "2-0": {
+      "weight": 80,
+      "reps": 10,
+      "date": "Wed Apr 22 2026"
+    },
+    "2-1": {
+      "weight": 10,
+      "reps": 20,
+      "date": "Thu May 21 2026"
+    },
+    "2-2": {
+      "weight": 20,
+      "reps": 12,
+      "date": "Wed Apr 22 2026"
+    },
+    "2-3": {
+      "weight": 25,
+      "reps": 12,
+      "date": "Wed Apr 22 2026"
+    },
+    "3-0": {
+      "weight": 35,
+      "reps": 10,
+      "date": "Mon May 11 2026"
+    },
+    "3-1": {
+      "weight": 35,
+      "reps": 10,
+      "date": "Mon May 11 2026"
+    },
+    "3-2": {
+      "weight": 35,
+      "reps": 10,
+      "date": "Mon May 11 2026"
+    },
+    "3-3": {
+      "weight": 35,
+      "reps": 20,
+      "date": "Mon May 11 2026"
+    },
+    "3-4": {
+      "weight": 35,
+      "reps": 12,
+      "date": "Mon May 11 2026"
+    },
+    "1-0": {
+      "weight": 55,
+      "reps": 12,
+      "date": "Tue Jun 02 2026"
+    },
+    "1-1": {
+      "weight": 95,
+      "reps": 12,
+      "date": "Fri Jul 24 2026"
+    },
+    "1-2": {
+      "weight": 50,
+      "reps": 12,
+      "date": "Tue Jun 02 2026"
+    },
+    "1-3": {
+      "weight": 30,
+      "reps": 12,
+      "date": "Tue Jun 02 2026"
+    },
+    "1-4": {
+      "weight": 65,
+      "reps": 12,
+      "date": "Tue Jun 02 2026"
+    },
+    "1-5": {
+      "weight": 25,
+      "reps": 12,
+      "date": "Tue Jun 02 2026"
+    },
+    "1-6": {
+      "weight": 30,
+      "reps": 12,
+      "date": "Tue Jun 02 2026"
+    },
+    "0-1": {
+      "weight": 80,
+      "reps": 12,
+      "date": "Mon Jul 20 2026"
+    },
+    "0-2": {
+      "weight": 65,
+      "reps": 12,
+      "date": "Mon Jul 20 2026"
+    },
+    "0-3": {
+      "weight": 85,
+      "reps": 12,
+      "date": "Mon Jul 20 2026"
+    },
+    "0-4": {
+      "weight": 40,
+      "reps": 12,
+      "date": "Mon Jul 20 2026"
+    },
+    "Goblet Squat": {
+      "weight": 25,
+      "reps": 10,
+      "date": "Thu Oct 01 2026",
+      "wTitle": "Day A: Volume"
+    },
+    "Barbell Bench Press": {
+      "weight": 155,
+      "reps": 8,
+      "date": "Wed Aug 12 2026",
+      "wTitle": "Full Body #1"
+    },
+    "Lat Pulldown": {
+      "weight": 110,
+      "reps": 9,
+      "date": "Mon Jul 27 2026",
+      "wTitle": "Full Body #1"
+    },
+    "Romanian Deadlift": {
+      "weight": 95,
+      "reps": 12,
+      "date": "Mon Jul 27 2026",
+      "wTitle": "Full Body #1"
+    },
+    "Decline Barbell Press": {
+      "weight": 135,
+      "reps": 8,
+      "date": "Wed Aug 12 2026",
+      "wTitle": "Full Body #1"
+    },
+    "Dumbbell Supinated Curl": {
+      "weight": 25,
+      "reps": 12,
+      "date": "Mon Jul 27 2026",
+      "wTitle": "Full Body #1"
+    },
+    "Dumbbell Concentration Curl": {
+      "weight": 25,
+      "reps": 12,
+      "date": "Tue Jul 28 2026",
+      "wTitle": "Supplemental A"
+    },
+    "Incline Dumbbell Curl Reverse 21's": {
+      "weight": 20,
+      "reps": 21,
+      "date": "Tue Jul 28 2026",
+      "wTitle": "Supplemental A"
+    },
+    "Weighted Dip (Close Grip)": {
+      "weight": 50,
+      "reps": 8,
+      "date": "Tue Jul 28 2026",
+      "wTitle": "Supplemental A"
+    },
+    "1-Arm Overhead Cable Extension": {
+      "weight": 20,
+      "reps": 12,
+      "date": "Tue Jul 28 2026",
+      "wTitle": "Supplemental A"
+    },
+    "Dumbbell Incline Press": {
+      "weight": 105,
+      "reps": 12,
+      "date": "Sun Aug 02 2026",
+      "wTitle": "Full Body #3"
+    },
+    "Reverse-Grip Lat Pulldown": {
+      "weight": 110,
+      "reps": 12,
+      "date": "Sun Aug 02 2026",
+      "wTitle": "Full Body #3"
+    },
+    "Barbell Hip Thrust": {
+      "weight": 50,
+      "reps": 12,
+      "date": "Sun Aug 02 2026",
+      "wTitle": "Full Body #3"
+    },
+    "Seated Face Pull": {
+      "weight": 50,
+      "reps": 12,
+      "date": "Sun Aug 02 2026",
+      "wTitle": "Full Body #3"
+    },
+    "Dumbbell Lateral Raise": {
+      "weight": 15,
+      "reps": 12,
+      "date": "Sun Aug 02 2026",
+      "wTitle": "Full Body #3"
+    },
+    "Rack Pull": {
+      "weight": 185,
+      "reps": 12,
+      "date": "Wed Aug 05 2026",
+      "wTitle": "Full Body #2"
+    },
+    "Military Press": {
+      "weight": 95,
+      "reps": 8,
+      "date": "Sat Aug 15 2026",
+      "wTitle": "Full Body #2"
+    },
+    "Seated Cable Row": {
+      "weight": 110,
+      "reps": 11,
+      "date": "Sat Aug 15 2026",
+      "wTitle": "Full Body #2"
+    },
+    "Incline Dumbbell Press": {
+      "weight": 45,
+      "reps": 12,
+      "date": "Wed Aug 05 2026",
+      "wTitle": "Full Body #2"
+    },
+    "Crunch": {
+      "weight": 0,
+      "reps": 12,
+      "date": "Wed Aug 05 2026",
+      "wTitle": "Full Body #2"
+    },
+    "Dumbbell Skull Crusher": {
+      "weight": 45,
+      "reps": 12,
+      "date": "Wed Aug 05 2026",
+      "wTitle": "Full Body #2"
+    },
+    "Standing Calf Raise": {
+      "weight": 0,
+      "reps": 21,
+      "date": "Wed Aug 12 2026",
+      "wTitle": "Full Body #1"
+    },
+    "Cable Curl": {
+      "weight": 40,
+      "reps": 10,
+      "date": "Wed Aug 12 2026",
+      "wTitle": "Full Body #1"
+    },
+    "Close Grip Bench Press": {
+      "weight": 135,
+      "reps": 6,
+      "date": "Fri Aug 21 2026",
+      "wTitle": "Arm Day"
+    },
+    "Machine Preacher Curl": {
+      "weight": 65,
+      "reps": 12,
+      "date": "Mon Aug 24 2026",
+      "wTitle": "Back & Biceps"
+    },
+    "Standing EZ Bar Curl": {
+      "weight": 85,
+      "reps": 8,
+      "date": "Mon Aug 31 2026",
+      "wTitle": "Arm Day"
+    },
+    "Bayesian Cable Curl": {
+      "weight": 10,
+      "reps": 12,
+      "date": "Mon Aug 31 2026",
+      "wTitle": "Arm Day"
+    },
+    "Tricep Pressdown": {
+      "weight": 40,
+      "reps": 10,
+      "date": "Mon Aug 31 2026",
+      "wTitle": "Arm Day"
+    },
+    "Overhead Rope Tricep Extension": {
+      "weight": 20,
+      "reps": 12,
+      "date": "Mon Aug 31 2026",
+      "wTitle": "Arm Day"
+    },
+    "Incline Barbell Press": {
+      "weight": 115,
+      "reps": 7,
+      "date": "Sat Aug 22 2026",
+      "wTitle": "Chest & Triceps"
+    },
+    "Incline DB Flye": {
+      "weight": 15,
+      "reps": 14,
+      "date": "Sat Aug 22 2026",
+      "wTitle": "Chest & Triceps"
+    },
+    "DB Fly": {
+      "weight": 20,
+      "reps": 12,
+      "date": "Sat Aug 22 2026",
+      "wTitle": "Chest & Triceps"
+    },
+    "Cable Triceps Pressdown": {
+      "weight": 30,
+      "reps": 12,
+      "date": "Sat Aug 22 2026",
+      "wTitle": "Chest & Triceps"
+    },
+    "Lying Triceps Extension": {
+      "weight": 35,
+      "reps": 15,
+      "date": "Sat Aug 22 2026",
+      "wTitle": "Chest & Triceps"
+    },
+    "Cable Lying Triceps Extension": {
+      "weight": 20,
+      "reps": 12,
+      "date": "Sat Aug 22 2026",
+      "wTitle": "Chest & Triceps"
+    },
+    "DB Overhead Extension": {
+      "weight": 20,
+      "reps": 12,
+      "date": "Sat Aug 22 2026",
+      "wTitle": "Chest & Triceps"
+    },
+    "Seated Calf Raise": {
+      "weight": 20,
+      "reps": 12,
+      "date": "Sat Aug 22 2026",
+      "wTitle": "Chest & Triceps"
+    },
+    "DB Bent-Over Row": {
+      "weight": 55,
+      "reps": 12,
+      "date": "Mon Aug 24 2026",
+      "wTitle": "Back & Biceps"
+    },
+    "Wide-Grip Pulldown": {
+      "weight": 110,
+      "reps": 9,
+      "date": "Fri Sep 04 2026",
+      "wTitle": "Back & Biceps"
+    },
+    "Standing Pulldown": {
+      "weight": 30,
+      "reps": 12,
+      "date": "Mon Aug 24 2026",
+      "wTitle": "Back & Biceps"
+    },
+    "Straight-Arm Pulldown": {
+      "weight": 25,
+      "reps": 11,
+      "date": "Fri Sep 04 2026",
+      "wTitle": "Back & Biceps"
+    },
+    "Barbell Curl": {
+      "weight": 65,
+      "reps": 12,
+      "date": "Mon Aug 24 2026",
+      "wTitle": "Back & Biceps"
+    },
+    "Spider Curl": {
+      "weight": 25,
+      "reps": 12,
+      "date": "Mon Aug 24 2026",
+      "wTitle": "Back & Biceps"
+    },
+    "Barbell OHP": {
+      "weight": 65,
+      "reps": 12,
+      "date": "Thu Aug 27 2026",
+      "wTitle": "Shoulders & Traps"
+    },
+    "DB Lateral Raise": {
+      "weight": 15,
+      "reps": 12,
+      "date": "Thu Aug 27 2026",
+      "wTitle": "Shoulders & Traps"
+    },
+    "DB Front Raise": {
+      "weight": 20,
+      "reps": 12,
+      "date": "Thu Aug 27 2026",
+      "wTitle": "Shoulders & Traps"
+    },
+    "Plate Front Raise": {
+      "weight": 35,
+      "reps": 12,
+      "date": "Thu Aug 27 2026",
+      "wTitle": "Shoulders & Traps"
+    },
+    "Face Pull": {
+      "weight": 20,
+      "reps": 12,
+      "date": "Thu Aug 27 2026",
+      "wTitle": "Shoulders & Traps"
+    },
+    "DB Shrug": {
+      "weight": 135,
+      "reps": 12,
+      "date": "Thu Aug 27 2026",
+      "wTitle": "Shoulders & Traps"
+    },
+    "Pull-Up": {
+      "weight": 0,
+      "reps": 6,
+      "date": "Thu Oct 01 2026",
+      "wTitle": "Day A: Volume"
+    },
+    "Dip": {
+      "weight": 0,
+      "reps": 8,
+      "date": "Thu Oct 01 2026",
+      "wTitle": "Day A: Volume"
+    },
+    "Seated Lateral Raise": {
+      "weight": 10,
+      "reps": 12,
+      "date": "Thu Oct 01 2026",
+      "wTitle": "Day A: Volume"
+    },
+    "Rear Delt Fly": {
+      "weight": 15,
+      "reps": 15,
+      "date": "Thu Oct 01 2026",
+      "wTitle": "Day A: Volume"
+    },
+    "Incline Dumbbell Curl": {
+      "weight": 35,
+      "reps": 10,
+      "date": "Thu Oct 01 2026",
+      "wTitle": "Day A: Volume"
+    },
+    "Overhead Kettlebell Triceps Extension": {
+      "weight": 40,
+      "reps": 10,
+      "date": "Thu Oct 01 2026",
+      "wTitle": "Day A: Volume"
+    }
+  },
+  "strLog": {
+    "Wed Apr 22 2026": {},
+    "Mon May 11 2026": {},
+    "Thu May 21 2026": {},
+    "Tue Jun 02 2026": {
+      "1": {
+        "0": [
+          {
+            "weight": 55,
+            "reps": 12,
+            "ts": 1780437364428
+          },
+          {
+            "weight": 55,
+            "reps": 12,
+            "ts": 1780437467308
+          },
+          {
+            "weight": 55,
+            "reps": 12,
+            "ts": 1780437602204
+          },
+          {
+            "weight": 55,
+            "reps": 12,
+            "ts": 1780437831610
+          }
+        ],
+        "1": [
+          {
+            "weight": 80,
+            "reps": 12,
+            "ts": 1780438155693
+          },
+          {
+            "weight": 80,
+            "reps": 12,
+            "ts": 1780438158701
+          },
+          {
+            "weight": 80,
+            "reps": 12,
+            "ts": 1780438226229
+          }
+        ],
+        "2": [
+          {
+            "weight": 50,
+            "reps": 12,
+            "ts": 1780438464529
+          },
+          {
+            "weight": 50,
+            "reps": 12,
+            "ts": 1780438540449
+          },
+          {
+            "weight": 50,
+            "reps": 12,
+            "ts": 1780438651825
+          }
+        ],
+        "3": [
+          {
+            "weight": 30,
+            "reps": 12,
+            "ts": 1780438800398
+          },
+          {
+            "weight": 30,
+            "reps": 12,
+            "ts": 1780438844498
+          },
+          {
+            "weight": 30,
+            "reps": 12,
+            "ts": 1780438980406
+          }
+        ],
+        "4": [
+          {
+            "weight": 45,
+            "reps": 12,
+            "ts": 1780439065612
+          },
+          {
+            "weight": 65,
+            "reps": 12,
+            "ts": 1780439252107
+          },
+          {
+            "weight": 65,
+            "reps": 12,
+            "ts": 1780439437720
+          },
+          {
+            "weight": 65,
+            "reps": 12,
+            "ts": 1780439684855
+          }
+        ],
+        "5": [
+          {
+            "weight": 25,
+            "reps": 12,
+            "ts": 1780439855926
+          },
+          {
+            "weight": 25,
+            "reps": 12,
+            "ts": 1780439972259
+          },
+          {
+            "weight": 25,
+            "reps": 12,
+            "ts": 1780440150724
+          }
+        ],
+        "6": [
+          {
+            "weight": 30,
+            "reps": 12,
+            "ts": 1780440349294
+          },
+          {
+            "weight": 30,
+            "reps": 12,
+            "ts": 1780440351552
+          }
+        ]
+      }
+    },
+    "Tue Jul 14 2026": {},
+    "Mon Jul 20 2026": {},
+    "Fri Jul 24 2026": {
+      "1": {
+        "1": [
+          {
+            "weight": 95,
+            "reps": 12,
+            "ts": 1784931152534
+          },
+          {
+            "weight": 95,
+            "reps": 12,
+            "ts": 1784931227450
+          },
+          {
+            "weight": 95,
+            "reps": 12,
+            "ts": 1784931501763
+          }
+        ],
+        "2": [
+          {
+            "weight": 10,
+            "reps": 12,
+            "ts": 1784931599246
+          },
+          {
+            "weight": 15,
+            "reps": 15,
+            "ts": 1784931743946
+          },
+          {
+            "weight": 15,
+            "reps": 15,
+            "ts": 1784931884590
+          },
+          {
+            "weight": 15,
+            "reps": 15,
+            "ts": 1784932030563
+          }
+        ],
+        "3": [
+          {
+            "weight": 25,
+            "reps": 15,
+            "ts": 1784932223992
+          },
+          {
+            "weight": 20,
+            "reps": 18,
+            "ts": 1784932377272
+          },
+          {
+            "weight": 25,
+            "reps": 15,
+            "ts": 1784932537083
+          }
+        ],
+        "4": [
+          {
+            "weight": 65,
+            "reps": 12,
+            "ts": 1784932773599
+          },
+          {
+            "weight": 65,
+            "reps": 12,
+            "ts": 1784932980715
+          },
+          {
+            "weight": 65,
+            "reps": 12,
+            "ts": 1784933058323
+          }
+        ],
+        "5": [
+          {
+            "weight": 20,
+            "reps": 12,
+            "ts": 1784933352126
+          },
+          {
+            "weight": 25,
+            "reps": 10,
+            "ts": 1784933453797
+          }
+        ]
+      }
+    },
+    "Mon Jul 27 2026": {},
+    "Tue Jul 28 2026": {},
+    "Sun Aug 02 2026": {},
+    "Wed Aug 05 2026": {
+      "1": {
+        "0": [
+          {
+            "weight": 165,
+            "reps": 5,
+            "ts": 1785958009600,
+            "exName": "Rack Pull"
+          },
+          {
+            "weight": 185,
+            "reps": 5,
+            "ts": 1785958170156,
+            "exName": "Rack Pull"
+          },
+          {
+            "weight": 185,
+            "reps": 12,
+            "ts": 1785958495548,
+            "exName": "Rack Pull"
+          }
+        ],
+        "1": [
+          {
+            "weight": 65,
+            "reps": 8,
+            "ts": 1785958558940,
+            "exName": "Military Press"
+          },
+          {
+            "weight": 85,
+            "reps": 12,
+            "ts": 1785958701756,
+            "exName": "Military Press"
+          },
+          {
+            "weight": 85,
+            "reps": 8,
+            "ts": 1785958883126,
+            "exName": "Military Press"
+          }
+        ],
+        "2": [
+          {
+            "weight": 90,
+            "reps": 12,
+            "ts": 1785959194596,
+            "exName": "Seated Cable Row"
+          },
+          {
+            "weight": 90,
+            "reps": 12,
+            "ts": 1785959327917,
+            "exName": "Seated Cable Row"
+          },
+          {
+            "weight": 90,
+            "reps": 12,
+            "ts": 1785959502244,
+            "exName": "Seated Cable Row"
+          }
+        ],
+        "4": [
+          {
+            "weight": 45,
+            "reps": 12,
+            "ts": 1785959768481,
+            "exName": "Incline Dumbbell Press"
+          },
+          {
+            "weight": 45,
+            "reps": 11,
+            "ts": 1785959953439,
+            "exName": "Incline Dumbbell Press"
+          },
+          {
+            "weight": 45,
+            "reps": 12,
+            "ts": 1785960161779,
+            "exName": "Incline Dumbbell Press"
+          }
+        ],
+        "5": [
+          {
+            "weight": 0,
+            "reps": 12,
+            "ts": 1785960351859,
+            "exName": "Crunch"
+          },
+          {
+            "weight": 0,
+            "reps": 12,
+            "ts": 1785960452435,
+            "exName": "Crunch"
+          },
+          {
+            "weight": 0,
+            "reps": 12,
+            "ts": 1785960706976,
+            "exName": "Crunch"
+          }
+        ],
+        "6": [
+          {
+            "weight": 35,
+            "reps": 12,
+            "ts": 1785960931732,
+            "exName": "Dumbbell Skull Crusher"
+          },
+          {
+            "weight": 45,
+            "reps": 12,
+            "ts": 1785961048451,
+            "exName": "Dumbbell Skull Crusher"
+          },
+          {
+            "weight": 45,
+            "reps": 12,
+            "ts": 1785961305030,
+            "exName": "Dumbbell Skull Crusher"
+          }
+        ]
+      }
+    },
+    "Wed Aug 12 2026": {},
+    "Sat Aug 15 2026": {
+      "1": {
+        "1": [
+          {
+            "weight": 85,
+            "reps": 8,
+            "ts": 1786817032648,
+            "exName": "Military Press"
+          },
+          {
+            "weight": 85,
+            "reps": 9,
+            "ts": 1786817169568,
+            "exName": "Military Press"
+          },
+          {
+            "weight": 95,
+            "reps": 8,
+            "ts": 1786817650530,
+            "exName": "Military Press"
+          }
+        ],
+        "2": [
+          {
+            "weight": 90,
+            "reps": 12,
+            "ts": 1786818079624,
+            "exName": "Seated Cable Row"
+          },
+          {
+            "weight": 110,
+            "reps": 11,
+            "ts": 1786818171839,
+            "exName": "Seated Cable Row"
+          },
+          {
+            "weight": 110,
+            "reps": 11,
+            "ts": 1786818303742,
+            "exName": "Seated Cable Row"
+          }
+        ]
+      }
+    },
+    "Tue Aug 18 2026": {},
+    "Fri Aug 21 2026": {},
+    "Sat Aug 22 2026": {},
+    "Mon Aug 24 2026": {},
+    "Thu Aug 27 2026": {},
+    "Mon Aug 31 2026": {},
+    "Fri Sep 04 2026": {
+      "1": {
+        "0": [
+          {
+            "weight": 55,
+            "reps": 10,
+            "ts": 1788530531148,
+            "exName": "DB Bent-Over Row"
+          },
+          {
+            "weight": 55,
+            "reps": 10,
+            "ts": 1788530586525,
+            "exName": "DB Bent-Over Row"
+          },
+          {
+            "weight": 55,
+            "reps": 10,
+            "ts": 1788530743575,
+            "exName": "DB Bent-Over Row"
+          },
+          {
+            "weight": 55,
+            "reps": 10,
+            "ts": 1788530851418,
+            "exName": "DB Bent-Over Row"
+          }
+        ],
+        "1": [
+          {
+            "weight": 90,
+            "reps": 11,
+            "ts": 1788531075246,
+            "exName": "Wide-Grip Pulldown"
+          },
+          {
+            "weight": 110,
+            "reps": 9,
+            "ts": 1788531163807,
+            "exName": "Wide-Grip Pulldown"
+          },
+          {
+            "weight": 110,
+            "reps": 9,
+            "ts": 1788531270277,
+            "exName": "Wide-Grip Pulldown"
+          }
+        ],
+        "2": [
+          {
+            "weight": 20,
+            "reps": 11,
+            "ts": 1788531457619,
+            "exName": "Standing Pulldown"
+          },
+          {
+            "weight": 20,
+            "reps": 11,
+            "ts": 1788531549484,
+            "exName": "Standing Pulldown"
+          },
+          {
+            "weight": 20,
+            "reps": 9,
+            "ts": 1788531642678,
+            "exName": "Standing Pulldown"
+          }
+        ],
+        "3": [
+          {
+            "weight": 20,
+            "reps": 11,
+            "ts": 1788531767483,
+            "exName": "Straight-Arm Pulldown"
+          },
+          {
+            "weight": 25,
+            "reps": 11,
+            "ts": 1788531866578,
+            "exName": "Straight-Arm Pulldown"
+          }
+        ]
+      }
+    },
+    "Thu Oct 01 2026": {}
+  },
+  "strHistory": [
+    {
+      "date": "Wed Apr 22 2026",
+      "wIdx": 2,
+      "title": "Shoulders & Arms",
+      "totalSets": 11,
+      "ts": 1776883868324
+    },
+    {
+      "date": "Wed Apr 22 2026",
+      "wIdx": 2,
+      "title": "Shoulders & Arms",
+      "totalSets": 0,
+      "ts": 1776841200000,
+      "backdated": true
+    },
+    {
+      "date": "Mon May 11 2026",
+      "wIdx": 3,
+      "title": "Kettlebell Shoulders & Arms",
+      "totalSets": 15,
+      "ts": 1778537992998
+    },
+    {
+      "date": "Thu May 21 2026",
+      "wIdx": 2,
+      "title": "Shoulders & Arms",
+      "totalSets": 10,
+      "ts": 1779397830954
+    },
+    {
+      "date": "Mon May 25 2026",
+      "wIdx": -1,
+      "title": "15 Min AMRAP — Upper Body / Core",
+      "totalSets": 0,
+      "ts": 1779718100509,
+      "kbSupp": true,
+      "kbId": "kbs5"
+    },
+    {
+      "date": "Tue Jul 14 2026",
+      "wIdx": 1,
+      "title": "Back & Biceps",
+      "totalSets": 1,
+      "ts": 1784062364236,
+      "stsWeek": 1,
+      "stsCycle": 1
+    },
+    {
+      "date": "Mon Jul 20 2026",
+      "wIdx": 0,
+      "title": "Workout A: Push/Pull Foundation",
+      "totalSets": 11,
+      "ts": 1784589551794,
+      "stsWeek": 1,
+      "stsCycle": 1
+    },
+    {
+      "date": "Mon Jul 27 2026",
+      "wIdx": 0,
+      "title": "Full Body #1",
+      "totalSets": 18,
+      "ts": 1785183977522,
+      "stsWeek": 1,
+      "stsCycle": 1
+    },
+    {
+      "date": "Tue Jul 28 2026",
+      "wIdx": 5,
+      "title": "Supplemental A",
+      "totalSets": 10,
+      "ts": 1785274753686,
+      "stsWeek": 1,
+      "stsCycle": 1
+    },
+    {
+      "date": "Sun Aug 02 2026",
+      "wIdx": 2,
+      "title": "Full Body #3",
+      "totalSets": 13,
+      "ts": 1785732603432,
+      "stsWeek": 1,
+      "stsCycle": 1
+    },
+    {
+      "date": "Wed Aug 05 2026",
+      "wIdx": 0,
+      "title": "Full Body #1",
+      "totalSets": 0,
+      "ts": 1786048073334,
+      "backdated": true
+    },
+    {
+      "date": "Wed Aug 12 2026",
+      "wIdx": 0,
+      "title": "Full Body #1",
+      "totalSets": 15,
+      "ts": 1786571439318,
+      "stsWeek": 1,
+      "stsCycle": 1
+    },
+    {
+      "date": "Tue Aug 18 2026",
+      "wIdx": 2,
+      "title": "Full Body #3",
+      "totalSets": 12,
+      "ts": 1787093678338,
+      "stsWeek": 1,
+      "stsCycle": 1
+    },
+    {
+      "date": "Fri Aug 21 2026",
+      "wIdx": 4,
+      "title": "Arm Day",
+      "totalSets": 18,
+      "ts": 1787346300199,
+      "stsWeek": 1,
+      "stsCycle": 1
+    },
+    {
+      "date": "Sat Aug 22 2026",
+      "wIdx": 0,
+      "title": "Chest & Triceps",
+      "totalSets": 33,
+      "ts": 1787425873758,
+      "stsWeek": 1,
+      "stsCycle": 1
+    },
+    {
+      "date": "Mon Aug 24 2026",
+      "wIdx": 1,
+      "title": "Back & Biceps",
+      "totalSets": 23,
+      "ts": 1787613177408,
+      "stsWeek": 1,
+      "stsCycle": 1
+    },
+    {
+      "date": "Thu Aug 27 2026",
+      "wIdx": 2,
+      "title": "Shoulders & Traps",
+      "totalSets": 20,
+      "ts": 1787869931464,
+      "stsWeek": 1,
+      "stsCycle": 1
+    },
+    {
+      "date": "Mon Aug 31 2026",
+      "wIdx": 4,
+      "title": "Arm Day",
+      "totalSets": 18,
+      "ts": 1788217080962,
+      "stsWeek": 2,
+      "stsCycle": 1
+    },
+    {
+      "date": "Thu Oct 01 2026",
+      "wIdx": 0,
+      "title": "Day A: Volume",
+      "totalSets": 25,
+      "ts": 1790895708288,
+      "stsWeek": 2,
+      "stsCycle": 1
+    }
+  ],
+  "strSwaps": {},
+  "strLogWeight": 135,
+  "strLogReps": 5,
+  "strLogExIdx": 0,
+  "strAnalyticsOpen": false,
+  "strProgram": "pulldip",
+  "reminders": {
+    "enabled": false,
+    "thresholdDays": 3,
+    "lastNotified": null
+  },
+  "energyLog": {
+    "Mon Jul 27 2026": "normal"
+  },
+  "nutrition": {
+    "goal": 2200,
+    "log": {
+      "Mon Jul 20 2026": [
+        {
+          "name": "2 Eggs",
+          "kcal": 143,
+          "grams": 100,
+          "per100": 143
+        }
+      ],
+      "Tue Jul 21 2026": [
+        {
+          "name": "Egg",
+          "kcal": 144,
+          "grams": 100,
+          "per100": 144
+        },
+        {
+          "name": "Sourdough Slice",
+          "kcal": 100,
+          "grams": 38,
+          "per100": 263
+        },
+        {
+          "name": "Apple",
+          "kcal": 95,
+          "grams": 182,
+          "per100": 52
+        },
+        {
+          "name": "Jam",
+          "kcal": 50,
+          "grams": 15,
+          "per100": 333
+        }
+      ],
+      "Mon Jul 27 2026": [
+        {
+          "name": "Eggs",
+          "kcal": 144,
+          "grams": 100,
+          "per100": 144
+        },
+        {
+          "name": "Sourdough Sandwich Bread",
+          "kcal": 225,
+          "grams": 90,
+          "per100": 250
+        },
+        {
+          "name": "Raspberry Jam",
+          "kcal": 40,
+          "grams": 15,
+          "per100": 267
+        },
+        {
+          "name": "Apple",
+          "kcal": 95,
+          "grams": 182,
+          "per100": 52
+        },
+        {
+          "name": "ROASTED SEAWEED SNACKS",
+          "kcal": 26,
+          "grams": 4,
+          "per100": 600
+        },
+        {
+          "name": "MIXED NUTS Roasted & Salted",
+          "kcal": 270,
+          "grams": 45,
+          "per100": 600
+        },
+        {
+          "name": "Grass-Fed Beef Stick",
+          "kcal": 114,
+          "grams": 32,
+          "per100": 357
+        },
+        {
+          "name": "PROSCIUTTO PANINOS",
+          "kcal": 320,
+          "grams": 111,
+          "per100": 288
+        },
+        {
+          "name": "Protein Shake",
+          "kcal": 120,
+          "grams": 30,
+          "per100": 400
+        }
+      ],
+      "Thu Aug 06 2026": [
+        {
+          "name": "Egg",
+          "kcal": 144,
+          "grams": 100,
+          "per100": 144
+        },
+        {
+          "name": "Apple",
+          "kcal": 95,
+          "grams": 182,
+          "per100": 52
+        },
+        {
+          "name": "Sourdough Slice",
+          "kcal": 100,
+          "grams": 38,
+          "per100": 263
+        },
+        {
+          "name": "Sourdough Slice",
+          "kcal": 100,
+          "grams": 38,
+          "per100": 263
+        },
+        {
+          "name": "Avocado",
+          "kcal": 100,
+          "grams": 75,
+          "per100": 133
+        },
+        {
+          "name": "Kirkland Signature Pita",
+          "kcal": 125,
+          "grams": 95,
+          "per100": 273
+        },
+        {
+          "name": "Amylu Chicken Burger",
+          "kcal": 170,
+          "grams": 112,
+          "per100": 211
+        },
+        {
+          "name": "Amylu Chicken Burger",
+          "kcal": 170,
+          "grams": 112,
+          "per100": 211
+        },
+        {
+          "name": "Amylu Chicken Burger",
+          "kcal": 85,
+          "grams": 112,
+          "per100": 211
+        },
+        {
+          "name": "Variety Pack (×4)",
+          "kcal": 360,
+          "grams": 84,
+          "per100": 429
+        },
+        {
+          "name": "Edamame Ranch",
+          "kcal": 130,
+          "grams": 30,
+          "per100": 433
+        },
+        {
+          "name": "Lasagna",
+          "kcal": 400,
+          "grams": 300,
+          "per100": 117
+        }
+      ],
+      "Fri Aug 07 2026": [
+        {
+          "name": "Whole Wheat Bagel",
+          "kcal": 280,
+          "grams": 100,
+          "per100": 280
+        },
+        {
+          "name": "Cream Cheese",
+          "kcal": 160,
+          "grams": 45,
+          "per100": 356
+        },
+        {
+          "name": "Apple",
+          "kcal": 125,
+          "grams": 209,
+          "per100": 60
+        }
+      ],
+      "Mon Aug 10 2026": [
+        {
+          "name": "Cabbage Salad",
+          "kcal": 7,
+          "grams": 30,
+          "per100": 23
+        },
+        {
+          "name": "Cowboy Caviar",
+          "kcal": 130,
+          "grams": 120,
+          "per100": 108
+        },
+        {
+          "name": "Pulled Pork",
+          "kcal": 305,
+          "grams": 113,
+          "per100": 270
+        },
+        {
+          "name": "MIXED NUTS Roasted & Salted",
+          "kcal": 270,
+          "grams": 45,
+          "per100": 600
+        },
+        {
+          "name": "Crispy Roasted Edamame Himalayan Pink Salt",
+          "kcal": 130,
+          "grams": 30,
+          "per100": 433
+        },
+        {
+          "name": "Beef",
+          "kcal": 100,
+          "grams": 32,
+          "per100": 313
+        },
+        {
+          "name": "Red Apple",
+          "kcal": 105,
+          "grams": 200,
+          "per100": 53
+        }
+      ],
+      "Wed Aug 12 2026": [
+        {
+          "name": "Rolled Oats",
+          "kcal": 156,
+          "grams": 40,
+          "per100": 390
+        },
+        {
+          "name": "Kirkland Signature Protein Powder",
+          "kcal": 120,
+          "grams": 30,
+          "per100": 400
+        },
+        {
+          "name": "Apple",
+          "kcal": 95,
+          "grams": 182,
+          "per100": 52
+        },
+        {
+          "name": "Beef",
+          "kcal": 100,
+          "grams": 32,
+          "per100": 313
+        },
+        {
+          "name": "Regular Chicken Burrito",
+          "kcal": 450,
+          "grams": 280,
+          "per100": 200
+        },
+        {
+          "name": "Regular Chicken Burrito",
+          "kcal": 450,
+          "grams": 280,
+          "per100": 200
+        },
+        {
+          "name": "Bean And Cheese Burrito",
+          "kcal": 380,
+          "grams": 250,
+          "per100": 140
+        },
+        {
+          "name": "Pulled Pork",
+          "kcal": 220,
+          "grams": 85,
+          "per100": 259
+        },
+        {
+          "name": "Cowboy Caviar",
+          "kcal": 75,
+          "grams": 80,
+          "per100": 94
+        },
+        {
+          "name": "Cabbage Salad",
+          "kcal": 17,
+          "grams": 67,
+          "per100": 25
+        },
+        {
+          "name": "Tillamook Mudslide",
+          "kcal": 384,
+          "grams": 198,
+          "per100": 394
+        }
+      ],
+      "Thu Aug 13 2026": [
+        {
+          "name": "Cabbage Salad",
+          "kcal": 17,
+          "grams": 67,
+          "per100": 25
+        },
+        {
+          "name": "Pulled Pork",
+          "kcal": 220,
+          "grams": 85,
+          "per100": 259
+        },
+        {
+          "name": "Cowboy Caviar",
+          "kcal": 75,
+          "grams": 80,
+          "per100": 94
+        },
+        {
+          "name": "Banana",
+          "kcal": 105,
+          "grams": 118,
+          "per100": 89
+        },
+        {
+          "name": "Kirkland Signature Protein Powder",
+          "kcal": 120,
+          "grams": 30,
+          "per100": 400
+        },
+        {
+          "name": "Rolled Oats",
+          "kcal": 156,
+          "grams": 40,
+          "per100": 390
+        },
+        {
+          "name": "Mango Salsa",
+          "kcal": 20,
+          "grams": 30,
+          "per100": 67
+        },
+        {
+          "name": "Thin & Light Delgados Tortilla Chips (×2)",
+          "kcal": 260,
+          "grams": 56,
+          "per100": 464
+        },
+        {
+          "name": "MIXED NUTS Roasted & Salted",
+          "kcal": 270,
+          "grams": 45,
+          "per100": 600
+        },
+        {
+          "name": "Sharp White Cheddar",
+          "kcal": 90,
+          "grams": 21,
+          "per100": 429
+        }
+      ],
+      "Sat Aug 22 2026": [
+        {
+          "name": "Banana",
+          "kcal": 210,
+          "grams": 236,
+          "per100": 89
+        },
+        {
+          "name": "Egg",
+          "kcal": 144,
+          "grams": 100,
+          "per100": 144
+        },
+        {
+          "name": "Slice Cheddar Cheese",
+          "kcal": 110,
+          "grams": 28,
+          "per100": 393
+        }
+      ]
+    },
+    "recents": {
+      "2 eggs": {
+        "name": "2 Eggs",
+        "kcal": 143,
+        "grams": 100,
+        "per100": 143,
+        "count": 1,
+        "last": 1784586113554
+      },
+      "egg": {
+        "name": "Egg",
+        "kcal": 144,
+        "grams": 100,
+        "per100": 144,
+        "count": 3,
+        "last": 1787419639249
+      },
+      "sourdough slice": {
+        "name": "Sourdough Slice",
+        "kcal": 100,
+        "grams": 38,
+        "per100": 263,
+        "count": 3,
+        "last": 1786036083018
+      },
+      "apple": {
+        "name": "Apple",
+        "kcal": 95,
+        "grams": 182,
+        "per100": 52,
+        "count": 2,
+        "last": 1786036073824
+      },
+      "eggs": {
+        "name": "Eggs",
+        "kcal": 144,
+        "grams": 100,
+        "per100": 144,
+        "count": 1,
+        "last": 1785177290644
+      },
+      "sourdough sandwich bread": {
+        "name": "Sourdough Sandwich Bread",
+        "kcal": 225,
+        "grams": 90,
+        "per100": 250,
+        "count": 1,
+        "last": 1785177305796
+      },
+      "roasted seaweed snacks": {
+        "name": "ROASTED SEAWEED SNACKS",
+        "kcal": 26,
+        "grams": 4,
+        "per100": 600,
+        "count": 1,
+        "last": 1785177569778
+      },
+      "mixed nuts roasted & salted": {
+        "name": "MIXED NUTS Roasted & Salted",
+        "kcal": 270,
+        "grams": 45,
+        "per100": 600,
+        "count": 3,
+        "last": 1786665204817
+      },
+      "prosciutto paninos": {
+        "name": "PROSCIUTTO PANINOS",
+        "kcal": 320,
+        "grams": 111,
+        "per100": 288,
+        "count": 1,
+        "last": 1785189121717
+      },
+      "pills": {
+        "name": "Pills",
+        "kcal": 0,
+        "grams": null,
+        "per100": null,
+        "count": 1,
+        "last": 1785189287795
+      },
+      "protein shake": {
+        "name": "Protein Shake",
+        "kcal": 120,
+        "grams": 30,
+        "per100": 400,
+        "count": 1,
+        "last": 1785189287795
+      },
+      "kirkland signature pita": {
+        "name": "Kirkland Signature Pita",
+        "kcal": 150,
+        "grams": 55,
+        "per100": 273,
+        "count": 1,
+        "last": 1786050765976
+      },
+      "amylu chicken burger": {
+        "name": "Amylu Chicken Burger",
+        "kcal": 380,
+        "grams": 180,
+        "per100": 211,
+        "count": 3,
+        "last": 1786050950301
+      },
+      "cheese slice": {
+        "name": "Cheese Slice",
+        "kcal": 70,
+        "grams": 20,
+        "per100": 350,
+        "count": 1,
+        "last": 1786051011941
+      },
+      "variety pack (×4)": {
+        "name": "Variety Pack (×4)",
+        "kcal": 360,
+        "grams": 84,
+        "per100": 429,
+        "count": 1,
+        "last": 1786051065965
+      },
+      "edamame ranch": {
+        "name": "Edamame Ranch",
+        "kcal": 130,
+        "grams": 30,
+        "per100": 433,
+        "count": 1,
+        "last": 1786051096812
+      },
+      "lasagna": {
+        "name": "Lasagna",
+        "kcal": 350,
+        "grams": 300,
+        "per100": 117,
+        "count": 1,
+        "last": 1786052900276
+      },
+      "whole wheat bagel": {
+        "name": "Whole Wheat Bagel",
+        "kcal": 280,
+        "grams": 100,
+        "per100": 280,
+        "count": 1,
+        "last": 1786117459546
+      },
+      "cream cheese": {
+        "name": "Cream Cheese",
+        "kcal": 160,
+        "grams": 45,
+        "per100": 356,
+        "count": 1,
+        "last": 1786117459546
+      },
+      "cabbage salad": {
+        "name": "Cabbage Salad",
+        "kcal": 17,
+        "grams": 67,
+        "per100": 25,
+        "count": 3,
+        "last": 1786664832833
+      },
+      "cowboy caviar": {
+        "name": "Cowboy Caviar",
+        "kcal": 75,
+        "grams": 80,
+        "per100": 94,
+        "count": 3,
+        "last": 1786664835630
+      },
+      "pulled pork": {
+        "name": "Pulled Pork",
+        "kcal": 220,
+        "grams": 85,
+        "per100": 259,
+        "count": 3,
+        "last": 1786664834833
+      },
+      "crispy roasted edamame himalayan pink salt": {
+        "name": "Crispy Roasted Edamame Himalayan Pink Salt",
+        "kcal": 130,
+        "grams": 30,
+        "per100": 433,
+        "count": 1,
+        "last": 1786396808735
+      },
+      "beef": {
+        "name": "Beef",
+        "kcal": 100,
+        "grams": 32,
+        "per100": 313,
+        "count": 1,
+        "last": 1786396816853
+      },
+      "rolled oats": {
+        "name": "Rolled Oats",
+        "kcal": 156,
+        "grams": 40,
+        "per100": 390,
+        "count": 2,
+        "last": 1786664852213
+      },
+      "kirkland signature protein powder": {
+        "name": "Kirkland Signature Protein Powder",
+        "kcal": 120,
+        "grams": 30,
+        "per100": 400,
+        "count": 2,
+        "last": 1786664850530
+      },
+      "regular chicken burrito": {
+        "name": "Regular Chicken Burrito",
+        "kcal": 560,
+        "grams": 280,
+        "per100": 200,
+        "count": 2,
+        "last": 1786565294393
+      },
+      "bean and cheese burrito": {
+        "name": "Bean And Cheese Burrito",
+        "kcal": 350,
+        "grams": 250,
+        "per100": 140,
+        "count": 1,
+        "last": 1786565306410
+      },
+      "tillamook mudslide": {
+        "name": "Tillamook Mudslide",
+        "kcal": 780,
+        "grams": 198,
+        "per100": 394,
+        "count": 1,
+        "last": 1786593575757
+      },
+      "banana": {
+        "name": "Banana",
+        "kcal": 210,
+        "grams": 236,
+        "per100": 89,
+        "count": 2,
+        "last": 1787419626759
+      },
+      "mango salsa": {
+        "name": "Mango Salsa",
+        "kcal": 20,
+        "grams": 30,
+        "per100": 67,
+        "count": 1,
+        "last": 1786665029778
+      },
+      "thin & light delgados tortilla chips (×2)": {
+        "name": "Thin & Light Delgados Tortilla Chips (×2)",
+        "kcal": 260,
+        "grams": 56,
+        "per100": 464,
+        "count": 1,
+        "last": 1786665177855
+      },
+      "slice cheddar cheese": {
+        "name": "Slice Cheddar Cheese",
+        "kcal": 110,
+        "grams": 28,
+        "per100": 393,
+        "count": 1,
+        "last": 1787419653994
+      }
+    },
+    "useAI": true
+  },
+  "stsWeek": 2,
+  "stsDone": {
+    "1": {
+      "0": true,
+      "1": true,
+      "2": true
+    }
+  },
+  "stsCycle": 1,
+  "bodyLog": [
+    {
+      "date": "Mon Apr 13 2026",
+      "weight": 205
+    },
+    {
+      "date": "Tue Apr 14 2026",
+      "weight": 205
+    },
+    {
+      "date": "Wed Apr 15 2026",
+      "weight": 203
+    },
+    {
+      "date": "Thu Apr 16 2026",
+      "weight": 202.8
+    },
+    {
+      "date": "Fri Apr 17 2026",
+      "weight": 202.5
+    },
+    {
+      "date": "Mon Apr 20 2026",
+      "weight": 200.8
+    },
+    {
+      "date": "Tue Apr 21 2026",
+      "weight": 202.5
+    }
+  ],
+  "bxHistory": [
+    {
+      "date": "Thu Apr 09 2026",
+      "workoutId": 0,
+      "title": "Boxing Session",
+      "week": 2,
+      "day": "day1",
+      "ts": 1775718000000,
+      "backdated": true
+    },
+    {
+      "date": "Thu Apr 16 2026",
+      "workoutId": 0,
+      "title": "Boxing Session",
+      "week": 2,
+      "day": "day1",
+      "ts": 1776322800000,
+      "backdated": true
+    }
+  ],
+  "activityLog": [
+    {
+      "date": "Wed Aug 12 2026",
+      "type": "cycling",
+      "ts": 1786548392976
+    },
+    {
+      "date": "Wed Aug 12 2026",
+      "type": "cycling",
+      "ts": 1786549687617
+    },
+    {
+      "date": "Fri Aug 14 2026",
+      "type": "cycling",
+      "ts": 1786737293091
+    },
+    {
+      "date": "Tue Aug 18 2026",
+      "type": "cycling",
+      "ts": 1787090111837
+    },
+    {
+      "date": "Thu Aug 20 2026",
+      "type": "cycling",
+      "ts": 1787374204813
+    },
+    {
+      "date": "Wed Aug 26 2026",
+      "type": "cycling",
+      "ts": 1787773170866,
+      "videoId": "DE5DYJGWDpU",
+      "title": "VO2 Max Booster"
+    },
+    {
+      "date": "Fri Sep 18 2026",
+      "type": "cycling",
+      "ts": 1789771931601,
+      "videoId": "XAPUZHksyaw",
+      "title": "High Power Anaerobic Sprints"
+    },
+    {
+      "date": "Fri Sep 18 2026",
+      "type": "cycling",
+      "ts": 1789771947085,
+      "videoId": "TO1h5fbOLAA",
+      "title": "Quick HIIT Sprints"
+    }
+  ],
+  "bwLog": {
+    "pullup": [],
+    "pushup": [],
+    "dip": [],
+    "squat": []
+  },
+  "cindyLog": [],
+  "gtgLog": [],
+  "beerLog": [
+    {
+      "date": "Fri Sep 18 2026",
+      "source": "cycling",
+      "kcal": 400,
+      "ts": 1789771931604
+    },
+    {
+      "date": "Fri Sep 18 2026",
+      "source": "cycling",
+      "kcal": 200,
+      "ts": 1789771947089
+    },
+    {
+      "date": "Thu Oct 01 2026",
+      "source": "strength",
+      "kcal": 175,
+      "ts": 1790895708288
+    }
+  ],
+  "beerPrefType": "ipa",
+  "challenges": {},
+  "goals": {
+    "mode": "bytype",
+    "period": "weekly",
+    "overall": 5,
+    "cycling": 3,
+    "boxing": 1,
+    "strength": 3,
+    "comboTarget": 3
+  },
+  "morningType": "cycling",
+  "streak": 1
+}
