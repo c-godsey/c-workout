@@ -3214,6 +3214,7 @@ function nutGetDay(dateKey){ return S.nutrition.log[dateKey]||[]; }
 function nutDayCalories(dateKey){ return nutGetDay(dateKey).reduce((s,f)=>s+(f.kcal||0),0); }
 function nutAddFood(dateKey,food){
   if(!S.nutrition.log[dateKey]) S.nutrition.log[dateKey]=[];
+  if(food.ts==null)food.ts=Date.now(); // lets cross-device sync dedupe/merge entries reliably
   S.nutrition.log[dateKey].push(food);
   saveState();
   nutRecordRecent(food);
@@ -3534,8 +3535,20 @@ let ghAutoPushTimer=null;
 function scheduleGhAutoPush(){
   if(!GH.token||!GH.repo||GH.autoSync===false)return;
   if(ghAutoPushTimer)clearTimeout(ghAutoPushTimer);
-  ghAutoPushTimer=setTimeout(()=>{ghPush(true);},4000);
+  ghAutoPushTimer=setTimeout(()=>{ghAutoPushTimer=null;ghPush(true);},4000);
 }
+// If the app is backgrounded/closed while a push is still waiting out its 4s debounce
+// (e.g. finishing a boxing or strength workout and immediately locking the phone —
+// unlike cycling, where you're often still watching the video), that pending push
+// would otherwise get killed before it ever fires and the session wouldn't sync.
+// Flush it immediately the moment the page starts hiding instead of waiting on the timer.
+function flushPendingGhPush(){
+  if(!ghAutoPushTimer)return;
+  clearTimeout(ghAutoPushTimer);ghAutoPushTimer=null;
+  ghPush(true);
+}
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden')flushPendingGhPush();});
+window.addEventListener('pagehide',flushPendingGhPush);
 // Tracks consecutive push/pull failures so the Home-tab warning banner only shows
 // up after a real pattern (2+ in a row) rather than one transient network blip.
 let syncWarnDismissed=false;
@@ -3570,6 +3583,110 @@ async function ghPush(auto){
     else console.error('Auto-sync push failed:',e);
   }
 }
+// ── Sync merge logic ─────────────────────────────────────────────────────────
+// A plain Object.assign(S, remoteData) treats sync as "whichever side is newer wins
+// outright", which silently throws away any history the *other* side logged that
+// never made it into that newer snapshot (e.g. a workout logged on the phone while
+// the tablet's copy was the one considered "newer" overall). Instead, every pull
+// merges local and remote as a union: history/log fields are combined and deduped
+// rather than overwritten, so nothing logged on either device is ever lost. Only
+// plain settings-like fields (current week, goals, nutrition target, etc.) use
+// last-writer-wins, since merging "current state" fields doesn't make sense.
+function mergeArrays(a,b){
+  const seen=new Map();
+  [...(a||[]),...(b||[])].forEach(it=>{
+    const key=(it&&typeof it==='object'&&'ts'in it)?'ts:'+it.ts:JSON.stringify(it);
+    if(!seen.has(key))seen.set(key,it);
+  });
+  return Array.from(seen.values()).sort((x,y)=>((x&&x.ts)||0)-((y&&y.ts)||0));
+}
+function mergeKeyedArrays(a={},b={}){ // dict of arrays, e.g. bwLog: {pullup:[...],...}
+  const out={};
+  new Set([...Object.keys(a||{}),...Object.keys(b||{})]).forEach(k=>{out[k]=mergeArrays(a[k],b[k]);});
+  return out;
+}
+function mergePrs(a={},b={}){ // personal records — keep whichever side's is actually heavier/harder
+  const out={...(a||{})};
+  Object.keys(b||{}).forEach(k=>{
+    const bv=b[k],av=out[k];
+    if(!av||bv.weight>av.weight||(bv.weight===av.weight&&bv.reps>av.reps))out[k]=bv;
+  });
+  return out;
+}
+function mergeChallenges(a={},b={}){ // {id:{startedAt,completed,completedAt}}
+  const out={...(a||{})};
+  Object.keys(b||{}).forEach(k=>{
+    const bv=b[k],av=out[k];
+    if(!av){out[k]=bv;return;}
+    if(bv.completed&&!av.completed){out[k]=bv;return;}
+    if(av.completed&&!bv.completed)return; // keep av
+    if(av.completed&&bv.completed){ // both completed — earliest win sticks
+      out[k]=new Date(bv.completedAt)<new Date(av.completedAt)?bv:av;return;
+    }
+    out[k]=new Date(bv.startedAt)<new Date(av.startedAt)?bv:av; // both in-progress — earliest start sticks
+  });
+  return out;
+}
+function mergeCyclingHistory(a={},b={}){ // {week:{days:{day1:{...completedAt}}}}
+  const out={};
+  new Set([...Object.keys(a||{}),...Object.keys(b||{})]).forEach(w=>{
+    const aw=a[w]||{days:{}},bw=b[w]||{days:{}};
+    const days={};
+    new Set([...Object.keys(aw.days||{}),...Object.keys(bw.days||{})]).forEach(d=>{
+      const ad=aw.days[d],bd=bw.days[d];
+      if(!ad){days[d]=bd;return;}
+      if(!bd){days[d]=ad;return;}
+      days[d]=new Date(bd.completedAt)>new Date(ad.completedAt)?bd:ad; // most recently-saved edit wins
+    });
+    out[w]={...aw,...bw,days};
+  });
+  return out;
+}
+function mergeStrLog(a={},b={}){ // {date:{wIdx:{eIdx:[{weight,reps,ts,exName}]}}}
+  const out={};
+  new Set([...Object.keys(a||{}),...Object.keys(b||{})]).forEach(date=>{
+    const aw=a[date]||{},bw=b[date]||{};
+    const wOut={};
+    new Set([...Object.keys(aw),...Object.keys(bw)]).forEach(wIdx=>{
+      const ae=aw[wIdx]||{},be=bw[wIdx]||{};
+      const eOut={};
+      new Set([...Object.keys(ae),...Object.keys(be)]).forEach(eIdx=>{
+        eOut[eIdx]=mergeArrays(ae[eIdx],be[eIdx]);
+      });
+      wOut[wIdx]=eOut;
+    });
+    out[date]=wOut;
+  });
+  return out;
+}
+function mergeByDateLatest(a=[],b=[]){ // one entry per date — newest ts wins on same-day conflicts
+  const byDate=new Map();
+  [...(a||[]),...(b||[])].forEach(it=>{
+    const prev=byDate.get(it.date);
+    if(!prev||(it.ts||0)>(prev.ts||0))byDate.set(it.date,it);
+  });
+  return Array.from(byDate.values()).sort((x,y)=>new Date(x.date)-new Date(y.date));
+}
+const FLAT_LOG_FIELDS=['strHistory','bxHistory','cindyLog','gtgLog','activityLog','beerLog'];
+function mergeStates(local,remote){
+  const newer=(remote.lastModified||0)>=(local.lastModified||0)?remote:local;
+  const merged={...newer}; // settings/current-state fields: take the newer side wholesale
+  FLAT_LOG_FIELDS.forEach(f=>{merged[f]=mergeArrays(local[f],remote[f]);});
+  merged.bodyLog=mergeByDateLatest(local.bodyLog,remote.bodyLog); // one weigh-in per date
+  merged.bwLog=mergeKeyedArrays(local.bwLog,remote.bwLog);
+  merged.prs=mergePrs(local.prs,remote.prs);
+  merged.challenges=mergeChallenges(local.challenges,remote.challenges);
+  merged.history=mergeCyclingHistory(local.history,remote.history);
+  merged.strLog=mergeStrLog(local.strLog,remote.strLog);
+  merged.energyLog={...(remote.energyLog||{}),...(local.energyLog||{})}; // union of days, local wins same-day conflicts
+  merged.nutrition={...(newer.nutrition||{})};
+  const aLog=(local.nutrition||{}).log||{},bLog=(remote.nutrition||{}).log||{};
+  const log={};
+  new Set([...Object.keys(aLog),...Object.keys(bLog)]).forEach(d=>{log[d]=mergeArrays(aLog[d],bLog[d]);});
+  merged.nutrition.log=log;
+  merged.lastModified=Math.max(local.lastModified||0,remote.lastModified||0);
+  return merged;
+}
 async function ghPull(){
   if(!GH.token||!GH.repo){showToast('','Setup needed','Enter your GitHub token and repo in Settings first');return;}
   const parts=GH.repo.split('/');
@@ -3586,20 +3703,21 @@ async function ghPull(){
     const decoded=decodeURIComponent(escape(atob(j.content.replace(/\n/g,''))));
     const data=JSON.parse(decoded);
     if(typeof data.week!=='number')throw new Error('Invalid data file');
-    Object.assign(S,data);
+    Object.assign(S,mergeStates(S,data));
     saveState();render();renderStrength();
     GH.lastSync=new Date().toISOString();recordSyncResult(true);
-    showToast('','Synced from GitHub','Your data has been restored');
+    showToast('','Synced from GitHub','Your data has been merged in — nothing was overwritten');
   }catch(e){
     recordSyncResult(false);
     showToast('','Sync failed',e.message||'Check your token, repo, and file path');
   }
 }
-// Runs once on app load (after the initial local render, so startup isn't blocked
-// on a network call). Fetches the remote file and compares S.lastModified against
-// the remote copy's timestamp — last writer wins: newer remote data gets pulled in
-// and re-rendered, newer local data gets pushed up, and a missing remote file just
-// gets seeded from local. Entirely silent on success/no-op; failures only log.
+// Runs once on app load (after the initial local render, so startup isn't blocked on a
+// network call), and again on every pull-to-refresh / visibility-triggered re-check.
+// Always pulls, merges remote into local as a union (see mergeStates above — no history
+// is ever lost to an overwrite), then pushes the merged result back up so the other
+// device converges too. A missing remote file just gets seeded from local. Entirely
+// silent on success/no-op; failures only log (and feed the sync-warning banner).
 async function autoSyncOnLoad(){
   if(!GH.token||!GH.repo||GH.autoSync===false)return;
   const parts=GH.repo.split('/');
@@ -3616,18 +3734,14 @@ async function autoSyncOnLoad(){
     const decoded=decodeURIComponent(escape(atob(j.content.replace(/\n/g,''))));
     const data=JSON.parse(decoded);
     if(typeof data.week!=='number')return;
-    const remoteMod=data.lastModified||0,localMod=S.lastModified||0;
-    if(remoteMod>localMod){
-      Object.assign(S,data);
-      saveState(true); // skip the auto-push that would otherwise immediately re-send what we just pulled
-      render();renderStrength();
-      GH.lastSync=new Date().toISOString();recordSyncResult(true);
-      showToast('','Synced from GitHub','Newer data found from another device');
-    } else if(localMod>remoteMod){
-      ghPush(true); // this device has unsynced changes — push them up
-    } else {
-      GH.lastSync=new Date().toISOString();recordSyncResult(true);
-    }
+    const merged=mergeStates(S,data);
+    const changed=JSON.stringify(merged)!==JSON.stringify(data); // did local contribute anything remote didn't have?
+    Object.assign(S,merged);
+    saveState(true); // we push explicitly below instead of relying on the debounce
+    render();renderStrength();
+    GH.lastSync=new Date().toISOString();recordSyncResult(true);
+    if(changed)showToast('','Synced','Merged in data from another device');
+    await ghPush(true); // propagate the merged (possibly superset) result back up
   }catch(e){
     recordSyncResult(false);
     console.error('Auto-sync pull failed:',e);
@@ -6935,7 +7049,7 @@ function saveBodyWeight(){
   const dateVal=dateInp?.value;
   const dateKey=dateVal?new Date(dateVal+'T12:00:00').toDateString():strTodayKey();
   S.bodyLog=S.bodyLog.filter(e=>e.date!==dateKey);
-  S.bodyLog.push({date:dateKey,weight:val});
+  S.bodyLog.push({date:dateKey,weight:val,ts:Date.now()});
   S.bodyLog.sort((a,b)=>new Date(a.date)-new Date(b.date));
   if(S.bodyLog.length>90)S.bodyLog=S.bodyLog.slice(-90);
   saveState();renderBodyWeight();
