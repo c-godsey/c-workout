@@ -1330,6 +1330,10 @@ code{font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:10p
       <input class="finput" type="password" id="gh-token-input" placeholder="GitHub token" style="padding:8px 10px" autocomplete="off"/>
       <input class="finput" type="text" id="gh-repo-input" placeholder="owner/repo" style="padding:8px 10px"/>
       <input class="finput" type="text" id="gh-path-input" placeholder="c-workout-data.json" style="padding:8px 10px"/>
+      <label style="display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text2);cursor:pointer">
+        <input type="checkbox" id="gh-autosync-input" checked style="width:16px;height:16px;accent-color:var(--lime)"/>
+        Auto-sync (push after changes, pull on open — no buttons needed)
+      </label>
       <button class="settings-action-btn" onclick="saveGhSettings()" style="align-self:flex-start">Save Settings</button>
       <div style="display:flex;gap:8px;margin-top:4px">
         <button class="settings-action-btn" onclick="ghPush()">↑ Push to GitHub</button>
@@ -3359,7 +3363,7 @@ function renderNutritionTab(){
   updateNutAIToggleUI();
 }
 
-const K={hist:'cw-history',ach:'cw-ach',timers:'cw-timers',week:'cw-week',strlog:'cw-str-log',strhist:'cw-str-hist',bodylog:'cw-body-log',bxhist:'cw-bx-hist',actlog:'cw-act-log',prs:'cw-prs',goals:'cw-goals',strswaps:'cw-str-swaps',plandays:'cw-plan-days',stsweek:'cw-sts-week',stsdone:'cw-sts-done',stscycle:'cw-sts-cycle',strprogram:'cw-str-program',reminders:'cw-reminders',energylog:'cw-energy-log',nutrition:'cw-nutrition',boxwid:'cw-box-workout-id',bwlog:'cw-bw-rep-log',cindylog:'cw-cindy-log',gtglog:'cw-gtg-log',beerlog:'cw-beer-log',beerpref:'cw-beer-pref',challenges:'cw-challenges'};
+const K={hist:'cw-history',ach:'cw-ach',timers:'cw-timers',week:'cw-week',strlog:'cw-str-log',strhist:'cw-str-hist',bodylog:'cw-body-log',bxhist:'cw-bx-hist',actlog:'cw-act-log',prs:'cw-prs',goals:'cw-goals',strswaps:'cw-str-swaps',plandays:'cw-plan-days',stsweek:'cw-sts-week',stsdone:'cw-sts-done',stscycle:'cw-sts-cycle',strprogram:'cw-str-program',reminders:'cw-reminders',energylog:'cw-energy-log',nutrition:'cw-nutrition',boxwid:'cw-box-workout-id',bwlog:'cw-bw-rep-log',cindylog:'cw-cindy-log',gtglog:'cw-gtg-log',beerlog:'cw-beer-log',beerpref:'cw-beer-pref',challenges:'cw-challenges',lastmod:'cw-last-modified'};
 const WORKOUT_DATA={
   phases:[
     {range:[1,13],name:"Foundation",focus:"Building aerobic base and pedal stroke efficiency."},
@@ -3471,6 +3475,7 @@ let S={
   strLogWeight:135,strLogReps:5,strLogExIdx:0,
   strAnalyticsOpen:false,
   strProgram:'pulldip',
+  lastModified:0,
   reminders:{enabled:false,thresholdDays:3,lastNotified:null},
   energyLog:{},
   nutrition:{goal:2200,log:{},recents:{},useAI:true},
@@ -3488,18 +3493,29 @@ let S={
 };
 
 // ── GitHub Cloud Sync (token kept separate from S so it never leaks into Export/Import backups) ──
-let GH={token:'',repo:'',path:'c-workout-data.json',lastSync:null};
+// Auto-sync: saveState() debounces a background push after every change; app load
+// kicks off autoSyncOnLoad() which pulls in the background and resolves conflicts
+// by comparing S.lastModified timestamps (last writer wins) — see autoSyncOnLoad().
+let GH={token:'',repo:'',path:'c-workout-data.json',lastSync:null,autoSync:true};
 function loadGhConfig(){
   try{const g=JSON.parse(localStorage.getItem('cw-gh-config')||'{}');GH={...GH,...g};}catch{}
 }
 function saveGhConfig(){
   try{localStorage.setItem('cw-gh-config',JSON.stringify(GH));}catch{}
 }
-async function ghPush(){
-  if(!GH.token||!GH.repo){showToast('','Setup needed','Enter your GitHub token and repo in Settings first');return;}
+let ghAutoPushTimer=null;
+function scheduleGhAutoPush(){
+  if(!GH.token||!GH.repo||GH.autoSync===false)return;
+  if(ghAutoPushTimer)clearTimeout(ghAutoPushTimer);
+  ghAutoPushTimer=setTimeout(()=>{ghPush(true);},4000);
+}
+// auto=true marks a background sync — suppresses toasts so it doesn't interrupt
+// whatever the user's doing; failures are logged to console instead.
+async function ghPush(auto){
+  if(!GH.token||!GH.repo){if(!auto)showToast('','Setup needed','Enter your GitHub token and repo in Settings first');return;}
   const parts=GH.repo.split('/');
   const owner=parts[0],repoName=parts[1];
-  if(!owner||!repoName){showToast('','Invalid repo','Use the format owner/repo-name');return;}
+  if(!owner||!repoName){if(!auto)showToast('','Invalid repo','Use the format owner/repo-name');return;}
   const apiUrl=`https://api.github.com/repos/${owner}/${repoName}/contents/${GH.path}`;
   try{
     let sha=null;
@@ -3511,9 +3527,10 @@ async function ghPush(){
     const putRes=await fetch(apiUrl,{method:'PUT',headers:{Authorization:`Bearer ${GH.token}`,Accept:'application/vnd.github+json','Content-Type':'application/json'},body:JSON.stringify(body)});
     if(!putRes.ok){const err=await putRes.json().catch(()=>({}));throw new Error(err.message||`HTTP ${putRes.status}`);}
     GH.lastSync=new Date().toISOString();saveGhConfig();updateSyncStatusUI();
-    showToast('','Synced to GitHub','Your data has been pushed');
+    if(!auto)showToast('','Synced to GitHub','Your data has been pushed');
   }catch(e){
-    showToast('','Sync failed',e.message||'Check your token and repo settings');
+    if(!auto)showToast('','Sync failed',e.message||'Check your token and repo settings');
+    else console.error('Auto-sync push failed:',e);
   }
 }
 async function ghPull(){
@@ -3540,23 +3557,67 @@ async function ghPull(){
     showToast('','Sync failed',e.message||'Check your token, repo, and file path');
   }
 }
+// Runs once on app load (after the initial local render, so startup isn't blocked
+// on a network call). Fetches the remote file and compares S.lastModified against
+// the remote copy's timestamp — last writer wins: newer remote data gets pulled in
+// and re-rendered, newer local data gets pushed up, and a missing remote file just
+// gets seeded from local. Entirely silent on success/no-op; failures only log.
+async function autoSyncOnLoad(){
+  if(!GH.token||!GH.repo||GH.autoSync===false)return;
+  const parts=GH.repo.split('/');
+  const owner=parts[0],repoName=parts[1];
+  if(!owner||!repoName)return;
+  const apiUrl=`https://api.github.com/repos/${owner}/${repoName}/contents/${GH.path}`;
+  try{
+    const res=await fetch(apiUrl,{headers:{Authorization:`Bearer ${GH.token}`,Accept:'application/vnd.github+json'}});
+    if(!res.ok){
+      if(res.status===404)ghPush(true); // nothing pushed yet — seed it from this device
+      return;
+    }
+    const j=await res.json();
+    const decoded=decodeURIComponent(escape(atob(j.content.replace(/\n/g,''))));
+    const data=JSON.parse(decoded);
+    if(typeof data.week!=='number')return;
+    const remoteMod=data.lastModified||0,localMod=S.lastModified||0;
+    if(remoteMod>localMod){
+      Object.assign(S,data);
+      saveState(true); // skip the auto-push that would otherwise immediately re-send what we just pulled
+      render();renderStrength();
+      GH.lastSync=new Date().toISOString();saveGhConfig();updateSyncStatusUI();
+      showToast('','Synced from GitHub','Newer data found from another device');
+    } else if(localMod>remoteMod){
+      ghPush(true); // this device has unsynced changes — push them up
+    } else {
+      GH.lastSync=new Date().toISOString();saveGhConfig();updateSyncStatusUI();
+    }
+  }catch(e){
+    console.error('Auto-sync pull failed:',e);
+  }
+}
 function saveGhSettings(){
   const tok=document.getElementById('gh-token-input')?.value.trim();
   const repo=document.getElementById('gh-repo-input')?.value.trim();
   const path=document.getElementById('gh-path-input')?.value.trim()||'c-workout-data.json';
-  GH.token=tok||'';GH.repo=repo||'';GH.path=path;
+  const autoSync=document.getElementById('gh-autosync-input')?.checked;
+  GH.token=tok||'';GH.repo=repo||'';GH.path=path;GH.autoSync=autoSync!==false;
   saveGhConfig();
   showToast('','Settings saved','GitHub sync is configured');
+  if(GH.autoSync) autoSyncOnLoad(); // kick off an immediate sync so the new settings take effect right away
 }
 function updateSyncStatusUI(){
   const statusEl=document.getElementById('gh-sync-status');
-  if(statusEl) statusEl.textContent=GH.lastSync?`Last synced ${new Date(GH.lastSync).toLocaleString()}`:'Never synced';
+  if(statusEl){
+    const base=GH.lastSync?`Last synced ${new Date(GH.lastSync).toLocaleString()}`:'Never synced';
+    statusEl.textContent=GH.token&&GH.repo?`${base} · Auto-sync ${GH.autoSync===false?'off':'on'}`:base;
+  }
   const tokInp=document.getElementById('gh-token-input');
   if(tokInp&&!tokInp.value) tokInp.value=GH.token;
   const repoInp=document.getElementById('gh-repo-input');
   if(repoInp&&!repoInp.value) repoInp.value=GH.repo;
   const pathInp=document.getElementById('gh-path-input');
   if(pathInp&&!pathInp.value) pathInp.value=GH.path;
+  const autoInp=document.getElementById('gh-autosync-input');
+  if(autoInp) autoInp.checked=GH.autoSync!==false;
 }
 
 // Boxing timer
@@ -3600,8 +3661,9 @@ function loadState(){
   try{S.beerLog=JSON.parse(localStorage.getItem(K.beerlog)||'[]');}catch{}
   try{S.beerPrefType=localStorage.getItem(K.beerpref)||'lager';}catch{S.beerPrefType='lager';}
   try{S.challenges=JSON.parse(localStorage.getItem(K.challenges)||'{}');}catch{S.challenges={};}
+  try{S.lastModified=parseInt(localStorage.getItem(K.lastmod)||'0')||0;}catch{S.lastModified=0;}
 }
-function saveState(){
+function saveState(skipAutoPush){
   try{
     localStorage.setItem(K.hist,JSON.stringify(S.history));
     localStorage.setItem(K.ach,JSON.stringify(S.achievements));
@@ -3630,7 +3692,10 @@ function saveState(){
     localStorage.setItem(K.beerlog,JSON.stringify(S.beerLog));
     localStorage.setItem(K.beerpref,S.beerPrefType);
     localStorage.setItem(K.challenges,JSON.stringify(S.challenges));
+    S.lastModified=Date.now();
+    localStorage.setItem(K.lastmod,String(S.lastModified));
   }catch{}
+  if(!skipAutoPush) scheduleGhAutoPush();
 }
 
 // ── Video Mode (push the page down for a YouTube video) ────────────────────────
@@ -7316,6 +7381,7 @@ const incompleteDays=DAYS.filter(d=>!isDayDone(S.week,d));
 if(incompleteDays.length)S.activeDay=incompleteDays[0];
 render();resetBoxingTimer();initSwipe();
 switchWorkoutTab('plan');
+autoSyncOnLoad(); // background pull/push against GitHub — doesn't block the initial render above
 
 // ── Guided Workout ────────────────────────────────────────────────────────────
 const GW={active:false,exIdx:0,restIv:null,restSecs:0,restTotal:0,restEndTime:0,startTime:0};
