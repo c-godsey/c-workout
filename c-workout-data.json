@@ -230,6 +230,12 @@
             "reps": 3,
             "ts": 1791145360065,
             "exName": "Weighted Pull-Up"
+          },
+          {
+            "weight": 15,
+            "reps": 3,
+            "ts": 1791145474898,
+            "exName": "Weighted Pull-Up"
           }
         ]
       }
@@ -252,7 +258,7 @@
   "strLogExIdx": 0,
   "strAnalyticsOpen": false,
   "strProgram": "pulldip",
-  "lastModified": 1791145360066,
+  "lastModified": 1791145474898,
   "reminders": {
     "enabled": false,
     "thresholdDays": 3,
