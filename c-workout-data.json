@@ -222,56 +222,7 @@
     }
   },
   "strLog": {
-    "Sun Oct 04 2026": {
-      "1": {
-        "0": [
-          {
-            "weight": 10,
-            "reps": 3,
-            "ts": 1791145099691,
-            "exName": "Weighted Pull-Up"
-          },
-          {
-            "weight": 15,
-            "reps": 3,
-            "ts": 1791145360065,
-            "exName": "Weighted Pull-Up"
-          },
-          {
-            "weight": 15,
-            "reps": 3,
-            "ts": 1791145474898,
-            "exName": "Weighted Pull-Up"
-          },
-          {
-            "weight": 15,
-            "reps": 3,
-            "ts": 1791145559943,
-            "exName": "Weighted Pull-Up"
-          }
-        ],
-        "1": [
-          {
-            "weight": 0,
-            "reps": 5,
-            "ts": 1791145899026,
-            "exName": "Weighted Dip"
-          },
-          {
-            "weight": 0,
-            "reps": 5,
-            "ts": 1791145923720,
-            "exName": "Weighted Dip"
-          },
-          {
-            "weight": 0,
-            "reps": 5,
-            "ts": 1791145966501,
-            "exName": "Weighted Dip"
-          }
-        ]
-      }
-    }
+    "Sun Oct 04 2026": {}
   },
   "strHistory": [
     {
@@ -282,6 +233,15 @@
       "mins": 45,
       "ts": 1790969553527,
       "backdated": true
+    },
+    {
+      "date": "Sun Oct 04 2026",
+      "wIdx": 1,
+      "title": "Day B: Strength",
+      "totalSets": 8,
+      "ts": 1791146012229,
+      "stsWeek": 1,
+      "stsCycle": 1
     }
   ],
   "strSwaps": {},
@@ -290,7 +250,7 @@
   "strLogExIdx": 0,
   "strAnalyticsOpen": false,
   "strProgram": "pulldip",
-  "lastModified": 1791145966501,
+  "lastModified": 1791146012230,
   "reminders": {
     "enabled": false,
     "thresholdDays": 3,
@@ -351,6 +311,12 @@
       "source": "cycling",
       "kcal": 150,
       "ts": 1790973810812
+    },
+    {
+      "date": "Sun Oct 04 2026",
+      "source": "strength",
+      "kcal": 56,
+      "ts": 1791146012229
     }
   ],
   "beerPrefType": "lager",
