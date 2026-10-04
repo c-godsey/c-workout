@@ -2,7 +2,7 @@
   "week": 4,
   "activeDay": "day1",
   "activeBoxingWorkoutId": 1,
-  "activeStrengthWorkout": 0,
+  "activeStrengthWorkout": 1,
   "activeWorkoutTab": "cycling",
   "planDays": [
     {
@@ -225,8 +225,8 @@
   "strLogReps": 5,
   "strLogExIdx": 0,
   "strAnalyticsOpen": false,
-  "strProgram": "sts",
-  "lastModified": 1791129002420,
+  "strProgram": "pulldip",
+  "lastModified": 1791129004298,
   "reminders": {
     "enabled": false,
     "thresholdDays": 3,
