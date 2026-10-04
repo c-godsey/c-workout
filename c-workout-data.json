@@ -262,6 +262,12 @@
             "reps": 5,
             "ts": 1791145923720,
             "exName": "Weighted Dip"
+          },
+          {
+            "weight": 0,
+            "reps": 5,
+            "ts": 1791145966501,
+            "exName": "Weighted Dip"
           }
         ]
       }
@@ -284,7 +290,7 @@
   "strLogExIdx": 0,
   "strAnalyticsOpen": false,
   "strProgram": "pulldip",
-  "lastModified": 1791145923721,
+  "lastModified": 1791145966501,
   "reminders": {
     "enabled": false,
     "thresholdDays": 3,
