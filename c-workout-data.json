@@ -213,6 +213,12 @@
       "reps": 3,
       "date": "Sun Oct 04 2026",
       "wTitle": "Day B: Strength"
+    },
+    "Weighted Dip": {
+      "weight": 0,
+      "reps": 5,
+      "date": "Sun Oct 04 2026",
+      "wTitle": "Day B: Strength"
     }
   },
   "strLog": {
@@ -243,6 +249,14 @@
             "ts": 1791145559943,
             "exName": "Weighted Pull-Up"
           }
+        ],
+        "1": [
+          {
+            "weight": 0,
+            "reps": 5,
+            "ts": 1791145899026,
+            "exName": "Weighted Dip"
+          }
         ]
       }
     }
@@ -259,12 +273,12 @@
     }
   ],
   "strSwaps": {},
-  "strLogWeight": 15,
-  "strLogReps": 3,
+  "strLogWeight": 0,
+  "strLogReps": 5,
   "strLogExIdx": 0,
   "strAnalyticsOpen": false,
   "strProgram": "pulldip",
-  "lastModified": 1791145857271,
+  "lastModified": 1791145899026,
   "reminders": {
     "enabled": false,
     "thresholdDays": 3,
