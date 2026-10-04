@@ -226,7 +226,7 @@
   "strLogExIdx": 0,
   "strAnalyticsOpen": false,
   "strProgram": "sts",
-  "lastModified": 1790973810812,
+  "lastModified": 1791093604898,
   "reminders": {
     "enabled": false,
     "thresholdDays": 3,
@@ -301,5 +301,5 @@
     "comboTarget": 3
   },
   "morningType": "cycling",
-  "streak": 1
+  "streak": 2
 }
