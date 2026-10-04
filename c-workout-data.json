@@ -207,8 +207,28 @@
     "prs": false
   },
   "modalRpe": 0,
-  "prs": {},
-  "strLog": {},
+  "prs": {
+    "Weighted Pull-Up": {
+      "weight": 10,
+      "reps": 3,
+      "date": "Sun Oct 04 2026",
+      "wTitle": "Day B: Strength"
+    }
+  },
+  "strLog": {
+    "Sun Oct 04 2026": {
+      "1": {
+        "0": [
+          {
+            "weight": 10,
+            "reps": 3,
+            "ts": 1791145099691,
+            "exName": "Weighted Pull-Up"
+          }
+        ]
+      }
+    }
+  },
   "strHistory": [
     {
       "date": "Thu Oct 01 2026",
@@ -221,12 +241,12 @@
     }
   ],
   "strSwaps": {},
-  "strLogWeight": 135,
-  "strLogReps": 5,
+  "strLogWeight": 10,
+  "strLogReps": 3,
   "strLogExIdx": 0,
   "strAnalyticsOpen": false,
   "strProgram": "pulldip",
-  "lastModified": 1791145093958,
+  "lastModified": 1791145099692,
   "reminders": {
     "enabled": false,
     "thresholdDays": 3,
