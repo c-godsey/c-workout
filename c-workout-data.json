@@ -3,7 +3,7 @@
   "activeDay": "day1",
   "activeBoxingWorkoutId": 1,
   "activeStrengthWorkout": 1,
-  "activeWorkoutTab": "cycling",
+  "activeWorkoutTab": "nutrition",
   "planDays": [
     {
       "type": "rest",
@@ -250,7 +250,7 @@
   "strLogExIdx": 0,
   "strAnalyticsOpen": false,
   "strProgram": "pulldip",
-  "lastModified": 1791222640664,
+  "lastModified": 1791222700700,
   "reminders": {
     "enabled": false,
     "thresholdDays": 3,
@@ -261,8 +261,42 @@
   },
   "nutrition": {
     "goal": 2200,
-    "log": {},
-    "recents": {},
+    "log": {
+      "Mon Oct 05 2026": [
+        {
+          "name": "Shredded Chicken Breast In Light Broth",
+          "kcal": 210,
+          "grams": 150,
+          "per100": 140,
+          "ts": 1791222700700
+        },
+        {
+          "name": "Quinoa With Minced Vegetables",
+          "kcal": 160,
+          "grams": 130,
+          "per100": 123,
+          "ts": 1791222700700
+        }
+      ]
+    },
+    "recents": {
+      "shredded chicken breast in light broth": {
+        "name": "Shredded Chicken Breast In Light Broth",
+        "kcal": 210,
+        "grams": 150,
+        "per100": 140,
+        "count": 1,
+        "last": 1791222700700
+      },
+      "quinoa with minced vegetables": {
+        "name": "Quinoa With Minced Vegetables",
+        "kcal": 160,
+        "grams": 130,
+        "per100": 123,
+        "count": 1,
+        "last": 1791222700701
+      }
+    },
     "useAI": true
   },
   "stsWeek": 1,
