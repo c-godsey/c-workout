@@ -293,6 +293,12 @@
             "reps": 9,
             "ts": 1791322544908,
             "exName": "Dip"
+          },
+          {
+            "weight": 0,
+            "reps": 10,
+            "ts": 1791322667405,
+            "exName": "Dip"
           }
         ]
       }
@@ -320,11 +326,11 @@
   ],
   "strSwaps": {},
   "strLogWeight": 0,
-  "strLogReps": 9,
+  "strLogReps": 10,
   "strLogExIdx": 0,
   "strAnalyticsOpen": false,
   "strProgram": "pulldip",
-  "lastModified": 1791322544910,
+  "lastModified": 1791322667406,
   "reminders": {
     "enabled": false,
     "thresholdDays": 3,
