@@ -3,7 +3,7 @@
   "activeDay": "day1",
   "activeBoxingWorkoutId": 1,
   "activeStrengthWorkout": 1,
-  "activeWorkoutTab": "nutrition",
+  "activeWorkoutTab": "cycling",
   "planDays": [
     {
       "type": "rest",
@@ -250,7 +250,7 @@
   "strLogExIdx": 0,
   "strAnalyticsOpen": false,
   "strProgram": "pulldip",
-  "lastModified": 1791302601405,
+  "lastModified": 1791304306470,
   "reminders": {
     "enabled": false,
     "thresholdDays": 3,
@@ -304,6 +304,13 @@
       "ts": 1790973810743,
       "videoId": "ug_1R9oiNvo",
       "title": "On & Off Varied Intensity"
+    },
+    {
+      "date": "Tue Oct 06 2026",
+      "type": "cycling",
+      "ts": 1791304306432,
+      "videoId": "Xor3DLlUwDk",
+      "title": "Emily's Short Mix"
     }
   ],
   "bwLog": {
@@ -344,6 +351,12 @@
       "source": "strength",
       "kcal": 56,
       "ts": 1791146012229
+    },
+    {
+      "date": "Tue Oct 06 2026",
+      "source": "cycling",
+      "kcal": 150,
+      "ts": 1791304306470
     }
   ],
   "beerPrefType": "lager",
