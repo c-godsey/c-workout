@@ -250,7 +250,7 @@
   "strLogExIdx": 0,
   "strAnalyticsOpen": false,
   "strProgram": "pulldip",
-  "lastModified": 1791222700700,
+  "lastModified": 1791302316849,
   "reminders": {
     "enabled": false,
     "thresholdDays": 3,
@@ -268,13 +268,6 @@
           "kcal": 210,
           "grams": 150,
           "per100": 140,
-          "ts": 1791222700700
-        },
-        {
-          "name": "Quinoa With Minced Vegetables",
-          "kcal": 160,
-          "grams": 130,
-          "per100": 123,
           "ts": 1791222700700
         }
       ]
@@ -365,5 +358,5 @@
     "comboTarget": 3
   },
   "morningType": "cycling",
-  "streak": 1
+  "streak": 0
 }
