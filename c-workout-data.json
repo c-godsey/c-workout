@@ -243,6 +243,12 @@
       "reps": 15,
       "date": "Tue Oct 06 2026",
       "wTitle": "Day C: Density"
+    },
+    "Biceps Curl": {
+      "weight": 40,
+      "reps": 12,
+      "date": "Tue Oct 06 2026",
+      "wTitle": "Day C: Density"
     }
   },
   "strLog": {
@@ -358,6 +364,14 @@
             "ts": 1791323407968,
             "exName": "Lateral Raise"
           }
+        ],
+        "5": [
+          {
+            "weight": 40,
+            "reps": 12,
+            "ts": 1791323649200,
+            "exName": "Biceps Curl"
+          }
         ]
       }
     }
@@ -383,12 +397,12 @@
     }
   ],
   "strSwaps": {},
-  "strLogWeight": 10,
-  "strLogReps": 15,
+  "strLogWeight": 40,
+  "strLogReps": 12,
   "strLogExIdx": 0,
   "strAnalyticsOpen": false,
   "strProgram": "pulldip",
-  "lastModified": 1791323407969,
+  "lastModified": 1791323649201,
   "reminders": {
     "enabled": false,
     "thresholdDays": 3,
