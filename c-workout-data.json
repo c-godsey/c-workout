@@ -250,7 +250,7 @@
   "strLogExIdx": 0,
   "strAnalyticsOpen": false,
   "strProgram": "pulldip",
-  "lastModified": 1791309802320,
+  "lastModified": 1791309812642,
   "reminders": {
     "enabled": false,
     "thresholdDays": 3,
@@ -271,22 +271,7 @@
           "ts": 1791222700700
         }
       ],
-      "Tue Oct 06 2026": [
-        {
-          "name": "LOW FAT COTTAGE CHEESE",
-          "kcal": 249,
-          "grams": 283,
-          "per100": 88,
-          "ts": 1791309103756
-        },
-        {
-          "name": "CORE POWER High Protein Milk Shake Chocolate",
-          "kcal": 230,
-          "grams": 414,
-          "per100": 56,
-          "ts": 1791309452784
-        }
-      ]
+      "Tue Oct 06 2026": []
     },
     "recents": {
       "shredded chicken breast in light broth": {
