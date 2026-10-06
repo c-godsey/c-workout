@@ -377,6 +377,12 @@
             "reps": 12,
             "ts": 1791323649200,
             "exName": "Biceps Curl"
+          },
+          {
+            "weight": 40,
+            "reps": 12,
+            "ts": 1791323880043,
+            "exName": "Biceps Curl"
           }
         ],
         "6": [
@@ -384,6 +390,12 @@
             "weight": 35,
             "reps": 12,
             "ts": 1791323717287,
+            "exName": "Triceps Skull Crusher"
+          },
+          {
+            "weight": 35,
+            "reps": 12,
+            "ts": 1791323881122,
             "exName": "Triceps Skull Crusher"
           }
         ]
@@ -416,7 +428,7 @@
   "strLogExIdx": 0,
   "strAnalyticsOpen": false,
   "strProgram": "pulldip",
-  "lastModified": 1791323717288,
+  "lastModified": 1791323881122,
   "reminders": {
     "enabled": false,
     "thresholdDays": 3,
