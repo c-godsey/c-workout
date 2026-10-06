@@ -2,7 +2,7 @@
   "week": 4,
   "activeDay": "day1",
   "activeBoxingWorkoutId": 1,
-  "activeStrengthWorkout": 1,
+  "activeStrengthWorkout": 0,
   "activeWorkoutTab": "plan",
   "planDays": [
     {
@@ -245,12 +245,12 @@
     }
   ],
   "strSwaps": {},
-  "strLogWeight": 0,
+  "strLogWeight": 135,
   "strLogReps": 5,
   "strLogExIdx": 0,
   "strAnalyticsOpen": false,
   "strProgram": "pulldip",
-  "lastModified": 1791310272723,
+  "lastModified": 1791313011835,
   "reminders": {
     "enabled": false,
     "thresholdDays": 3,
@@ -260,7 +260,7 @@
     "Tue Jul 21 2026": "low"
   },
   "nutrition": {
-    "goal": 2200,
+    "goal": 1914,
     "log": {
       "Mon Oct 05 2026": [
         {
@@ -361,7 +361,15 @@
         "fi": 2.4
       }
     },
-    "useAI": true
+    "useAI": true,
+    "goals": {
+      "kcal": 1914,
+      "protein": 239,
+      "carbs": 96,
+      "fat": 64,
+      "fiber": 27,
+      "water": 137
+    }
   },
   "stsWeek": 1,
   "stsDone": {},
