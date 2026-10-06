@@ -250,7 +250,7 @@
   "strLogExIdx": 0,
   "strAnalyticsOpen": false,
   "strProgram": "pulldip",
-  "lastModified": 1791318409435,
+  "lastModified": 1791318420988,
   "reminders": {
     "enabled": false,
     "thresholdDays": 3,
@@ -494,7 +494,12 @@
   "beerPrefType": "lager",
   "challenges": {},
   "wellness": {
-    "water": {},
+    "water": {
+      "Tue Oct 06 2026": {
+        "oz": 32,
+        "ts": 1791318420988
+      }
+    },
     "sleep": {
       "Tue Oct 06 2026": {
         "hrs": 7,
