@@ -250,7 +250,7 @@
   "strLogExIdx": 0,
   "strAnalyticsOpen": false,
   "strProgram": "pulldip",
-  "lastModified": 1791309287550,
+  "lastModified": 1791309452784,
   "reminders": {
     "enabled": false,
     "thresholdDays": 3,
@@ -278,6 +278,13 @@
           "grams": 113,
           "per100": 88,
           "ts": 1791309103756
+        },
+        {
+          "name": "CORE POWER High Protein Milk Shake Chocolate",
+          "kcal": 230,
+          "grams": 414,
+          "per100": 56,
+          "ts": 1791309452784
         }
       ]
     },
@@ -305,6 +312,14 @@
         "per100": 88,
         "count": 1,
         "last": 1791309103756
+      },
+      "core power high protein milk shake chocolate": {
+        "name": "CORE POWER High Protein Milk Shake Chocolate",
+        "kcal": 230,
+        "grams": 414,
+        "per100": 56,
+        "count": 1,
+        "last": 1791309452784
       }
     },
     "useAI": true
