@@ -15,7 +15,7 @@
 <style>
 :root{
   /* ── Base (warm dark) ── */
-  --bg:#120b06;--surface:#1d130a;--surface2:#26190d;--border:#3a2410;
+  --bg:#0b0b0b;--surface:#1a1a1a;--surface2:#242424;--border:#2e2e2e;
   /* ── Technical Accents ── */
   --accent:#ff6a1a;--accent-dim:#b8440d;
   --blue:#8ECAE6;
@@ -23,14 +23,14 @@
   --green:#ff6a1a;
   --red:#e63946;
   /* ── Typography ── */
-  --text:#F5F5FA;--text2:#DDDDE8;--dim:#a08a7c;--dim2:#846d5f;
+  --text:#F2F2F2;--text2:#DDDDDD;--dim:#9a9a9a;--dim2:#767676;
   /* ── Amber (formerly "Lime") ── */
   --lime:#ff6a1a;--lime-dim:#b8440d;--lime-glow:rgba(255,106,26,.14);
   --gold:#ffb347;
   --amber-gradient:linear-gradient(90deg,var(--gold),var(--lime));
   /* ── Elevation ── */
   --glass:rgba(255,255,255,.025);--glass-border:rgba(255,255,255,.06);
-  --card-shadow:0 4px 24px rgba(0,0,0,.55);
+  --card-shadow:none;
   --r:6px;
   /* ── Bottom Nav ── */
   --bnav-h:64px;
@@ -38,8 +38,7 @@
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{background:var(--bg);color:var(--text);font-family:'Montserrat',-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh}
 body{position:relative}
-body::before{content:'';position:fixed;top:-8%;right:-18%;width:65vw;height:65vw;max-width:520px;max-height:520px;background:radial-gradient(circle,rgba(255,122,26,.22),transparent 70%);border-radius:50%;pointer-events:none;z-index:0}
-body::after{content:'';position:fixed;bottom:-14%;left:-18%;width:65vw;height:65vw;max-width:520px;max-height:520px;background:radial-gradient(circle,rgba(255,90,20,.16),transparent 70%);border-radius:50%;pointer-events:none;z-index:0}
+/* flat theme: no ambient glow blobs */
 .app{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:0 20px calc(var(--bnav-h) + env(safe-area-inset-bottom) + 24px);padding-left:max(20px,env(safe-area-inset-left));padding-right:max(20px,env(safe-area-inset-right))}
 /* Pull-to-refresh: sits above the app content, fixed under the status bar, and is
    translated into view by JS as the user drags down from the top of the page. */
@@ -64,7 +63,7 @@ body::after{content:'';position:fixed;bottom:-14%;left:-18%;width:65vw;height:65
 .wcard-log-btn:active,.gw-log-btn:active,.str-complete-btn:active,.str-confirm-btn:active,.btn-icon:active,.bnav-item:active,.phase-btn:active,.day-tab:active,.topbar-settings-btn:active,.plan-today-start:active,.plan-save-btn:active{transform:scale(.94)}
 
 /* ── TOP BAR ─────────────────────────────────────── */
-.topbar{display:flex;align-items:center;justify-content:space-between;padding:20px 20px 8px;margin:0 -20px 0;gap:10px;position:sticky;top:0;z-index:30;background:rgba(18,11,6,.68);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:20px 20px 8px;margin:0 -20px 0;gap:10px;position:sticky;top:0;z-index:30;background:rgba(11,11,11,.92);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)}
 .topbar-left{display:flex;flex-direction:column;gap:2px}
 .topbar-logo{font-size:16px;font-weight:900;letter-spacing:3px;text-transform:uppercase;color:var(--text);line-height:1}
 .topbar-logo span{background:var(--amber-gradient);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
@@ -130,7 +129,7 @@ body.pip-mode .pip-mask{display:block}
 .bnav-label{font-size:10px;font-weight:700;letter-spacing:.2px;line-height:1}
 
 /* ── GENERIC CARD ────────────────────────────────── */
-.card{background:var(--surface);border-radius:18px;margin-top:28px;overflow:hidden;box-shadow:var(--card-shadow)}
+.card{background:var(--surface);border-radius:10px;margin-top:28px;overflow:hidden;box-shadow:var(--card-shadow)}
 .tab-content{display:none}.tab-content.active{display:block}
 .btn-icon{background:var(--surface2);border:1px solid var(--border);color:var(--text);width:40px;height:40px;border-radius:14px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0}
 .btn-icon:hover{background:var(--border);border-color:var(--lime)}.btn-icon:disabled{opacity:.3;cursor:default}
@@ -542,6 +541,12 @@ body.pip-mode .pip-mask{display:block}
 .gw-inputs{display:grid;grid-template-columns:1fr 1px 1fr;background:var(--surface);border-radius:16px;border:1px solid var(--border);overflow:hidden;margin-bottom:12px}
 .gw-input-sep{background:var(--border);align-self:stretch}
 .gw-input-grp{display:flex;flex-direction:column;align-items:center;gap:6px;padding:18px 10px}
+.gw-stepper{display:flex;gap:10px;margin-top:6px}
+.gw-stepper button{width:52px;height:44px;border-radius:8px;border:none;background:var(--surface2);color:var(--lime);font-size:26px;font-weight:500;line-height:1;cursor:pointer;font-family:inherit}
+.gw-stepper button:active{transform:scale(.94)}
+.gw-upnext{display:flex;justify-content:space-between;align-items:center;margin-top:18px;background:var(--surface);border-radius:8px;padding:12px 14px}
+.gw-upnext-lbl{font-size:10px;color:var(--dim);text-transform:uppercase;letter-spacing:1px}
+.gw-upnext-name{font-size:14px;font-weight:600;margin-top:2px}
 .gw-input-lbl{font-size:9px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--dim)}
 .gw-input{background:transparent;border:none;outline:none;width:100%;text-align:center;font-family:inherit;font-size:52px;font-weight:900;color:var(--text);-moz-appearance:textfield;line-height:1}
 .gw-input::-webkit-outer-spin-button,.gw-input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
@@ -1073,17 +1078,26 @@ code{font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:10p
 .plan-stat-row{display:none}
 .plan-stat-card{display:none}
 /* ── Home hero card (Hero Focus layout) ─────────────── */
-.home-hero{border-radius:20px;padding:24px 22px;margin-top:20px;background:linear-gradient(160deg,#ff8a3d,#b8440d);position:relative;overflow:hidden}
-.home-hero-eyebrow{font-size:11px;font-weight:800;letter-spacing:2px;color:rgba(255,255,255,.85)}
-.home-hero-title{font-size:24px;font-weight:800;margin-top:6px;line-height:1.2;color:#fff}
-.home-hero-sub{font-size:12px;color:rgba(255,255,255,.85);margin-top:4px}
-.home-hero-cta{margin-top:16px;width:100%;padding:14px;border:none;border-radius:12px;background:#120b06;color:#ffb347;font-size:13px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;transition:transform .12s}
-.home-hero-cta:active{transform:scale(.96)}
-.home-hero-meta{margin-top:12px;font-size:11px;color:rgba(255,255,255,.75)}
+.home-hero{border-radius:10px;padding:20px 18px;margin-top:20px;background:var(--surface);position:relative;overflow:hidden}
+.home-hero-eyebrow{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--dim)}
+.home-hero-title{font-size:22px;font-weight:700;margin-top:6px;line-height:1.2;color:var(--text)}
+.home-hero-sub{font-size:12px;color:var(--dim);margin-top:4px}
+.home-hero-cta{margin-top:16px;width:100%;padding:14px;border:none;border-radius:8px;background:var(--lime);color:#0b0b0b;font-size:13px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;cursor:pointer;transition:transform .12s}
+.home-hero-cta:active{transform:scale(.97)}
+.home-hero-meta{margin-top:12px;font-size:11px;color:var(--dim)}
+/* ── Flat menu rows (Home) ── */
+.menu-row{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--surface);border-radius:8px;padding:16px;margin-top:8px;cursor:pointer;border:none;width:100%;text-align:left;color:var(--text);font-family:inherit;transition:background .15s}
+.menu-row:active{background:var(--surface2)}
+.menu-row-title{font-size:14px;font-weight:600}
+.menu-row-sub{font-size:11px;color:var(--dim);margin-top:3px}
+.menu-row-chev{color:var(--dim2);font-size:20px;line-height:1}
 /* ── Horizontal scroll chip row (replaces stacked stat grids) ── */
 .chip-scroll-row{display:flex;gap:10px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;margin-bottom:0}
 .chip-scroll-row::-webkit-scrollbar{display:none}
 .chip-scroll-row>.prog-stat-card{flex:0 0 auto;min-width:84px}
+/* auto margins center the chips when they fit, and still let them scroll from the left edge when they don't */
+.chip-scroll-row>:first-child{margin-left:auto}
+.chip-scroll-row>:last-child{margin-right:auto}
 /* ── PLAN DASHBOARD ──────────────────────────────── */
 .plan-header{padding:4px 0 18px}
 .plan-header-eyebrow{font-size:12px;font-weight:600;color:var(--dim);margin-bottom:6px}
@@ -1160,6 +1174,20 @@ code{font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:10p
 .nut-cal-bar-fill{height:100%;background:var(--lime);border-radius:3px;transition:width .3s}
 .nut-cal-bar-fill.over{background:var(--red)}
 .nut-cal-ring-row{display:flex;align-items:center;gap:20px}
+.mac-card{padding:18px 16px}
+.mac-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:14px;gap:8px}
+.mac-title{font-size:10px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:var(--dim)}
+.mac-kcal{font-size:11px;color:var(--dim)}.mac-kcal b{color:var(--text);font-size:13px}
+.mac-row{display:flex;justify-content:space-around;gap:6px}
+.mac-item{display:flex;flex-direction:column;align-items:center;gap:6px;flex:1}
+.mac-ring{line-height:0}
+.mac-val{font-size:14px;font-weight:800;color:var(--text)}.mac-val span{font-size:10px;font-weight:600;color:var(--dim)}
+.mac-lbl{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--dim)}
+.mac-fiber{display:flex;align-items:center;gap:10px;margin-top:16px;font-size:11px;color:var(--dim)}
+.mac-fbar{flex:1;height:6px;background:var(--surface2);border-radius:3px;overflow:hidden}.mac-fbar i{display:block;height:100%;background:var(--accent)}
+.mac-note{font-size:10.5px;color:var(--dim);margin-top:10px}
+.mac-goals{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.mac-goals label{font-size:11px;color:var(--dim);display:block}.mac-goals input{margin-top:4px}
 .nut-cal-side{flex:1;min-width:0}
 .nut-cal-side-val{font-size:32px;font-weight:900;color:var(--lime);line-height:1}
 .nut-cal-side-val.over{color:var(--red)}
@@ -1235,6 +1263,15 @@ code{font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:10p
 .photo-scan-item-note{font-size:11.5px;color:var(--dim);line-height:1.4;flex:1;min-width:100px}
 .photo-scan-total{font-size:12px;color:var(--dim);margin:12px 0 16px;text-align:right}
 .photo-scan-empty{font-size:13px;color:var(--dim);text-align:center;padding:16px 0}
+
+/* ══ Flat theme overrides — one consistent card/button language ══ */
+.panel,.goal-card,.week-summary,.cal-section,.bw-section,.bwx-section,.plan-rotation-card,.plan-compliance-card,.plan-day-card,.plan-stat-card,.prog-stat-card,.station-card,.str-lift-item,.str-superset-group,.str-chart-card,.settings-panel,.plan-edit-panel,#str-analytics-view,.pr-item,.bx-log-row,.gw-complete-stat,.gw-check-item,.gw-last-set-row,.hist-modal-entry,.str-analytics-hist-row,.gw-inputs,.str-drawer-inputs,.edit-set-inputs{background:var(--surface)!important;background-image:none!important;border:none!important;border-radius:10px!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+.str-drawer,.photo-scan-sheet,.scan-result-sheet{border-radius:14px 14px 0 0!important}
+.modal{border-radius:12px!important}
+.str-start-btn,.gw-log-btn,.gw-complete-btn,.str-confirm-btn,.btn-tstart,.plan-save-btn{background:var(--lime)!important;background-image:none!important;color:#0b0b0b!important;border:none!important;border-radius:8px!important;box-shadow:none!important}
+.str-complete-btn,.str-log-cta,.btn-tpause,.str-analytics-btn{background:var(--surface2)!important;background-image:none!important;color:var(--text)!important;border:none!important;border-radius:8px!important;box-shadow:none!important;backdrop-filter:none!important}
+.plan-today-card.strength .plan-today-start,.plan-adhoc-btn.strength{background-image:none!important;box-shadow:none!important}
+.station-card.current,.workout-card.logged,.plan-day-card.today,.str-wbtn.active{box-shadow:none!important}
 </style>
 </head>
 <body>
@@ -1385,11 +1422,11 @@ code{font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:10p
   <div class="tab-content" id="tab-cycling">
 
     <!-- Cycling Hero -->
-    <div class="home-hero" id="cy-hero-card" style="margin-top:12px;background:linear-gradient(160deg,#8ECAE6,#4f8aa8)">
+    <div class="home-hero" id="cy-hero-card" style="margin-top:12px">
       <div class="home-hero-eyebrow">Today's pick</div>
-      <div class="home-hero-title" id="cy-hero-title" style="color:#06202b">CYCLING</div>
-      <div class="home-hero-sub" id="cy-hero-sub" style="color:#0a2a38">Pick whatever fits your time today</div>
-      <button class="home-hero-cta" id="cy-hero-cta" style="background:#06202b;color:#8ECAE6">Press play</button>
+      <div class="home-hero-title" id="cy-hero-title">CYCLING</div>
+      <div class="home-hero-sub" id="cy-hero-sub">Pick whatever fits your time today</div>
+      <button class="home-hero-cta" id="cy-hero-cta">Press play</button>
     </div>
 
     <!-- Stats -->
@@ -1412,11 +1449,11 @@ code{font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:10p
   <div class="tab-content" id="tab-boxing">
 
     <!-- Boxing Hero -->
-    <div class="home-hero" style="margin-top:12px;background:linear-gradient(160deg,#e0633a,#9c3c1f)">
+    <div class="home-hero" style="margin-top:12px">
       <div class="home-hero-eyebrow">Boxing session</div>
       <div class="home-hero-title" id="bx-hero-title">BOXING DAY</div>
       <div class="home-hero-sub" id="bx-hero-sub2">Workout 1</div>
-      <button class="home-hero-cta" style="background:#2a0f08;color:#ffb089" onclick="document.querySelector('.timer-section').scrollIntoView({behavior:'smooth',block:'start'})">Start session</button>
+      <button class="home-hero-cta" onclick="document.querySelector('.timer-section').scrollIntoView({behavior:'smooth',block:'start'})">Start session</button>
     </div>
 
     <div class="card" style="overflow:visible">
@@ -1764,8 +1801,11 @@ code{font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:10p
     </div>
 
     <!-- Ad-hoc section -->
-    <div class="plan-section-hdr">Later Today</div>
-    <div class="plan-adhoc-row">
+    <div class="plan-section-hdr">Choose your workout</div>
+    <button class="menu-row" onclick="switchWorkoutTab('strength')"><div><div class="menu-row-title">Strength</div><div class="menu-row-sub" id="menu-sub-strength">Today's lifts</div></div><div class="menu-row-chev">›</div></button>
+    <button class="menu-row" onclick="switchWorkoutTab('cycling')"><div><div class="menu-row-title">Cycling</div><div class="menu-row-sub">Browse rides by length and type</div></div><div class="menu-row-chev">›</div></button>
+    <button class="menu-row" onclick="switchWorkoutTab('boxing')"><div><div class="menu-row-title">Boxing</div><div class="menu-row-sub" id="menu-sub-boxing">Shuffle or pick a session</div></div><div class="menu-row-chev">›</div></button>
+    <div class="plan-adhoc-row" style="display:none">
       <button class="plan-adhoc-btn cycling"  onclick="switchWorkoutTab('cycling')">
         <svg class="bnav-icon" style="width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round" viewBox="0 0 24 24"><path d="M5 18m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path d="M19 18m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"/><path d="M12 19l0 -4l-3 -3l5 -4l2 3l3 0"/><path d="M17 5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"/></svg>
         Cycling
@@ -1802,6 +1842,9 @@ code{font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:10p
       </div>
     </div>
 
+    <!-- Today's macros (auto-summed from the Nutrition food log) -->
+    <div class="card mac-card" id="home-macro-card" style="margin-top:16px;cursor:pointer" onclick="switchWorkoutTab('nutrition')"></div>
+
     <!-- Beer Rewards (gamified kcal-to-beer conversion) -->
     <div class="card" id="home-beer-card" style="margin-top:16px;padding:20px 18px">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:2px">
@@ -1831,6 +1874,16 @@ code{font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:10p
       <div class="str-hero-eyebrow">Nutrition</div>
       <div class="str-training-day">DAILY<br>INTAKE</div>
       <div class="str-focus-name">TRACK WHAT YOU EAT</div>
+    </div>
+    <div class="card mac-card" id="nut-macro-card"></div>
+    <div class="card" style="padding:16px 20px">
+      <div style="font-size:10px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:var(--dim);margin-bottom:10px">Daily goals</div>
+      <div class="mac-goals">
+        <label>Protein (g)<input class="finput" type="number" id="ng-protein" min="0" onchange="nutSetMacroGoal('protein',this.value)"/></label>
+        <label>Carbs (g)<input class="finput" type="number" id="ng-carbs" min="0" onchange="nutSetMacroGoal('carbs',this.value)"/></label>
+        <label>Fat (g)<input class="finput" type="number" id="ng-fat" min="0" onchange="nutSetMacroGoal('fat',this.value)"/></label>
+        <label>Fiber (g)<input class="finput" type="number" id="ng-fiber" min="0" onchange="nutSetMacroGoal('fiber',this.value)"/></label>
+      </div>
     </div>
     <div class="card" style="padding:22px 20px">
       <div class="nut-cal-ring-row">
@@ -2826,7 +2879,7 @@ async function nutAddFromDescAI(){
   const btn=document.getElementById('nut-add-btn');
   if(btn){btn.disabled=true;const orig=btn.textContent;btn.dataset.orig=orig;btn.textContent='…';}
   try{
-    const prompt=`Estimate calories for these foods eaten: "${raw}". Return ONLY a JSON array (no prose, no markdown fences), one object per distinct food item, each shaped exactly like {"name":string,"kcal":integer,"grams":integer or null}. Split multiple foods/items into separate array entries. Use realistic standard nutrition data for the stated portion, or a typical single serving if no quantity is given.`;
+    const prompt=`Estimate calories and macros for these foods eaten: "${raw}". Return ONLY a JSON array (no prose, no markdown fences), one object per distinct food item, each shaped exactly like {"name":string,"kcal":integer,"grams":integer or null,"protein_g":number,"fat_g":number,"carbs_g":number,"fiber_g":number}. Split multiple foods/items into separate array entries. Use realistic standard nutrition data for the stated portion, or a typical single serving if no quantity is given.`;
     const raw2=await callGroq(prompt);
     const items=parseGroqJSON(raw2);
     if(!Array.isArray(items)||!items.length)throw new Error('No items returned');
@@ -2835,7 +2888,7 @@ async function nutAddFromDescAI(){
       if(!it||!it.name||typeof it.kcal!=='number')return;
       const kcal=Math.round(it.kcal);
       const grams=(it.grams!=null&&!isNaN(it.grams))?Math.round(it.grams):null;
-      nutAddFood(strTodayKey(),{name:nutTitleCase(String(it.name)),kcal,grams,per100:(grams?Math.round(kcal/grams*100):null)});
+      nutAddFood(strTodayKey(),Object.assign({name:nutTitleCase(String(it.name)),kcal,grams,per100:(grams?Math.round(kcal/grams*100):null)},nutMacroFromAI(it)));
       total+=kcal;count++;
     });
     if(!count)throw new Error('No valid items in response');
@@ -2939,7 +2992,7 @@ function handlePhotoScanFile(e){
 }
 async function analyzePhotoScan(dataUrl){
   try{
-    const prompt=`This photo shows a plate/meal of food. First, write a one-sentence overall summary describing what the meal appears to be. Then identify every distinct food item you can see, estimate its portion size, and estimate its calories. For each item, briefly note any assumptions you made that affect the estimate — portion size, preparation method (fried vs grilled vs baked), or hidden ingredients like oil, butter, sauce, or dressing — and rate your confidence in that item's estimate as "high", "medium", or "low" (use "medium" or "low" whenever the photo makes portion size, preparation, or ingredients genuinely hard to judge). Return ONLY a JSON object (no prose, no markdown fences) shaped exactly like {"summary":string,"items":[{"name":string,"kcal":integer,"grams":integer or null,"note":string,"confidence":"high"|"medium"|"low"}]}.`;
+    const prompt=`This photo shows a plate/meal of food. First, write a one-sentence overall summary describing what the meal appears to be. Then identify every distinct food item you can see, estimate its portion size, and estimate its calories and macros. For each item, briefly note any assumptions you made that affect the estimate — portion size, preparation method (fried vs grilled vs baked), or hidden ingredients like oil, butter, sauce, or dressing — and rate your confidence in that item's estimate as "high", "medium", or "low" (use "medium" or "low" whenever the photo makes portion size, preparation, or ingredients genuinely hard to judge). Return ONLY a JSON object (no prose, no markdown fences) shaped exactly like {"summary":string,"items":[{"name":string,"kcal":integer,"grams":integer or null,"protein_g":number,"fat_g":number,"carbs_g":number,"fiber_g":number,"note":string,"confidence":"high"|"medium"|"low"}]}.`;
     const raw=await callGroqVision(prompt,dataUrl);
     const parsed=parseGroqJSON(raw);
     const rawItems=Array.isArray(parsed)?parsed:parsed.items; // tolerate a bare array too
@@ -2950,7 +3003,8 @@ async function analyzePhotoScan(dataUrl){
       kcal:Math.round(it.kcal),
       grams:(it.grams!=null&&!isNaN(it.grams))?Math.round(it.grams):null,
       note:it.note?String(it.note):'',
-      confidence:['high','medium','low'].includes(it.confidence)?it.confidence:'high'
+      confidence:['high','medium','low'].includes(it.confidence)?it.confidence:'high',
+      ...nutMacroFromAI(it)
     }));
     if(!PHOTO_SCAN.items.length)throw new Error('No valid items in response');
     renderPhotoScanItems();
@@ -3028,7 +3082,7 @@ function confirmPhotoScanAdd(){
   items.forEach(it=>{
     if(!it.name||!it.kcal)return;
     const grams=it.grams;
-    nutAddFood(strTodayKey(),{name:it.name,kcal:it.kcal,grams,per100:(grams?Math.round(it.kcal/grams*100):null)});
+    nutAddFood(strTodayKey(),Object.assign({name:it.name,kcal:it.kcal,grams,per100:(grams?Math.round(it.kcal/grams*100):null)},nutMacroPick(it)));
     total+=it.kcal;count++;
   });
   closePhotoScan();
@@ -3123,6 +3177,8 @@ async function handleBarcodeDetected(code){
       const m=String(p.serving_size).match(/([\d.]+)\s*g\b/i);
       if(m)servingG=Math.round(parseFloat(m[1]));
     }
+    const mac=(k)=>{const a=nutr[k+'_100g'],s=nutr[k+'_serving'];return{a:(typeof a==='number'?a:null),s:(typeof s==='number'?s:null)};};
+    const macros={p:mac('proteins'),f:mac('fat'),c:mac('carbohydrates'),fi:mac('fiber')};
     // Flag entries where the data looks thin/unreliable (common with crowd-sourced
     // OFF entries) so the user knows to double-check the calorie field before adding.
     const lowConfidence=!p.brands||(perServing==null&&!servingG)||(per100!=null&&(per100<=0||per100>900));
@@ -3131,7 +3187,7 @@ async function handleBarcodeDetected(code){
       brand:p.brands||'',
       per100,perServing,
       servingLabel:p.serving_size||(servingG?`${servingG}g`:null),
-      servingG,
+      servingG,macros,
       lowConfidence
     };
     SCAN.qty=1;
@@ -3188,7 +3244,20 @@ function confirmScanAdd(){
   const grams=p.perServing!=null?(p.servingG?p.servingG*SCAN.qty:null):(100*SCAN.qty);
   const name=SCAN.qty!==1?`${p.name} (×${SCAN.qty})`:p.name;
   const per100=grams?Math.round(kcal/grams*100):(p.per100!=null?p.per100:null);
-  nutAddFood(strTodayKey(),{name,kcal,grams,per100});
+  // Macros: per-serving values × qty when the product has a serving; otherwise per-100g × grams/100.
+  const mx={};
+  [['p','p'],['f','f'],['c','c'],['fi','fi']].forEach(([k])=>{
+    const m=p.macros&&p.macros[k];if(!m)return;
+    let v=null;
+    if(p.perServing!=null&&m.s!=null)v=m.s*SCAN.qty;
+    else if(m.a!=null)v=m.a*(grams?grams/100:SCAN.qty);
+    if(v!=null)mx[k]=Math.round(v*10)/10;
+  });
+  if(mx.p!=null&&mx.f!=null&&mx.c!=null&&SCAN.kcalOverride!=null&&scanKcalForQty()>0){
+    const r=SCAN.kcalOverride/scanKcalForQty();
+    Object.keys(mx).forEach(k=>mx[k]=Math.round(mx[k]*r*10)/10);
+  }
+  nutAddFood(strTodayKey(),Object.assign({name,kcal,grams,per100},mx));
   closeBarcodeScanner();
   renderNutritionTab();
   showToast('','Added from barcode',`${p.name} · ${kcal} cal`);
@@ -3221,6 +3290,55 @@ function nutEsc(s){ return (s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;
 // ── Nutrition: storage + UI (uses S.nutrition, saveState(), strTodayKey()) ──
 function nutGetDay(dateKey){ return S.nutrition.log[dateKey]||[]; }
 function nutDayCalories(dateKey){ return nutGetDay(dateKey).reduce((s,f)=>s+(f.kcal||0),0); }
+// ── Macros: each food may carry p/f/c/fi (grams). Totals are auto-summed from the log. ──
+const NUT_GOAL_DEFAULTS={kcal:1914,protein:239,carbs:96,fat:64,fiber:27,water:137};
+function nutGoals(){ return Object.assign({},NUT_GOAL_DEFAULTS,S.nutrition.goals||{}); }
+function nutNum(v){ const n=parseFloat(v); return (isFinite(n)&&n>=0)?Math.round(n*10)/10:null; }
+function nutMacroFromAI(it){
+  const o={};
+  const p=nutNum(it.protein_g),f=nutNum(it.fat_g),c=nutNum(it.carbs_g),fi=nutNum(it.fiber_g);
+  if(p!=null)o.p=p; if(f!=null)o.f=f; if(c!=null)o.c=c; if(fi!=null)o.fi=fi;
+  return o;
+}
+function nutMacroPick(f){
+  const o={}; ['p','f','c','fi'].forEach(k=>{ if(f&&f[k]!=null)o[k]=f[k]; }); return o;
+}
+function nutDayMacros(dateKey){
+  const t={p:0,f:0,c:0,fi:0,missing:0};
+  nutGetDay(dateKey).forEach(f=>{
+    if(f.p==null&&f.f==null&&f.c==null){ if((f.kcal||0)>0)t.missing++; return; }
+    t.p+=f.p||0; t.f+=f.f||0; t.c+=f.c||0; t.fi+=f.fi||0;
+  });
+  return t;
+}
+function nutMacroCardHTML(compact){
+  const dk=strTodayKey(), g=nutGoals(), m=nutDayMacros(dk), kc=nutDayCalories(dk);
+  const rows=[
+    {lbl:'Protein',v:m.p,goal:g.protein,col:'var(--accent)'},
+    {lbl:'Carbs',v:m.c,goal:g.carbs,col:'var(--blue)'},
+    {lbl:'Fat',v:m.f,goal:g.fat,col:'var(--gold)'}
+  ];
+  const rings=rows.map(r=>{
+    const over=r.v>r.goal;
+    return `<div class="mac-item">
+      <div class="mac-ring">${makeSvgRing(r.v,r.goal,over?'var(--red)':r.col,compact?74:84,8)}</div>
+      <div class="mac-val">${Math.round(r.v)}<span>/${r.goal}g</span></div>
+      <div class="mac-lbl">${r.lbl}</div>
+    </div>`;
+  }).join('');
+  const fiPct=Math.min(100,g.fiber?m.fi/g.fiber*100:0);
+  const left=g.kcal-kc;
+  return `<div class="mac-head"><div class="mac-title">Macros</div><div class="mac-kcal"><b>${kc.toLocaleString()}</b> / ${g.kcal.toLocaleString()} cal · ${left>=0?left.toLocaleString()+' left':Math.abs(left).toLocaleString()+' over'}</div></div>
+    <div class="mac-row">${rings}</div>
+    <div class="mac-fiber"><span>Fiber</span><div class="mac-fbar"><i style="width:${fiPct}%"></i></div><span>${Math.round(m.fi)}/${g.fiber}g</span></div>
+    ${m.missing?`<div class="mac-note">${m.missing} logged item${m.missing===1?'':'s'} without macro data (offline/older entries) — not counted.</div>`:''}`;
+}
+function renderMacroCards(){
+  ['home-macro-card','nut-macro-card'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el)el.innerHTML=nutMacroCardHTML(id==='home-macro-card');
+  });
+}
 function nutAddFood(dateKey,food){
   if(!S.nutrition.log[dateKey]) S.nutrition.log[dateKey]=[];
   if(food.ts==null)food.ts=Date.now(); // lets cross-device sync dedupe/merge entries reliably
@@ -3236,6 +3354,12 @@ function nutRemoveFood(dateKey,i){
 function nutEditFood(dateKey,index,patch){
   const arr=S.nutrition.log[dateKey]||[];
   if(!arr[index])return;
+  // Keep macros proportional when calories are edited
+  const old=arr[index];
+  if(patch.kcal!=null&&old.kcal>0&&patch.kcal!==old.kcal){
+    const r=patch.kcal/old.kcal;
+    ['p','f','c','fi'].forEach(k=>{ if(old[k]!=null&&patch[k]==null)patch[k]=Math.round(old[k]*r*10)/10; });
+  }
   arr[index]=Object.assign({},arr[index],patch);
   saveState();
 }
@@ -3244,7 +3368,7 @@ function nutRecordRecent(food){
   if(!S.nutrition.recents)S.nutrition.recents={};
   const key=food.name.toLowerCase().trim();
   const prev=S.nutrition.recents[key]||{};
-  S.nutrition.recents[key]={name:food.name,kcal:food.kcal||0,grams:food.grams!=null?food.grams:null,per100:food.per100!=null?food.per100:null,count:(prev.count||0)+1,last:Date.now()};
+  S.nutrition.recents[key]=Object.assign({name:food.name,kcal:food.kcal||0,grams:food.grams!=null?food.grams:null,per100:food.per100!=null?food.per100:null,count:(prev.count||0)+1,last:Date.now()},nutMacroPick(food));
   const keys=Object.keys(S.nutrition.recents);
   if(keys.length>60){keys.sort((a,b)=>(S.nutrition.recents[a].last||0)-(S.nutrition.recents[b].last||0));for(let i=0;i<keys.length-60;i++)delete S.nutrition.recents[keys[i]];}
 }
@@ -3258,14 +3382,25 @@ function nutToggleRecentMode(){
   nutRecentMode=nutRecentMode==='frequent'?'recent':'frequent';
   renderNutritionRecents();
 }
+function nutSetMacroGoal(key,val){
+  const v=Math.max(0,parseFloat(val)||0);
+  if(!S.nutrition.goals)S.nutrition.goals={};
+  S.nutrition.goals[key]=v;
+  if(key==='kcal')S.nutrition.goal=v;
+  saveState();
+  renderNutritionSummary();
+}
 function nutSetGoal(val){
   S.nutrition.goal=Math.max(0,parseInt(val)||0);
+  if(!S.nutrition.goals)S.nutrition.goals={};
+  S.nutrition.goals.kcal=S.nutrition.goal;
   saveState();
   renderNutritionSummary();
 }
 function renderNutritionSummary(){
   const dateKey=strTodayKey();
-  const goal=S.nutrition.goal||2200;
+  const goal=S.nutrition.goal||nutGoals().kcal;
+  renderMacroCards();
   const food=nutDayCalories(dateKey);
   const remaining=goal-food;
   const over=remaining<0;
@@ -3278,6 +3413,8 @@ function renderNutritionSummary(){
   const goalEl=document.getElementById('nut-goal-display'); if(goalEl)goalEl.textContent=goal.toLocaleString();
   const goalInput=document.getElementById('nut-goal-input');
   if(goalInput&&document.activeElement!==goalInput) goalInput.value=goal;
+  const ng=nutGoals();
+  ['protein','carbs','fat','fiber'].forEach(k=>{const el=document.getElementById('ng-'+k);if(el&&document.activeElement!==el)el.value=ng[k];});
 }
 function renderNutritionRecents(){
   const box=document.getElementById('nut-recent-foods');
@@ -3298,7 +3435,7 @@ function renderNutritionRecents(){
     </div>`;
   box.querySelectorAll('.nut-chip').forEach(c=>c.onclick=()=>{
     const r=list[parseInt(c.dataset.i,10)];
-    nutAddFood(strTodayKey(),{name:r.name,kcal:r.kcal,grams:r.grams,per100:r.per100});
+    nutAddFood(strTodayKey(),Object.assign({name:r.name,kcal:r.kcal,grams:r.grams,per100:r.per100},nutMacroPick(r)));
     renderNutritionTab();
     showToast('','Added',r.kcal+' cal');
   });
@@ -3316,7 +3453,7 @@ function renderNutritionLog(){
       ${nutFoodIcon(f.name)}
       <div style="flex:1;min-width:0">
         <div style="font-size:13px;color:var(--text)">${nutEsc(f.name)}</div>
-        <div style="font-size:11px;color:var(--dim)">${amt}${f.kcal} cal</div>
+        <div style="font-size:11px;color:var(--dim)">${amt}${f.kcal} cal${(f.p!=null||f.c!=null||f.f!=null)?` · P${Math.round(f.p||0)} C${Math.round(f.c||0)} F${Math.round(f.f||0)}`:''}</div>
       </div>
       <button class="nut-log-btn nut-log-dup" data-i="${i}" data-act="dup" title="Add another">+1</button>
       <button class="nut-log-btn" data-i="${i}" data-act="edit">✎</button>
@@ -3334,7 +3471,7 @@ function renderNutritionLog(){
   box.querySelectorAll('.nut-log-btn[data-act="dup"]').forEach(b=>b.addEventListener('click',()=>{
     const f=foods[parseInt(b.dataset.i,10)];
     if(!f)return;
-    nutAddFood(dateKey,{name:f.name,kcal:f.kcal,grams:f.grams,per100:f.per100});
+    nutAddFood(dateKey,Object.assign({name:f.name,kcal:f.kcal,grams:f.grams,per100:f.per100},nutMacroPick(f)));
     renderNutritionTab();
     showToast('','Added another',f.kcal+' cal');
   }));
@@ -3515,7 +3652,7 @@ let S={
   lastModified:0,
   reminders:{enabled:false,thresholdDays:3,lastNotified:null},
   energyLog:{},
-  nutrition:{goal:2200,log:{},recents:{},useAI:true},
+  nutrition:{goal:1914,goals:{kcal:1914,protein:239,carbs:96,fat:64,fiber:27,water:137},log:{},recents:{},useAI:true},
   stsWeek:1,stsDone:{},stsCycle:1,
   bodyLog:[],
   bxHistory:[],
@@ -3816,7 +3953,10 @@ function loadState(){
   try{S.stsCycle=Math.max(1,parseInt(localStorage.getItem(K.stscycle)||'1')||1);}catch{}
   try{const r=JSON.parse(localStorage.getItem(K.reminders)||'null');if(r)S.reminders={...S.reminders,...r};}catch{}
   try{S.energyLog=JSON.parse(localStorage.getItem(K.energylog)||'{}');}catch{}
-  try{const n=JSON.parse(localStorage.getItem(K.nutrition)||'null');if(n)S.nutrition={goal:2200,log:{},recents:{},useAI:true,...n};}catch{}
+  try{const n=JSON.parse(localStorage.getItem(K.nutrition)||'null');if(n){S.nutrition={goal:2200,log:{},recents:{},useAI:true,...n};
+    // One-time migration: adopt the personal macro goals (calories 1914, P239/C96/F64/Fiber27)
+    if(!S.nutrition.goals){S.nutrition.goals={kcal:1914,protein:239,carbs:96,fat:64,fiber:27,water:137};S.nutrition.goal=1914;}
+  }}catch{}
   try{S.strProgram=localStorage.getItem(K.strprogram)||'pulldip';}catch{S.strProgram='pulldip';}
   try{const v=parseInt(localStorage.getItem(K.boxwid)||'');if(v&&BOXING.some(b=>b.id===v))S.activeBoxingWorkoutId=v;}catch{}
   try{const b=JSON.parse(localStorage.getItem(K.bwlog)||'null');if(b)S.bwLog={pullup:[],pushup:[],dip:[],squat:[],...b};}catch{}
@@ -6522,6 +6662,7 @@ function renderHomeStreakStrip(){
   </div>`;
 }
 function renderHomeGtgCard(){
+  try{renderMacroCards();}catch(e){}
   const cntEl=document.getElementById('home-gtg-count');
   if(!cntEl)return;
   cntEl.textContent=`${gtgSessionsThisWeek()}/3 this week`;
@@ -6609,6 +6750,9 @@ function renderPlan(){
     }).join('')}</div>
     <div style="font-size:11px;color:var(--dim);margin-top:10px;line-height:1.5">Alternates every week so each muscle group has full recovery before being hit again.</div>`;
   }
+  const msS=document.getElementById('menu-sub-strength'),msB=document.getElementById('menu-sub-boxing');
+  if(msS){try{msS.textContent=STRENGTH[S.activeStrengthWorkout].title;}catch(e){}}
+  if(msB){try{msB.textContent=getActiveBoxing().title;}catch(e){}}
   renderHomeMorning();
   renderHomeGoal();
   renderHomeStats();
@@ -7658,6 +7802,15 @@ window.addEventListener('pageshow',()=>{maybeAutoSync();}); // covers iOS Safari
 // ── Guided Workout ────────────────────────────────────────────────────────────
 const GW={active:false,exIdx:0,restIv:null,restSecs:0,restTotal:0,restEndTime:0,startTime:0};
 
+function gwStep(id,delta){
+  const el=document.getElementById(id);if(!el)return;
+  const min=id==='gw-reps'?1:0;
+  const cur=parseFloat(el.value)||0;
+  const next=Math.max(min,Math.round((cur+delta)*100)/100);
+  el.value=next;
+  if(id==='gw-weight'&&typeof updateGuidedWarmup==='function')updateGuidedWarmup();
+  if(typeof resetInactivityTimer==='function')resetInactivityTimer();
+}
 function startGuidedWorkout(){
   const wIdx=S.activeStrengthWorkout;
   const wo=STRENGTH[wIdx];
@@ -7713,6 +7866,11 @@ function renderGuidedWorkout(){
 
   // Exercise info (use swap name if set)
   document.getElementById('gw-ex-name').textContent=getExName(wIdx,GW.exIdx);
+  const upn=document.getElementById('gw-upnext-name');
+  if(upn){
+    const exs=STRENGTH[wIdx].exercises;
+    upn.textContent=GW.exIdx+1<exs.length?getExName(wIdx,GW.exIdx+1):'Finish workout';
+  }
   // Update swap button state
   const hasSwap=S.strSwaps&&S.strSwaps[`${wIdx}-${GW.exIdx}`]!==undefined;
   const gwSwapBtn=document.getElementById('gw-swap-btn');
@@ -8300,17 +8458,20 @@ function renderGuidedChecklist(){
           <div class="gw-input-lbl">WEIGHT (LBS)</div>
           <input type="number" id="gw-weight" class="gw-input" inputmode="decimal" step="2.5" min="0"
             oninput="updateGuidedWarmup();resetInactivityTimer()" onfocus="setTimeout(()=>{this.setSelectionRange(this.value.length,this.value.length)},0)">
+          <div class="gw-stepper"><button type="button" onclick="gwStep('gw-weight',-2.5)" aria-label="Decrease weight">−</button><button type="button" onclick="gwStep('gw-weight',2.5)" aria-label="Increase weight">+</button></div>
         </div>
         <div class="gw-input-sep" id="gw-input-sep"></div>
         <div class="gw-input-grp" id="gw-reps-grp">
           <div class="gw-input-lbl">REPS</div>
           <input type="number" id="gw-reps" class="gw-input" inputmode="numeric" step="1" min="1"
             onfocus="setTimeout(()=>{this.setSelectionRange(this.value.length,this.value.length)},0)">
+          <div class="gw-stepper"><button type="button" onclick="gwStep('gw-reps',-1)" aria-label="Decrease reps">−</button><button type="button" onclick="gwStep('gw-reps',1)" aria-label="Increase reps">+</button></div>
         </div>
       </div>
       <div class="gw-warmup" id="gw-warmup"></div>
       <button class="gw-log-btn" onclick="guidedLogSet()">LOG SET →</button>
       <button class="gw-skip-btn" onclick="guidedSkipExercise()">Skip Exercise</button>
+      <div class="gw-upnext"><div><div class="gw-upnext-lbl">Up next</div><div class="gw-upnext-name" id="gw-upnext-name"></div></div><div style="color:var(--lime);font-size:20px">›</div></div>
     </div>
 
     <!-- Rest state -->
