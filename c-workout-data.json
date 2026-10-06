@@ -250,7 +250,7 @@
   "strLogExIdx": 0,
   "strAnalyticsOpen": false,
   "strProgram": "pulldip",
-  "lastModified": 1791309812642,
+  "lastModified": 1791309820125,
   "reminders": {
     "enabled": false,
     "thresholdDays": 3,
@@ -271,7 +271,19 @@
           "ts": 1791222700700
         }
       ],
-      "Tue Oct 06 2026": []
+      "Tue Oct 06 2026": [
+        {
+          "name": "CORE POWER High Protein Milk Shake Chocolate",
+          "kcal": 230,
+          "grams": 414,
+          "per100": 56,
+          "p": 42,
+          "f": 3.5,
+          "c": 9,
+          "fi": 2,
+          "ts": 1791309820125
+        }
+      ]
     },
     "recents": {
       "shredded chicken breast in light broth": {
@@ -303,8 +315,12 @@
         "kcal": 230,
         "grams": 414,
         "per100": 56,
-        "count": 1,
-        "last": 1791309452784
+        "count": 2,
+        "last": 1791309820125,
+        "p": 42,
+        "f": 3.5,
+        "c": 9,
+        "fi": 2
       }
     },
     "useAI": true
