@@ -250,7 +250,7 @@
   "strLogExIdx": 0,
   "strAnalyticsOpen": false,
   "strProgram": "pulldip",
-  "lastModified": 1791313110996,
+  "lastModified": 1791313126903,
   "reminders": {
     "enabled": false,
     "thresholdDays": 3,
@@ -315,6 +315,17 @@
           "c": 15.4,
           "fi": 3.1,
           "ts": 1791313034381
+        },
+        {
+          "name": "Edamame",
+          "kcal": 130,
+          "grams": 30,
+          "per100": 433,
+          "p": 13,
+          "f": 5,
+          "c": 9,
+          "fi": 5,
+          "ts": 1791313126903
         }
       ]
     },
@@ -382,6 +393,18 @@
         "f": 0.2,
         "c": 15.4,
         "fi": 3.1
+      },
+      "edamame": {
+        "name": "Edamame",
+        "kcal": 130,
+        "grams": 30,
+        "per100": 433,
+        "count": 1,
+        "last": 1791313126903,
+        "p": 13,
+        "f": 5,
+        "c": 9,
+        "fi": 5
       }
     },
     "useAI": true,
