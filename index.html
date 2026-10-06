@@ -1791,20 +1791,15 @@ code{font-size:11px;background:var(--surface2);padding:1px 5px;border-radius:10p
       </div>
       <div id="home-goal-rings"></div>
     </div>
-    <!-- This Week + Lifetime Stats — one compact card, stats as a horizontal scroll row -->
-    <div class="card" id="home-stats-card" style="margin-top:16px;padding:18px 16px">
-      <div style="font-size:10px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:var(--dim);margin-bottom:12px">This Week</div>
-      <div id="home-streak-strip"></div>
-      <div class="chip-scroll-row" id="home-stats-row" style="margin-top:14px"></div>
-    </div>
+    <!-- Lifetime stats — a single scroll row (the Session Goal ring above is the one weekly tracker) -->
+    <div class="chip-scroll-row" id="home-stats-row" style="margin-top:16px"></div>
 
-    <!-- Progression Plan adherence (GTG) -->
-    <div class="card" id="home-gtg-card" style="margin-top:16px;padding:20px 18px;cursor:pointer" onclick="switchWorkoutTab('bodyweight')">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+    <!-- Progression Plan — slim link row, details live on the Bodyweight tab -->
+    <div class="card" id="home-gtg-card" style="margin-top:16px;padding:16px 18px;cursor:pointer" onclick="switchWorkoutTab('bodyweight')">
+      <div style="display:flex;align-items:center;justify-content:space-between">
         <div style="font-size:10px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:var(--dim)">Progression Plan</div>
-        <div style="font-size:12px;font-weight:800;color:var(--lime)" id="home-gtg-count">0/3 this week</div>
+        <div style="font-size:12px;font-weight:800;color:var(--lime)"><span id="home-gtg-count">0/3 this week</span> ›</div>
       </div>
-      <div id="home-gtg-strip"></div>
     </div>
 
     <!-- Beer Rewards (gamified kcal-to-beer conversion) -->
@@ -5845,8 +5840,12 @@ const BEER_TYPES={
   stout:{label:'Stout / Porter',kcal:210},
   dipa:{label:'Double IPA',kcal:280},
 };
-const BEER_WEEKLY_CAP_KCAL=600; // ~4 lagers/week at full effort, not from one session
+const BEER_WEEKLY_CAP_KCAL=600; // 4 lagers/week max
 const BEER_KCAL_PER_MIN={cycling:5,boxing:6,strength:7}; // shared by live logging + ad-hoc backdated entries
+// Only this share of a session's estimated burn counts toward beer — a 30-min ride
+// (~150 kcal burned) earns ~0.4 lager, so a full beer takes a few solid sessions.
+// Challenge bonuses are exempt. Applies to new sessions only; past entries are unchanged.
+const BEER_EARN_FACTOR=0.4;
 function mondayOf(d){
   const dow=d.getDay();
   const mon=new Date(d);
@@ -5857,6 +5856,7 @@ function mondayOf(d){
 function logBeerKcal(source,kcal){
   if(!kcal||kcal<=0)return;
   if(!S.beerLog)S.beerLog=[];
+  if(source!=='challenge')kcal*=BEER_EARN_FACTOR;
   S.beerLog.push({date:strTodayKey(),source,kcal:Math.round(kcal),ts:Date.now()});
   if(S.beerLog.length>500)S.beerLog=S.beerLog.slice(-500);
   saveState();
@@ -6523,9 +6523,10 @@ function renderHomeStreakStrip(){
 }
 function renderHomeGtgCard(){
   const cntEl=document.getElementById('home-gtg-count');
-  const stripEl=document.getElementById('home-gtg-strip');
-  if(!cntEl||!stripEl)return;
+  if(!cntEl)return;
   cntEl.textContent=`${gtgSessionsThisWeek()}/3 this week`;
+  const stripEl=document.getElementById('home-gtg-strip');
+  if(!stripEl)return; // Home no longer shows the day strip — count text is enough
   const dates=new Set((S.gtgLog||[]).map(e=>e.date));
   const today=new Date();
   const days=[];
