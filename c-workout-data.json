@@ -2,8 +2,8 @@
   "week": 4,
   "activeDay": "day1",
   "activeBoxingWorkoutId": 1,
-  "activeStrengthWorkout": 0,
-  "activeWorkoutTab": "plan",
+  "activeStrengthWorkout": 2,
+  "activeWorkoutTab": "strength",
   "planDays": [
     {
       "type": "rest",
@@ -219,10 +219,28 @@
       "reps": 5,
       "date": "Sun Oct 04 2026",
       "wTitle": "Day B: Strength"
+    },
+    "Pull-Up": {
+      "weight": 0,
+      "reps": 10,
+      "date": "Tue Oct 06 2026",
+      "wTitle": "Day C: Density"
     }
   },
   "strLog": {
-    "Sun Oct 04 2026": {}
+    "Sun Oct 04 2026": {},
+    "Tue Oct 06 2026": {
+      "2": {
+        "0": [
+          {
+            "weight": 0,
+            "reps": 10,
+            "ts": 1791321698954,
+            "exName": "Pull-Up"
+          }
+        ]
+      }
+    }
   },
   "strHistory": [
     {
@@ -245,12 +263,12 @@
     }
   ],
   "strSwaps": {},
-  "strLogWeight": 135,
-  "strLogReps": 5,
+  "strLogWeight": 0,
+  "strLogReps": 10,
   "strLogExIdx": 0,
   "strAnalyticsOpen": false,
   "strProgram": "pulldip",
-  "lastModified": 1791321586576,
+  "lastModified": 1791321698955,
   "reminders": {
     "enabled": false,
     "thresholdDays": 3,
