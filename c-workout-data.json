@@ -331,6 +331,12 @@
             "reps": 10,
             "ts": 1791323047604,
             "exName": "Incline Dumbbell Press"
+          },
+          {
+            "weight": 45,
+            "reps": 10,
+            "ts": 1791323254743,
+            "exName": "Incline Dumbbell Press"
           }
         ],
         "4": [
@@ -338,6 +344,12 @@
             "weight": 15,
             "reps": 15,
             "ts": 1791323096307,
+            "exName": "Lateral Raise"
+          },
+          {
+            "weight": 15,
+            "reps": 15,
+            "ts": 1791323255762,
             "exName": "Lateral Raise"
           }
         ]
@@ -370,7 +382,7 @@
   "strLogExIdx": 0,
   "strAnalyticsOpen": false,
   "strProgram": "pulldip",
-  "lastModified": 1791323096307,
+  "lastModified": 1791323255762,
   "reminders": {
     "enabled": false,
     "thresholdDays": 3,
