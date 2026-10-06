@@ -237,6 +237,12 @@
       "reps": 10,
       "date": "Tue Oct 06 2026",
       "wTitle": "Day C: Density"
+    },
+    "Lateral Raise": {
+      "weight": 15,
+      "reps": 15,
+      "date": "Tue Oct 06 2026",
+      "wTitle": "Day C: Density"
     }
   },
   "strLog": {
@@ -326,6 +332,14 @@
             "ts": 1791323047604,
             "exName": "Incline Dumbbell Press"
           }
+        ],
+        "4": [
+          {
+            "weight": 15,
+            "reps": 15,
+            "ts": 1791323096307,
+            "exName": "Lateral Raise"
+          }
         ]
       }
     }
@@ -351,12 +365,12 @@
     }
   ],
   "strSwaps": {},
-  "strLogWeight": 45,
-  "strLogReps": 10,
+  "strLogWeight": 15,
+  "strLogReps": 15,
   "strLogExIdx": 0,
   "strAnalyticsOpen": false,
   "strProgram": "pulldip",
-  "lastModified": 1791323047605,
+  "lastModified": 1791323096307,
   "reminders": {
     "enabled": false,
     "thresholdDays": 3,
