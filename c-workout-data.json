@@ -250,7 +250,7 @@
   "strLogExIdx": 0,
   "strAnalyticsOpen": false,
   "strProgram": "pulldip",
-  "lastModified": 1791318396895,
+  "lastModified": 1791318409435,
   "reminders": {
     "enabled": false,
     "thresholdDays": 3,
@@ -421,7 +421,13 @@
   "stsWeek": 1,
   "stsDone": {},
   "stsCycle": 1,
-  "bodyLog": [],
+  "bodyLog": [
+    {
+      "date": "Tue Oct 06 2026",
+      "weight": 209,
+      "ts": 1791318409434
+    }
+  ],
   "bxHistory": [],
   "activityLog": [
     {
