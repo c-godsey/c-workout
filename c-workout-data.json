@@ -250,7 +250,7 @@
   "strLogExIdx": 0,
   "strAnalyticsOpen": false,
   "strProgram": "pulldip",
-  "lastModified": 1791318381147,
+  "lastModified": 1791318396895,
   "reminders": {
     "enabled": false,
     "thresholdDays": 3,
@@ -489,7 +489,13 @@
   "challenges": {},
   "wellness": {
     "water": {},
-    "sleep": {},
+    "sleep": {
+      "Tue Oct 06 2026": {
+        "hrs": 7,
+        "q": 3,
+        "ts": 1791318396894
+      }
+    },
     "measures": [],
     "health": {}
   },
