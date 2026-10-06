@@ -250,7 +250,7 @@
   "strLogExIdx": 0,
   "strAnalyticsOpen": false,
   "strProgram": "pulldip",
-  "lastModified": 1791309452784,
+  "lastModified": 1791309466762,
   "reminders": {
     "enabled": false,
     "thresholdDays": 3,
@@ -274,8 +274,8 @@
       "Tue Oct 06 2026": [
         {
           "name": "LOW FAT COTTAGE CHEESE",
-          "kcal": 100,
-          "grams": 113,
+          "kcal": 246,
+          "grams": 280,
           "per100": 88,
           "ts": 1791309103756
         },
