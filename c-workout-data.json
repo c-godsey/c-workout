@@ -250,7 +250,7 @@
   "strLogExIdx": 0,
   "strAnalyticsOpen": false,
   "strProgram": "pulldip",
-  "lastModified": 1791309843004,
+  "lastModified": 1791310107970,
   "reminders": {
     "enabled": false,
     "thresholdDays": 3,
@@ -293,6 +293,17 @@
           "c": 11.8,
           "fi": 0,
           "ts": 1791309843004
+        },
+        {
+          "name": "Baby Carrots",
+          "kcal": 35,
+          "grams": 85,
+          "per100": 41,
+          "p": 0.8,
+          "f": 0.2,
+          "c": 8.2,
+          "fi": 2.4,
+          "ts": 1791310107970
         }
       ]
     },
@@ -336,6 +347,18 @@
         "f": 3.5,
         "c": 9,
         "fi": 2
+      },
+      "baby carrots": {
+        "name": "Baby Carrots",
+        "kcal": 35,
+        "grams": 85,
+        "per100": 41,
+        "count": 1,
+        "last": 1791310107970,
+        "p": 0.8,
+        "f": 0.2,
+        "c": 8.2,
+        "fi": 2.4
       }
     },
     "useAI": true
