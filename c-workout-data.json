@@ -351,6 +351,12 @@
             "reps": 15,
             "ts": 1791323255762,
             "exName": "Lateral Raise"
+          },
+          {
+            "weight": 10,
+            "reps": 15,
+            "ts": 1791323407968,
+            "exName": "Lateral Raise"
           }
         ]
       }
@@ -377,12 +383,12 @@
     }
   ],
   "strSwaps": {},
-  "strLogWeight": 15,
+  "strLogWeight": 10,
   "strLogReps": 15,
   "strLogExIdx": 0,
   "strAnalyticsOpen": false,
   "strProgram": "pulldip",
-  "lastModified": 1791323345689,
+  "lastModified": 1791323407969,
   "reminders": {
     "enabled": false,
     "thresholdDays": 3,
