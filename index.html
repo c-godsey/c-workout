@@ -3379,6 +3379,7 @@ function nutDayMacros(dateKey){
     if(f.p==null&&f.f==null&&f.c==null){ if((f.kcal||0)>0)t.missing++; return; }
     t.p+=f.p||0; t.f+=f.f||0; t.c+=f.c||0; t.fi+=f.fi||0;
   });
+  t.p=Math.round(t.p); t.f=Math.round(t.f); t.c=Math.round(t.c); t.fi=Math.round(t.fi); // whole grams for display
   return t;
 }
 // Estimated workout burn for a day. Derived from the beer-rewards log (which stores
