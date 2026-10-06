@@ -250,7 +250,7 @@
   "strLogExIdx": 0,
   "strAnalyticsOpen": false,
   "strProgram": "pulldip",
-  "lastModified": 1791309820125,
+  "lastModified": 1791309843004,
   "reminders": {
     "enabled": false,
     "thresholdDays": 3,
@@ -282,6 +282,17 @@
           "c": 9,
           "fi": 2,
           "ts": 1791309820125
+        },
+        {
+          "name": "Low Fat Cottage Cheese",
+          "kcal": 204,
+          "grams": 280,
+          "per100": 73,
+          "p": 30.2,
+          "f": 2.5,
+          "c": 11.8,
+          "fi": 0,
+          "ts": 1791309843004
         }
       ]
     },
@@ -303,12 +314,16 @@
         "last": 1791222700701
       },
       "low fat cottage cheese": {
-        "name": "LOW FAT COTTAGE CHEESE",
-        "kcal": 100,
-        "grams": 113,
-        "per100": 88,
-        "count": 1,
-        "last": 1791309103756
+        "name": "Low Fat Cottage Cheese",
+        "kcal": 204,
+        "grams": 280,
+        "per100": 73,
+        "count": 2,
+        "last": 1791309843004,
+        "p": 30.2,
+        "f": 2.5,
+        "c": 11.8,
+        "fi": 0
       },
       "core power high protein milk shake chocolate": {
         "name": "CORE POWER High Protein Milk Shake Chocolate",
