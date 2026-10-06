@@ -250,14 +250,15 @@
   "strLogExIdx": 0,
   "strAnalyticsOpen": false,
   "strProgram": "pulldip",
-  "lastModified": 1791318364034,
+  "lastModified": 1791318381147,
   "reminders": {
     "enabled": false,
     "thresholdDays": 3,
     "lastNotified": null
   },
   "energyLog": {
-    "Tue Jul 21 2026": "low"
+    "Tue Jul 21 2026": "low",
+    "Tue Oct 06 2026": "normal"
   },
   "nutrition": {
     "goal": 1914,
