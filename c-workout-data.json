@@ -250,7 +250,7 @@
   "strLogExIdx": 0,
   "strAnalyticsOpen": false,
   "strProgram": "pulldip",
-  "lastModified": 1791318357139,
+  "lastModified": 1791318364034,
   "reminders": {
     "enabled": false,
     "thresholdDays": 3,
@@ -486,6 +486,13 @@
   ],
   "beerPrefType": "lager",
   "challenges": {},
+  "wellness": {
+    "water": {},
+    "sleep": {},
+    "measures": [],
+    "health": {}
+  },
+  "mealTemplates": [],
   "goals": {
     "mode": "overall",
     "period": "weekly",
