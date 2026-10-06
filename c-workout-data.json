@@ -437,7 +437,7 @@
   "strLogExIdx": 0,
   "strAnalyticsOpen": false,
   "strProgram": "pulldip",
-  "lastModified": 1791325586035,
+  "lastModified": 1791325599470,
   "reminders": {
     "enabled": false,
     "thresholdDays": 3,
@@ -721,17 +721,6 @@
   ],
   "beerPrefType": "lager",
   "challenges": {},
-  "goals": {
-    "mode": "overall",
-    "period": "weekly",
-    "overall": 5,
-    "cycling": 3,
-    "boxing": 2,
-    "strength": 2,
-    "comboTarget": 3
-  },
-  "morningType": "cycling",
-  "streak": 1,
   "wellness": {
     "water": {
       "Tue Oct 06 2026": {
@@ -749,5 +738,16 @@
     "measures": [],
     "health": {}
   },
-  "mealTemplates": []
+  "mealTemplates": [],
+  "goals": {
+    "mode": "overall",
+    "period": "weekly",
+    "overall": 5,
+    "cycling": 3,
+    "boxing": 2,
+    "strength": 2,
+    "comboTarget": 3
+  },
+  "morningType": "cycling",
+  "streak": 1
 }
