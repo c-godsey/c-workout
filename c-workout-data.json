@@ -437,7 +437,7 @@
   "strLogExIdx": 0,
   "strAnalyticsOpen": false,
   "strProgram": "pulldip",
-  "lastModified": 1791393374081,
+  "lastModified": 1791393395612,
   "reminders": {
     "enabled": false,
     "thresholdDays": 3,
@@ -560,6 +560,17 @@
           "c": 11,
           "fi": 1,
           "ts": 1791392622128
+        },
+        {
+          "name": "Darigold Cottage Cheese",
+          "kcal": 220,
+          "grams": 226,
+          "per100": 97,
+          "p": 28,
+          "f": 5,
+          "c": 8,
+          "fi": 0,
+          "ts": 1791393395612
         }
       ]
     },
@@ -699,6 +710,18 @@
         "f": 8,
         "c": 11,
         "fi": 1
+      },
+      "darigold cottage cheese": {
+        "name": "Darigold Cottage Cheese",
+        "kcal": 220,
+        "grams": 226,
+        "per100": 97,
+        "count": 1,
+        "last": 1791393395612,
+        "p": 28,
+        "f": 5,
+        "c": 8,
+        "fi": 0
       }
     },
     "useAI": true,
