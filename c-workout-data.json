@@ -437,7 +437,7 @@
   "strLogExIdx": 0,
   "strAnalyticsOpen": false,
   "strProgram": "pulldip",
-  "lastModified": 1791395297405,
+  "lastModified": 1791395346729,
   "reminders": {
     "enabled": false,
     "thresholdDays": 3,
@@ -582,6 +582,17 @@
           "c": 24.7,
           "fi": 2.6,
           "ts": 1791393478561
+        },
+        {
+          "name": "Roasted Seaweed Snacks, Sea Salt",
+          "kcal": 30,
+          "grams": 5,
+          "per100": 600,
+          "p": 2,
+          "f": 2,
+          "c": 1,
+          "fi": 1,
+          "ts": 1791395346729
         }
       ]
     },
@@ -745,6 +756,18 @@
         "f": 0.6,
         "c": 24.7,
         "fi": 2.6
+      },
+      "roasted seaweed snacks, sea salt": {
+        "name": "Roasted Seaweed Snacks, Sea Salt",
+        "kcal": 30,
+        "grams": 5,
+        "per100": 600,
+        "count": 1,
+        "last": 1791395346729,
+        "p": 2,
+        "f": 2,
+        "c": 1,
+        "fi": 1
       }
     },
     "useAI": true,
