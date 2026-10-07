@@ -7175,24 +7175,24 @@ function renderHomeStats(){
   renderHomeBeerCard();
   const el=document.getElementById('home-stats-row');
   if(!el)return;
-  const total=getTotalWorkouts();
-  const cycleWeeks=Object.keys(S.history).map(Number).filter(w=>isWeekDone(w)).length;
-  const streak=getConsecutiveDayStreak();
-  let totalSets=0;
-  Object.values(S.strLog||{}).forEach(dayLog=>{
-    Object.values(dayLog||{}).forEach(exMap=>{
-      Object.values(exMap||{}).forEach(sets=>{totalSets+=(sets||[]).length;});
-    });
-  });
+  // This week (Mon–Sun): total sessions, then a breakdown by type
+  const mon=mondayOf(new Date());
+  const inWeek=ds=>{const d=new Date(ds);return !isNaN(d)&&d>=mon;};
+  const cyclingPlan=Object.values(S.history||{}).flatMap(wh=>Object.values(wh.days||{})).filter(d=>d.completedAt&&inWeek(new Date(d.completedAt).toDateString())).length;
+  const cyclingExtra=(S.activityLog||[]).filter(e=>(e.type||'cycling')==='cycling'&&inWeek(e.date)).length;
+  const cycling=cyclingPlan+cyclingExtra;
+  const strength=(S.strHistory||[]).filter(h=>inWeek(h.date)).length;
+  const boxing=(S.bxHistory||[]).filter(h=>inWeek(h.date)).length;
+  const total=cycling+strength+boxing;
   el.innerHTML=`
-    <div class="prog-stat-card"><div class="prog-stat-val" id="home-stat-total">0</div><div class="prog-stat-lbl">Total Workouts</div></div>
-    <div class="prog-stat-card"><div class="prog-stat-val" id="home-stat-weeks">0</div><div class="prog-stat-lbl">Cycling Weeks</div></div>
-    <div class="prog-stat-card"><div class="prog-stat-val" id="home-stat-streak">0</div><div class="prog-stat-lbl">Day Streak</div></div>
-    <div class="prog-stat-card"><div class="prog-stat-val" id="home-stat-sets">0</div><div class="prog-stat-lbl">Sets Lifted</div></div>`;
+    <div class="prog-stat-card"><div class="prog-stat-val" id="home-stat-total">0</div><div class="prog-stat-lbl">This Week</div></div>
+    <div class="prog-stat-card"><div class="prog-stat-val" id="home-stat-cycling">0</div><div class="prog-stat-lbl">Cycling</div></div>
+    <div class="prog-stat-card"><div class="prog-stat-val" id="home-stat-strength">0</div><div class="prog-stat-lbl">Strength</div></div>
+    <div class="prog-stat-card"><div class="prog-stat-val" id="home-stat-boxing">0</div><div class="prog-stat-lbl">Boxing</div></div>`;
   animateCountUp(document.getElementById('home-stat-total'),total,500);
-  animateCountUp(document.getElementById('home-stat-weeks'),cycleWeeks,500);
-  animateCountUp(document.getElementById('home-stat-streak'),streak,500);
-  animateCountUp(document.getElementById('home-stat-sets'),totalSets,700);
+  animateCountUp(document.getElementById('home-stat-cycling'),cycling,500);
+  animateCountUp(document.getElementById('home-stat-strength'),strength,500);
+  animateCountUp(document.getElementById('home-stat-boxing'),boxing,500);
 }
 
 function renderPlan(){
