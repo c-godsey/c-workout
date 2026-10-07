@@ -437,7 +437,7 @@
   "strLogExIdx": 0,
   "strAnalyticsOpen": false,
   "strProgram": "pulldip",
-  "lastModified": 1791392529757,
+  "lastModified": 1791392545168,
   "reminders": {
     "enabled": false,
     "thresholdDays": 3,
@@ -538,19 +538,7 @@
           "ts": 1791325586034
         }
       ],
-      "Wed Oct 07 2026": [
-        {
-          "name": "Kirkland Sous Vide Egg Bites",
-          "kcal": 310,
-          "grams": 142,
-          "per100": 218,
-          "p": 19,
-          "f": 22,
-          "c": 9,
-          "fi": 0,
-          "ts": 1791392529756
-        }
-      ]
+      "Wed Oct 07 2026": []
     },
     "recents": {
       "shredded chicken breast in light broth": {
