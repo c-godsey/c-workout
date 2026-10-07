@@ -437,7 +437,7 @@
   "strLogExIdx": 0,
   "strAnalyticsOpen": false,
   "strProgram": "pulldip",
-  "lastModified": 1791325998942,
+  "lastModified": 1791392506370,
   "reminders": {
     "enabled": false,
     "thresholdDays": 3,
@@ -537,7 +537,8 @@
           "fi": 4.4,
           "ts": 1791325586034
         }
-      ]
+      ],
+      "Wed Oct 07 2026": []
     },
     "recents": {
       "shredded chicken breast in light broth": {
@@ -627,6 +628,18 @@
         "f": 0.3,
         "c": 25,
         "fi": 4.4
+      },
+      "kirkland signature egg white bites": {
+        "name": "Kirkland Signature Egg White Bites",
+        "kcal": 300,
+        "grams": 128,
+        "per100": 234,
+        "count": 1,
+        "last": 1791392078690,
+        "p": 24,
+        "f": 13,
+        "c": 9,
+        "fi": 1
       }
     },
     "useAI": true,
