@@ -437,7 +437,7 @@
   "strLogExIdx": 0,
   "strAnalyticsOpen": false,
   "strProgram": "pulldip",
-  "lastModified": 1791392545168,
+  "lastModified": 1791392586391,
   "reminders": {
     "enabled": false,
     "thresholdDays": 3,
@@ -538,7 +538,19 @@
           "ts": 1791325586034
         }
       ],
-      "Wed Oct 07 2026": []
+      "Wed Oct 07 2026": [
+        {
+          "name": "Cashews",
+          "kcal": 280,
+          "grams": 45,
+          "per100": 622,
+          "p": 8,
+          "f": 22,
+          "c": 14,
+          "fi": 2,
+          "ts": 1791392586391
+        }
+      ]
     },
     "recents": {
       "shredded chicken breast in light broth": {
@@ -652,6 +664,18 @@
         "f": 22,
         "c": 9,
         "fi": 0
+      },
+      "cashews": {
+        "name": "Cashews",
+        "kcal": 280,
+        "grams": 45,
+        "per100": 622,
+        "count": 1,
+        "last": 1791392586391,
+        "p": 8,
+        "f": 22,
+        "c": 14,
+        "fi": 2
       }
     },
     "useAI": true,
