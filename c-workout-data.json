@@ -437,7 +437,7 @@
   "strLogExIdx": 0,
   "strAnalyticsOpen": false,
   "strProgram": "pulldip",
-  "lastModified": 1791392586391,
+  "lastModified": 1791392622128,
   "reminders": {
     "enabled": false,
     "thresholdDays": 3,
@@ -549,6 +549,17 @@
           "c": 14,
           "fi": 2,
           "ts": 1791392586391
+        },
+        {
+          "name": "Sous Vide Egg Bites",
+          "kcal": 160,
+          "grams": 119,
+          "per100": 134,
+          "p": 11,
+          "f": 8,
+          "c": 11,
+          "fi": 1,
+          "ts": 1791392622128
         }
       ]
     },
@@ -676,6 +687,18 @@
         "f": 22,
         "c": 14,
         "fi": 2
+      },
+      "sous vide egg bites": {
+        "name": "Sous Vide Egg Bites",
+        "kcal": 160,
+        "grams": 119,
+        "per100": 134,
+        "count": 1,
+        "last": 1791392622128,
+        "p": 11,
+        "f": 8,
+        "c": 11,
+        "fi": 1
       }
     },
     "useAI": true,
