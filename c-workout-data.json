@@ -437,7 +437,7 @@
   "strLogExIdx": 0,
   "strAnalyticsOpen": false,
   "strProgram": "pulldip",
-  "lastModified": 1791399624319,
+  "lastModified": 1791399633951,
   "reminders": {
     "enabled": false,
     "thresholdDays": 3,
@@ -860,7 +860,7 @@
       "ts": 1791323924964
     }
   ],
-  "beerPrefType": "lager",
+  "beerPrefType": "ipa",
   "challenges": {},
   "wellness": {
     "water": {
