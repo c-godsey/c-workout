@@ -437,7 +437,7 @@
   "strLogExIdx": 0,
   "strAnalyticsOpen": false,
   "strProgram": "pulldip",
-  "lastModified": 1791393466371,
+  "lastModified": 1791393478561,
   "reminders": {
     "enabled": false,
     "thresholdDays": 3,
@@ -571,6 +571,17 @@
           "c": 5,
           "fi": 0,
           "ts": 1791393457543
+        },
+        {
+          "name": "Mango",
+          "kcal": 99,
+          "grams": 165,
+          "per100": 60,
+          "p": 1.4,
+          "f": 0.6,
+          "c": 24.7,
+          "fi": 2.6,
+          "ts": 1791393478561
         }
       ]
     },
@@ -722,6 +733,18 @@
         "f": 5,
         "c": 8,
         "fi": 0
+      },
+      "mango": {
+        "name": "Mango",
+        "kcal": 99,
+        "grams": 165,
+        "per100": 60,
+        "count": 1,
+        "last": 1791393478561,
+        "p": 1.4,
+        "f": 0.6,
+        "c": 24.7,
+        "fi": 2.6
       }
     },
     "useAI": true,
