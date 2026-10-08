@@ -467,6 +467,12 @@
             "reps": 8,
             "ts": 1791498952121,
             "exName": "Chest-Supported Row"
+          },
+          {
+            "weight": 60,
+            "reps": 8,
+            "ts": 1791499082833,
+            "exName": "Chest-Supported Row"
           }
         ]
       }
@@ -507,7 +513,7 @@
   "strLogExIdx": 0,
   "strAnalyticsOpen": false,
   "strProgram": "pulldip",
-  "lastModified": 1791498952122,
+  "lastModified": 1791499082833,
   "reminders": {
     "enabled": false,
     "thresholdDays": 3,
