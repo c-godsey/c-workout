@@ -279,6 +279,18 @@
       "reps": 15,
       "date": "Thu Oct 08 2026",
       "wTitle": "Day A: Volume"
+    },
+    "Incline Dumbbell Curl": {
+      "weight": 25,
+      "reps": 10,
+      "date": "Thu Oct 08 2026",
+      "wTitle": "Day A: Volume"
+    },
+    "Overhead Kettlebell Triceps Extension": {
+      "weight": 44,
+      "reps": 10,
+      "date": "Thu Oct 08 2026",
+      "wTitle": "Day A: Volume"
     }
   },
   "strLog": {
@@ -552,6 +564,22 @@
             "ts": 1791499948310,
             "exName": "Rear Delt Fly"
           }
+        ],
+        "6": [
+          {
+            "weight": 25,
+            "reps": 10,
+            "ts": 1791500129594,
+            "exName": "Incline Dumbbell Curl"
+          }
+        ],
+        "7": [
+          {
+            "weight": 44,
+            "reps": 10,
+            "ts": 1791500135646,
+            "exName": "Overhead Kettlebell Triceps Extension"
+          }
         ]
       }
     }
@@ -586,12 +614,12 @@
     }
   ],
   "strSwaps": {},
-  "strLogWeight": 15,
-  "strLogReps": 15,
+  "strLogWeight": 44,
+  "strLogReps": 10,
   "strLogExIdx": 0,
   "strAnalyticsOpen": false,
   "strProgram": "pulldip",
-  "lastModified": 1791499948312,
+  "lastModified": 1791500135646,
   "reminders": {
     "enabled": false,
     "thresholdDays": 3,
