@@ -267,6 +267,18 @@
       "reps": 10,
       "date": "Thu Oct 08 2026",
       "wTitle": "Day A: Volume"
+    },
+    "Seated Lateral Raise": {
+      "weight": 10,
+      "reps": 12,
+      "date": "Thu Oct 08 2026",
+      "wTitle": "Day A: Volume"
+    },
+    "Rear Delt Fly": {
+      "weight": 15,
+      "reps": 15,
+      "date": "Thu Oct 08 2026",
+      "wTitle": "Day A: Volume"
     }
   },
   "strLog": {
@@ -500,6 +512,22 @@
             "ts": 1791499438047,
             "exName": "Goblet Squat"
           }
+        ],
+        "4": [
+          {
+            "weight": 10,
+            "reps": 12,
+            "ts": 1791499637905,
+            "exName": "Seated Lateral Raise"
+          }
+        ],
+        "5": [
+          {
+            "weight": 15,
+            "reps": 15,
+            "ts": 1791499641322,
+            "exName": "Rear Delt Fly"
+          }
         ]
       }
     }
@@ -534,12 +562,12 @@
     }
   ],
   "strSwaps": {},
-  "strLogWeight": 35,
-  "strLogReps": 10,
+  "strLogWeight": 15,
+  "strLogReps": 15,
   "strLogExIdx": 0,
   "strAnalyticsOpen": false,
   "strProgram": "pulldip",
-  "lastModified": 1791499438047,
+  "lastModified": 1791499641322,
   "reminders": {
     "enabled": false,
     "thresholdDays": 3,
