@@ -255,6 +255,12 @@
       "reps": 12,
       "date": "Tue Oct 06 2026",
       "wTitle": "Day C: Density"
+    },
+    "Chest-Supported Row": {
+      "weight": 60,
+      "reps": 8,
+      "date": "Thu Oct 08 2026",
+      "wTitle": "Day A: Volume"
     }
   },
   "strLog": {
@@ -454,6 +460,14 @@
             "ts": 1791498747153,
             "exName": "Dip"
           }
+        ],
+        "2": [
+          {
+            "weight": 60,
+            "reps": 8,
+            "ts": 1791498952121,
+            "exName": "Chest-Supported Row"
+          }
         ]
       }
     }
@@ -488,12 +502,12 @@
     }
   ],
   "strSwaps": {},
-  "strLogWeight": 0,
+  "strLogWeight": 60,
   "strLogReps": 8,
   "strLogExIdx": 0,
   "strAnalyticsOpen": false,
   "strProgram": "pulldip",
-  "lastModified": 1791498747154,
+  "lastModified": 1791498952122,
   "reminders": {
     "enabled": false,
     "thresholdDays": 3,
