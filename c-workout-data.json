@@ -493,6 +493,12 @@
             "reps": 10,
             "ts": 1791499331847,
             "exName": "Goblet Squat"
+          },
+          {
+            "weight": 35,
+            "reps": 10,
+            "ts": 1791499438047,
+            "exName": "Goblet Squat"
           }
         ]
       }
@@ -533,7 +539,7 @@
   "strLogExIdx": 0,
   "strAnalyticsOpen": false,
   "strProgram": "pulldip",
-  "lastModified": 1791499331847,
+  "lastModified": 1791499438047,
   "reminders": {
     "enabled": false,
     "thresholdDays": 3,
