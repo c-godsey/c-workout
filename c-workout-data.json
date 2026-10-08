@@ -525,6 +525,12 @@
             "reps": 12,
             "ts": 1791499742942,
             "exName": "Seated Lateral Raise"
+          },
+          {
+            "weight": 10,
+            "reps": 12,
+            "ts": 1791499947557,
+            "exName": "Seated Lateral Raise"
           }
         ],
         "5": [
@@ -538,6 +544,12 @@
             "weight": 15,
             "reps": 15,
             "ts": 1791499786377,
+            "exName": "Rear Delt Fly"
+          },
+          {
+            "weight": 15,
+            "reps": 15,
+            "ts": 1791499948310,
             "exName": "Rear Delt Fly"
           }
         ]
@@ -579,7 +591,7 @@
   "strLogExIdx": 0,
   "strAnalyticsOpen": false,
   "strProgram": "pulldip",
-  "lastModified": 1791499786377,
+  "lastModified": 1791499948312,
   "reminders": {
     "enabled": false,
     "thresholdDays": 3,
