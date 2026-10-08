@@ -533,6 +533,12 @@
             "reps": 15,
             "ts": 1791499641322,
             "exName": "Rear Delt Fly"
+          },
+          {
+            "weight": 15,
+            "reps": 15,
+            "ts": 1791499786377,
+            "exName": "Rear Delt Fly"
           }
         ]
       }
@@ -568,12 +574,12 @@
     }
   ],
   "strSwaps": {},
-  "strLogWeight": 10,
-  "strLogReps": 12,
+  "strLogWeight": 15,
+  "strLogReps": 15,
   "strLogExIdx": 0,
   "strAnalyticsOpen": false,
   "strProgram": "pulldip",
-  "lastModified": 1791499742942,
+  "lastModified": 1791499786377,
   "reminders": {
     "enabled": false,
     "thresholdDays": 3,
