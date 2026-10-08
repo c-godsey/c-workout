@@ -281,7 +281,7 @@
       "wTitle": "Day A: Volume"
     },
     "Incline Dumbbell Curl": {
-      "weight": 25,
+      "weight": 35,
       "reps": 10,
       "date": "Thu Oct 08 2026",
       "wTitle": "Day A: Volume"
@@ -571,6 +571,12 @@
             "reps": 10,
             "ts": 1791500129594,
             "exName": "Incline Dumbbell Curl"
+          },
+          {
+            "weight": 35,
+            "reps": 10,
+            "ts": 1791500282522,
+            "exName": "Incline Dumbbell Curl"
           }
         ],
         "7": [
@@ -614,12 +620,12 @@
     }
   ],
   "strSwaps": {},
-  "strLogWeight": 44,
+  "strLogWeight": 35,
   "strLogReps": 10,
   "strLogExIdx": 0,
   "strAnalyticsOpen": false,
   "strProgram": "pulldip",
-  "lastModified": 1791500135646,
+  "lastModified": 1791500282523,
   "reminders": {
     "enabled": false,
     "thresholdDays": 3,
