@@ -489,7 +489,7 @@
   "strLogExIdx": 0,
   "strAnalyticsOpen": false,
   "strProgram": "pulldip",
-  "lastModified": 1791500890895,
+  "lastModified": 1791501059564,
   "reminders": {
     "enabled": false,
     "thresholdDays": 3,
@@ -1064,5 +1064,5 @@
     "comboTarget": 3
   },
   "morningType": "cycling",
-  "streak": 2
+  "streak": 3
 }
