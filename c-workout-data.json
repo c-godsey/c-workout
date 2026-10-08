@@ -519,6 +519,12 @@
             "reps": 12,
             "ts": 1791499637905,
             "exName": "Seated Lateral Raise"
+          },
+          {
+            "weight": 10,
+            "reps": 12,
+            "ts": 1791499742942,
+            "exName": "Seated Lateral Raise"
           }
         ],
         "5": [
@@ -562,12 +568,12 @@
     }
   ],
   "strSwaps": {},
-  "strLogWeight": 15,
-  "strLogReps": 15,
+  "strLogWeight": 10,
+  "strLogReps": 12,
   "strLogExIdx": 0,
   "strAnalyticsOpen": false,
   "strProgram": "pulldip",
-  "lastModified": 1791499665108,
+  "lastModified": 1791499742942,
   "reminders": {
     "enabled": false,
     "thresholdDays": 3,
