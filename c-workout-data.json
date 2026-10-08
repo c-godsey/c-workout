@@ -437,7 +437,7 @@
   "strLogExIdx": 0,
   "strAnalyticsOpen": false,
   "strProgram": "pulldip",
-  "lastModified": 1791480998555,
+  "lastModified": 1791481038789,
   "reminders": {
     "enabled": false,
     "thresholdDays": 3,
@@ -639,6 +639,17 @@
           "c": 11,
           "fi": 1,
           "ts": 1791480998554
+        },
+        {
+          "name": "Kidney Beans",
+          "kcal": 281,
+          "grams": 221,
+          "per100": 127,
+          "p": 19.2,
+          "f": 1.1,
+          "c": 50.5,
+          "fi": 16.4,
+          "ts": 1791481029900
         }
       ]
     },
@@ -826,6 +837,18 @@
         "f": 9,
         "c": 1,
         "fi": 0
+      },
+      "kidney beans": {
+        "name": "Kidney Beans",
+        "kcal": 281,
+        "grams": 221,
+        "per100": 127,
+        "count": 3,
+        "last": 1791481036264,
+        "p": 19.1,
+        "f": 1.1,
+        "c": 50.5,
+        "fi": 16.4
       }
     },
     "useAI": true,
