@@ -437,7 +437,7 @@
   "strLogExIdx": 0,
   "strAnalyticsOpen": false,
   "strProgram": "pulldip",
-  "lastModified": 1791481189761,
+  "lastModified": 1791481200263,
   "reminders": {
     "enabled": false,
     "thresholdDays": 3,
@@ -650,6 +650,17 @@
           "c": 50.5,
           "fi": 16.4,
           "ts": 1791481029900
+        },
+        {
+          "name": "MIXED NUTS Roasted & Salted",
+          "kcal": 270,
+          "grams": 45,
+          "per100": 600,
+          "p": 8,
+          "f": 19,
+          "c": 16,
+          "fi": 4,
+          "ts": 1791481200263
         }
       ]
     },
@@ -849,6 +860,18 @@
         "f": 1.1,
         "c": 50.5,
         "fi": 16.4
+      },
+      "mixed nuts roasted & salted": {
+        "name": "MIXED NUTS Roasted & Salted",
+        "kcal": 270,
+        "grams": 45,
+        "per100": 600,
+        "count": 1,
+        "last": 1791481200263,
+        "p": 8,
+        "f": 19,
+        "c": 16,
+        "fi": 4
       }
     },
     "useAI": true,
