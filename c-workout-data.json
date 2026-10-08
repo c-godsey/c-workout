@@ -585,6 +585,12 @@
             "reps": 10,
             "ts": 1791500135646,
             "exName": "Overhead Kettlebell Triceps Extension"
+          },
+          {
+            "weight": 44,
+            "reps": 10,
+            "ts": 1791500330458,
+            "exName": "Overhead Kettlebell Triceps Extension"
           }
         ]
       }
@@ -620,12 +626,12 @@
     }
   ],
   "strSwaps": {},
-  "strLogWeight": 35,
+  "strLogWeight": 44,
   "strLogReps": 10,
   "strLogExIdx": 0,
   "strAnalyticsOpen": false,
   "strProgram": "pulldip",
-  "lastModified": 1791500282523,
+  "lastModified": 1791500330459,
   "reminders": {
     "enabled": false,
     "thresholdDays": 3,
