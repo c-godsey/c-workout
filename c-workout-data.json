@@ -409,6 +409,12 @@
             "reps": 6,
             "ts": 1791498087247,
             "exName": "Pull-Up"
+          },
+          {
+            "weight": 0,
+            "reps": 6,
+            "ts": 1791498181057,
+            "exName": "Pull-Up"
           }
         ]
       }
@@ -449,7 +455,7 @@
   "strLogExIdx": 0,
   "strAnalyticsOpen": false,
   "strProgram": "pulldip",
-  "lastModified": 1791498087247,
+  "lastModified": 1791498181057,
   "reminders": {
     "enabled": false,
     "thresholdDays": 3,
