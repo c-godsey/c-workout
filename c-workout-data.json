@@ -605,6 +605,12 @@
             "reps": 8,
             "ts": 1791500603796,
             "exName": "Incline Dumbbell Press"
+          },
+          {
+            "weight": 45,
+            "reps": 7,
+            "ts": 1791500714278,
+            "exName": "Incline Dumbbell Press"
           }
         ]
       }
@@ -641,11 +647,11 @@
   ],
   "strSwaps": {},
   "strLogWeight": 45,
-  "strLogReps": 8,
+  "strLogReps": 7,
   "strLogExIdx": 0,
   "strAnalyticsOpen": false,
   "strProgram": "pulldip",
-  "lastModified": 1791500603796,
+  "lastModified": 1791500714279,
   "reminders": {
     "enabled": false,
     "thresholdDays": 3,
