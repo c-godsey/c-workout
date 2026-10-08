@@ -592,6 +592,14 @@
             "ts": 1791500330458,
             "exName": "Overhead Kettlebell Triceps Extension"
           }
+        ],
+        "8": [
+          {
+            "weight": 45,
+            "reps": 8,
+            "ts": 1791500497102,
+            "exName": "Incline Dumbbell Press"
+          }
         ]
       }
     }
@@ -626,12 +634,12 @@
     }
   ],
   "strSwaps": {},
-  "strLogWeight": 44,
-  "strLogReps": 10,
+  "strLogWeight": 45,
+  "strLogReps": 8,
   "strLogExIdx": 0,
   "strAnalyticsOpen": false,
   "strProgram": "pulldip",
-  "lastModified": 1791500330459,
+  "lastModified": 1791500497102,
   "reminders": {
     "enabled": false,
     "thresholdDays": 3,
