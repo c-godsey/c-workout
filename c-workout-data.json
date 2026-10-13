@@ -489,7 +489,7 @@
   "strLogExIdx": 0,
   "strAnalyticsOpen": false,
   "strProgram": "pulldip",
-  "lastModified": 1791914107170,
+  "lastModified": 1791914119924,
   "reminders": {
     "enabled": false,
     "thresholdDays": 3,
@@ -726,13 +726,6 @@
           "c": 11,
           "fi": 1,
           "ts": 1791913903113
-        },
-        {
-          "name": "Westbrae Natural Organic Chili Beans",
-          "kcal": 227,
-          "grams": 172,
-          "per100": 132,
-          "ts": 1791914072123
         }
       ]
     },
