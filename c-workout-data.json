@@ -3,7 +3,7 @@
   "activeDay": "day1",
   "activeBoxingWorkoutId": 1,
   "activeStrengthWorkout": 0,
-  "activeWorkoutTab": "plan",
+  "activeWorkoutTab": "cycling",
   "planDays": [
     {
       "type": "rest",
@@ -489,7 +489,7 @@
   "strLogExIdx": 0,
   "strAnalyticsOpen": false,
   "strProgram": "pulldip",
-  "lastModified": 1792531858651,
+  "lastModified": 1792534370156,
   "reminders": {
     "enabled": false,
     "thresholdDays": 3,
@@ -981,6 +981,13 @@
       "type": "cycling",
       "ts": 1791409322389,
       "mins": 60
+    },
+    {
+      "date": "Tue Oct 20 2026",
+      "type": "cycling",
+      "ts": 1792534370098,
+      "videoId": "PXamrwTAMvY",
+      "title": "Spin Those Legs"
     }
   ],
   "bwLog": {
@@ -1045,6 +1052,12 @@
       "source": "strength",
       "kcal": 76,
       "ts": 1791500890894
+    },
+    {
+      "date": "Tue Oct 20 2026",
+      "source": "cycling",
+      "kcal": 80,
+      "ts": 1792534370156
     }
   ],
   "beerPrefType": "ipa",
