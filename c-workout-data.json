@@ -470,6 +470,12 @@
             "reps": 9,
             "ts": 1793136704012,
             "exName": "Barbell Bench Press"
+          },
+          {
+            "weight": 135,
+            "reps": 7,
+            "ts": 1793136881818,
+            "exName": "Barbell Bench Press"
           }
         ]
       }
@@ -515,11 +521,11 @@
   ],
   "strSwaps": {},
   "strLogWeight": 135,
-  "strLogReps": 9,
+  "strLogReps": 7,
   "strLogExIdx": 0,
   "strAnalyticsOpen": false,
   "strProgram": "sts",
-  "lastModified": 1793136704012,
+  "lastModified": 1793136881818,
   "reminders": {
     "enabled": false,
     "thresholdDays": 3,
