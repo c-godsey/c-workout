@@ -620,6 +620,12 @@
             "reps": 10,
             "ts": 1793139008283,
             "exName": "Cable Overhead Triceps Extension"
+          },
+          {
+            "weight": 10,
+            "reps": 12,
+            "ts": 1793139072710,
+            "exName": "Cable Overhead Triceps Extension"
           }
         ]
       }
@@ -666,12 +672,12 @@
   "strSwaps": {
     "0-3": 0
   },
-  "strLogWeight": 20,
-  "strLogReps": 10,
+  "strLogWeight": 10,
+  "strLogReps": 12,
   "strLogExIdx": 0,
   "strAnalyticsOpen": false,
   "strProgram": "sts",
-  "lastModified": 1793139008283,
+  "lastModified": 1793139072710,
   "reminders": {
     "enabled": false,
     "thresholdDays": 3,
