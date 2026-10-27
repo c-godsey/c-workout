@@ -297,6 +297,12 @@
       "reps": 12,
       "date": "Thu Oct 08 2026",
       "wTitle": "Day A: Volume"
+    },
+    "Barbell Bench Press": {
+      "weight": 115,
+      "reps": 12,
+      "date": "Tue Oct 27 2026",
+      "wTitle": "Chest & Triceps"
     }
   },
   "strLog": {
@@ -443,7 +449,19 @@
         ]
       }
     },
-    "Thu Oct 08 2026": {}
+    "Thu Oct 08 2026": {},
+    "Tue Oct 27 2026": {
+      "0": {
+        "0": [
+          {
+            "weight": 115,
+            "reps": 12,
+            "ts": 1793136365012,
+            "exName": "Barbell Bench Press"
+          }
+        ]
+      }
+    }
   },
   "strHistory": [
     {
@@ -484,12 +502,12 @@
     }
   ],
   "strSwaps": {},
-  "strLogWeight": 135,
-  "strLogReps": 5,
+  "strLogWeight": 115,
+  "strLogReps": 12,
   "strLogExIdx": 0,
   "strAnalyticsOpen": false,
   "strProgram": "sts",
-  "lastModified": 1793136176265,
+  "lastModified": 1793136365013,
   "reminders": {
     "enabled": false,
     "thresholdDays": 3,
