@@ -333,6 +333,12 @@
       "reps": 12,
       "date": "Tue Oct 27 2026",
       "wTitle": "Chest & Triceps"
+    },
+    "Cable Overhead Triceps Extension": {
+      "weight": 20,
+      "reps": 10,
+      "date": "Tue Oct 27 2026",
+      "wTitle": "Chest & Triceps"
     }
   },
   "strLog": {
@@ -607,6 +613,14 @@
             "ts": 1793138993561,
             "exName": "Lying Triceps Extension"
           }
+        ],
+        "6": [
+          {
+            "weight": 20,
+            "reps": 10,
+            "ts": 1793139008283,
+            "exName": "Cable Overhead Triceps Extension"
+          }
         ]
       }
     }
@@ -653,11 +667,11 @@
     "0-3": 0
   },
   "strLogWeight": 20,
-  "strLogReps": 12,
+  "strLogReps": 10,
   "strLogExIdx": 0,
   "strAnalyticsOpen": false,
   "strProgram": "sts",
-  "lastModified": 1793138993562,
+  "lastModified": 1793139008283,
   "reminders": {
     "enabled": false,
     "thresholdDays": 3,
