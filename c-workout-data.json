@@ -568,6 +568,12 @@
             "reps": 12,
             "ts": 1793138269341,
             "exName": "Cable Triceps Pressdown"
+          },
+          {
+            "weight": 40,
+            "reps": 12,
+            "ts": 1793138370444,
+            "exName": "Cable Triceps Pressdown"
           }
         ]
       }
@@ -619,7 +625,7 @@
   "strLogExIdx": 0,
   "strAnalyticsOpen": false,
   "strProgram": "sts",
-  "lastModified": 1793138269342,
+  "lastModified": 1793138370445,
   "reminders": {
     "enabled": false,
     "thresholdDays": 3,
