@@ -317,8 +317,8 @@
       "wTitle": "Chest & Triceps"
     },
     "DB Fly": {
-      "weight": 15,
-      "reps": 15,
+      "weight": 20,
+      "reps": 12,
       "date": "Tue Oct 27 2026",
       "wTitle": "Chest & Triceps"
     }
@@ -542,6 +542,12 @@
             "reps": 15,
             "ts": 1793137891839,
             "exName": "DB Fly"
+          },
+          {
+            "weight": 20,
+            "reps": 12,
+            "ts": 1793138028638,
+            "exName": "DB Fly"
           }
         ]
       }
@@ -588,12 +594,12 @@
   "strSwaps": {
     "0-3": 0
   },
-  "strLogWeight": 15,
-  "strLogReps": 15,
+  "strLogWeight": 20,
+  "strLogReps": 12,
   "strLogExIdx": 0,
   "strAnalyticsOpen": false,
   "strProgram": "sts",
-  "lastModified": 1793137891840,
+  "lastModified": 1793138028638,
   "reminders": {
     "enabled": false,
     "thresholdDays": 3,
