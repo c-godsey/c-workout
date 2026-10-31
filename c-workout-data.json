@@ -535,15 +535,13 @@
       "stsCycle": 1
     }
   ],
-  "strSwaps": {
-    "0-3": 0
-  },
+  "strSwaps": {},
   "strLogWeight": 10,
   "strLogReps": 12,
   "strLogExIdx": 0,
   "strAnalyticsOpen": false,
-  "strProgram": "sts",
-  "lastModified": 1793475881734,
+  "strProgram": "jnfullA",
+  "lastModified": 1793475919819,
   "reminders": {
     "enabled": false,
     "thresholdDays": 3,
