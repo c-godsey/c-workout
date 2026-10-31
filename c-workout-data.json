@@ -540,8 +540,8 @@
   "strLogReps": 12,
   "strLogExIdx": 0,
   "strAnalyticsOpen": false,
-  "strProgram": "jnfullA",
-  "lastModified": 1793475993618,
+  "strProgram": "spinesafe",
+  "lastModified": 1793476004885,
   "reminders": {
     "enabled": false,
     "thresholdDays": 3,
